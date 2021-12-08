@@ -14,9 +14,28 @@ class _StartPageState extends State<StartPage> {
     return Scaffold(
       body: Column(
         children: [
-          const Text('BLAACKJAAAACCKK'),
-          TextButton(
-            child: const Text('Tryck här'),
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(""),
+                fit: BoxFit.cover,
+              ),
+            ),
+            margin: const EdgeInsets.only(left: 20, top: 40),
+          ),
+          const Text(
+            'Blackjack',
+            style: TextStyle(fontSize: 50),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 125),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(200, 50),
+              maximumSize: const Size(200, 50),
+            ),
+            child: const Text('PLAY NOW'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -26,6 +45,38 @@ class _StartPageState extends State<StartPage> {
               );
             },
           ),
+          Container(
+            margin: const EdgeInsets.only(top: 30),
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(200, 50),
+                maximumSize: const Size(200, 50),
+              ),
+              child: const Text('HOW TO PLAY'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HelpPage(),
+                    ));
+              }),
+          Container(
+            margin: const EdgeInsets.only(top: 30),
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(200, 50),
+                maximumSize: const Size(200, 50),
+              ),
+              child: const Text('STATISTICS'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HelpPage(),
+                    ));
+              })
         ],
       ),
     );
