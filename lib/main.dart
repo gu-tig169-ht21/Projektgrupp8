@@ -12,7 +12,7 @@ void main() {
           debugShowCheckedModeBanner: false,
           title: 'blackjack:)',
           home: StartPage(),
-          theme: ThemeCustom.StandardTheme),
+          theme: ThemeCustom.DarkTheme),
     ),
   );
 }
