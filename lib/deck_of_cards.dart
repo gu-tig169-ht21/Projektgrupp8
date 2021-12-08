@@ -24,7 +24,7 @@ class DeckOfCards {
     switch (card.value) {
       case CardValue.ace:
         {
-          return 1;
+          return 11;
         }
       case CardValue.two:
         {
@@ -80,9 +80,39 @@ class DeckOfCards {
   int handValue(List<PlayingCard> hand) {
     //returnerar värdet av en "hand" (lista av kort)
     int value = 0;
+    var test = hand.where((element) => element.value == CardValue.ace);
+
     for (PlayingCard card in hand) {
       value += valueOfCard(card);
     }
+    if (value > 21 && test.isNotEmpty && test.length == 1) {
+      value -= 10;
+    } else if (value > 21 && test.isNotEmpty && test.length == 2) {
+      if (value - 10 <= 21) {
+        value -= 10;
+      } else {
+        value -= 20;
+      }
+    } else if (value > 21 && test.isNotEmpty && test.length == 3) {
+      if (value - 10 <= 21) {
+        value -= 10;
+      } else if (value - 20 <= 21) {
+        value -= 20;
+      } else {
+        value -= 30;
+      }
+    } else if (value > 21 && test.isNotEmpty && test.length == 4) {
+      if (value - 10 <= 21) {
+        value -= 10;
+      } else if (value - 20 <= 21) {
+        value -= 20;
+      } else if (value - 30 <= 21) {
+        value -= 30;
+      } else {
+        value -= 40;
+      }
+    }
+
     return value;
   }
 }
