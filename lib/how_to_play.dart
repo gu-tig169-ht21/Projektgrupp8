@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
 import 'package:provider/provider.dart';
 import 'rules.dart';
 
@@ -29,6 +28,7 @@ class _HelpPageState extends State<HelpPage> {
         appBar: AppBar(
           //appbar med en dropdownbutton
           title: DropdownButton(
+            style: const TextStyle(fontSize: 20, fontStyle: FontStyle.normal),
             value: dropDownValue,
             onChanged: (String? chosenValue) {
               //kallar på funktionen med hjälp av en provider
