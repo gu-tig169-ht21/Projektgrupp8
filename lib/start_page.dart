@@ -55,7 +55,7 @@ class _StartPageState extends State<StartPage> {
     return Stack(
       children: [
         Positioned(
-          top: 120,
+          bottom: 280,
           left: 150,
           right: 150,
           child: ElevatedButton(
@@ -78,7 +78,7 @@ class _StartPageState extends State<StartPage> {
   Widget _howToPlayButton() {
     return Stack(children: [
       Positioned(
-        top: 200,
+        bottom: 240,
         left: 100,
         right: 100,
         child: ElevatedButton(
