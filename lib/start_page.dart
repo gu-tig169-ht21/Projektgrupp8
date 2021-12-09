@@ -29,18 +29,22 @@ class _StartPageState extends State<StartPage> {
   Widget _image() {
     return Stack(children: const [
       Image(
-        image: AssetImage('assets/bakgrundBlackjack'),
+        image: AssetImage('assets/bakgrundBlackjack.jpg'),
+        fit: BoxFit.cover,
       ),
     ]);
   }
 
   //widget för huvudtitel
   Widget _title() {
-    return Container(
-      child: const Text(
-        'Blackjack',
-        style: TextStyle(fontSize: 50),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Text(
+          'Blackjack',
+          style: TextStyle(fontSize: 50),
+        ),
+      ],
     );
   }
 
@@ -48,8 +52,35 @@ class _StartPageState extends State<StartPage> {
   Widget _playButton() {
     return Stack(
       children: [
-        ElevatedButton(
-          child: const Text('PLAY NOW'),
+        Positioned(
+          top: 120,
+          left: 150,
+          right: 150,
+          child: ElevatedButton(
+            child: const Text('PLAY NOW'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HelpPage(),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  //Widget för hjälp/how to play knapp
+  Widget _howToPlayButton() {
+    return Stack(children: [
+      Positioned(
+        top: 200,
+        left: 100,
+        right: 100,
+        child: ElevatedButton(
+          child: const Text('HOW TO PLAY'),
           onPressed: () {
             Navigator.push(
               context,
@@ -59,23 +90,6 @@ class _StartPageState extends State<StartPage> {
             );
           },
         ),
-      ],
-    );
-  }
-
-  //Widget för hjälp knapp
-  Widget _howToPlayButton() {
-    return Stack(children: [
-      ElevatedButton(
-        child: const Text('HOW TO PLAY'),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HelpPage(),
-            ),
-          );
-        },
       ),
     ]);
   }
@@ -83,26 +97,43 @@ class _StartPageState extends State<StartPage> {
   //Widget för statistik knapp
   Widget _statisticsButton() {
     return Stack(children: [
-      ElevatedButton(
-        child: const Text('STATISTICS'),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HelpPage(),
-            ),
-          );
-        },
+      Positioned(
+        bottom: 200,
+        left: 100,
+        right: 100,
+        child: ElevatedButton(
+          child: const Text('STATISTICS'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HelpPage(),
+              ),
+            );
+          },
+        ),
       ),
     ]);
   }
 
   //widget för inställningsikon
   Widget _settingsIcon() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+    return Stack(
       children: [
-        IconButton(icon: const Icon(Icons.settings), onPressed: () {}),
+        Positioned(
+          bottom: 50,
+          right: 50,
+          child: IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HelpPage(),
+                  ),
+                );
+              }),
+        ),
       ],
     );
   }
