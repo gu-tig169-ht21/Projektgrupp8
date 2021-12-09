@@ -3,21 +3,21 @@ import 'package:playing_cards/playing_cards.dart';
 import 'dart:math';
 
 class DeckOfCards {
-  List<PlayingCard> deck = standardFiftyTwoCardDeck(); //ska den ligga här?
+  //List<PlayingCard> deck = standardFiftyTwoCardDeck(); //ska den ligga här?
   final _random = Random();
 
-  PlayingCard pickACard() {
+  PlayingCard pickACard(List<PlayingCard> deck) {
     //returnerar ett kort och tar bort det ur leken
     int i = _random.nextInt(deck.length + 1);
     PlayingCard card = deck[i];
-    deck.removeAt(i);
+    //deck.removeAt(i);
     return card;
   }
 
-  void resetDeck() {
-    //resettar kortleken
-    deck = standardFiftyTwoCardDeck();
-  }
+  // List<PlayingCard> resetDeck() {
+  //   //resettar kortleken
+  //   return standardFiftyTwoCardDeck();
+  // }
 
   int valueOfCard(PlayingCard card) {
     //returnerar värdet av ett specifikt kort
