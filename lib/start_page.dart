@@ -1,9 +1,13 @@
+import 'package:my_first_app/game_page.dart';
+
 import 'how_to_play.dart';
 import 'package:flutter/material.dart';
 import 'rules.dart';
 import 'main.dart';
 
 class StartPage extends StatefulWidget {
+  const StartPage({Key? key}) : super(key: key);
+
   @override
   State<StartPage> createState() => _StartPageState();
 }
@@ -21,7 +25,7 @@ class _StartPageState extends State<StartPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HelpPage(),
+                  builder: (context) => const GamePage(),
                 ),
               );
             },

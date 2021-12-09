@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'blackjack.dart';
+import 'deck_of_cards.dart';
+import 'package:playing_cards/playing_cards.dart';
 
 int saldo = 300;
 
@@ -61,8 +64,62 @@ class _GamePageState extends State<GamePage> {
             },
           ),
         ),
-        body: Column(
-          children: [Row()],
-        ));
+        body: startNewGame());
+  }
+
+  Widget startNewGame() {
+    //här skapas ett nytt spel och startkort delas ut, ska kanske ha något med bet att göra
+    BlackJack().resetDeck();
+    BlackJack().clearHands();
+    BlackJack().startingHands();
+
+    return Column(
+      //när spelaren tryckt på knapp så får dealrn sin tur FIXA
+      children: [
+        Consumer<BlackJack>(
+            builder: (context, state, child) =>
+                getHand(BlackJack().dealerHand)),
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                try {
+                  Provider.of<BlackJack>(context, listen: false).getNewCard();
+                } catch (e) {
+                  //gör en popup som säger att du inte kan dra kort FIXA
+                }
+              },
+              icon: const Icon(Icons.plus_one),
+            ),
+            Column(
+              children: [
+                const Icon(Icons.money),
+                Consumer(
+                    builder: (context, state, child) =>
+                        Text('${BlackJack().playerBet}'))
+              ],
+            ),
+            IconButton(
+                onPressed: () {
+                  Provider.of<BlackJack>(context, listen: false).stop('Player');
+                },
+                icon: const Icon(Icons.stop))
+          ],
+        ),
+        Consumer<BlackJack>(
+            builder: (context, state, child) =>
+                getHand(BlackJack().playerHand)),
+      ],
+    );
+  }
+
+  Widget getHand(List<PlayingCard> hand) {
+    List<Widget> viewHand = <Widget>[];
+    for (PlayingCard card in hand) {
+      viewHand.add(PlayingCardView(card: card));
+    }
+    return Row(
+      children: viewHand,
+    );
   }
 }

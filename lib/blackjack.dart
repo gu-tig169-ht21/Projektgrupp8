@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:my_first_app/game_page.dart';
 import 'package:playing_cards/playing_cards.dart';
 
 import 'deck_of_cards.dart';
 
-class BlackJack {
+class BlackJack extends ChangeNotifier {
+  List<PlayingCard> deck = standardFiftyTwoCardDeck();
   List<PlayingCard> playerHand = <PlayingCard>[];
   List<PlayingCard> splitHand = <PlayingCard>[];
   List<PlayingCard> dealerHand = <PlayingCard>[];
@@ -13,21 +16,43 @@ class BlackJack {
   int splitBet = 0;
   bool doubled = false;
   bool split = false;
+  String winCondition = '';
 
-  void startNewGame() {
-    //här skapas ett nytt spel och startkort delas ut, ska kanske ha något med bet att göra
+  void clearHands() {
     playerHand.clear();
     dealerHand.clear();
+    splitHand.clear();
+    notifyListeners();
+  }
 
-    playerHand.add(DeckOfCards().pickACard());
-    dealerHand.add(DeckOfCards().pickACard());
-    playerHand.add(DeckOfCards().pickACard());
-    dealerHand.add(DeckOfCards().pickACard());
+  void startingHands() {
+    PlayingCard card = DeckOfCards().pickACard(deck);
+    playerHand.add(card);
+    deck.removeWhere((element) => element == card);
+    card = DeckOfCards().pickACard(deck);
+    dealerHand.add(card);
+    deck.removeWhere((element) => element == card);
+    card = DeckOfCards().pickACard(deck);
+    playerHand.add(card);
+    deck.removeWhere((element) => element == card);
+    card = DeckOfCards().pickACard(deck);
+    dealerHand.add(card);
+    deck.removeWhere((element) => element == card);
+    notifyListeners();
+  }
+
+  void resetDeck() {
+    deck = standardFiftyTwoCardDeck();
+    notifyListeners();
   }
 
   void dealersTurn() {
+    PlayingCard card = DeckOfCards().pickACard(deck);
+
     if (DeckOfCards().handValue(dealerHand) < 17) {
-      dealerHand.add(DeckOfCards().pickACard());
+      dealerHand.add(card);
+      deck.removeWhere((element) => element == card);
+      notifyListeners();
       //Kör vinstfunktion när dealern blir tjock eller får blackjack
     } else {
       stop('Dealer');
@@ -39,11 +64,13 @@ class BlackJack {
       case 'Player':
         {
           playerStop = true;
+          notifyListeners();
           break;
         }
       case 'Dealer':
         {
           dealerStop = true;
+          notifyListeners();
           break;
         }
       default:
@@ -53,46 +80,51 @@ class BlackJack {
     }
   }
 
-  bool increaseBet(int bet) {
+  void increaseBet(int bet) {
+    //returna det nya bettet istället
     //ökar spelarens insats
     if (bet <= saldo) {
-      playerBet = bet;
+      playerBet += bet;
       saldo -= bet;
-      return true;
+      notifyListeners();
     } else if (bet > saldo) {
-      return false;
+      throw Exception('Not enough money');
     } else {
-      return false;
+      throw Exception('Something went wrong setting bet');
     }
   }
 
-  bool getNewCard() {
+  void getNewCard() {
     //drar ett nytt kort för spelaren
+    PlayingCard card = DeckOfCards().pickACard(deck);
     if (!doubled) {
-      playerHand.add(DeckOfCards().pickACard());
-      return true;
+      playerHand.add(card);
+      deck.removeWhere((element) => element == card);
+      notifyListeners();
     } else if (doubled && playerHand.length < 3) {
-      playerHand.add(DeckOfCards().pickACard());
-      return true;
+      playerHand.add(card);
+      deck.removeWhere((element) => element == card);
+      notifyListeners();
     } else {
-      return false;
+      throw Exception('Cant pick new card');
     }
   }
 
-  bool doDouble() {
+  void doDouble() {
     //en dubblering av insatsen
     if (saldo >= playerBet) {
       saldo -= playerBet;
       playerBet = playerBet * 2;
       doubled = true;
-      return true;
+      notifyListeners();
     } else {
-      return false;
+      throw Exception('Not enough money');
     }
   }
 
-  bool doSplit() {
+  void doSplit() {
     //gör en split om det väljs och kraven uppfylls
+    PlayingCard card = DeckOfCards().pickACard(deck);
     if (DeckOfCards().valueOfCard(playerHand[0]) ==
             DeckOfCards().valueOfCard(playerHand[1]) &&
         saldo >= playerBet) {
@@ -101,45 +133,55 @@ class BlackJack {
 
       splitBet = playerBet;
       saldo -= splitBet;
-      playerHand.add(DeckOfCards().pickACard());
-      splitHand.add(DeckOfCards().pickACard());
-
+      playerHand.add(card);
+      deck.removeWhere((element) => element == card);
+      card = DeckOfCards().pickACard(deck);
+      splitHand.add(card);
+      deck.removeWhere((element) => element == card);
       split = true;
-      return true;
+      notifyListeners();
     } else {
-      split = false;
-      return false;
+      throw Exception('Cant do split');
     }
   }
 
-  String winOrLose(List<PlayingCard> hand) {
+  void winOrLose(List<PlayingCard> hand) {
     //kalla en gång, eller två vid en split
     int dealerScore = DeckOfCards().handValue(dealerHand);
     int playerScore = DeckOfCards().handValue(hand);
+
     if (dealerScore == 21 && playerScore == 21) {
       //båda har blackjack
-      return 'Draw';
+      winCondition = 'Draw';
+      notifyListeners();
     } else if (dealerScore == 21 && playerScore != 21) {
       //dealern har blackjack
-      return 'Lose';
+      winCondition = 'Lose';
+      notifyListeners();
     } else if (dealerScore != 21 && playerScore == 21) {
       //spelaren har blackjack
-      return 'Win';
+      winCondition = 'Win';
+      notifyListeners();
     } else if (dealerScore > 21) {
       //dealern blev tjock
-      return 'Win';
+      winCondition = 'Win';
+      notifyListeners();
     } else if (playerScore > 21) {
       //spelaren blev tjock
-      return 'Lose';
+      winCondition = 'Lose';
+      notifyListeners();
     } else if (dealerScore == playerScore) {
       //båda fick samma poäng
-      return 'Draw';
+      winCondition = 'Draw';
+      notifyListeners();
     } else if (playerScore > dealerScore) {
       //spelaren fick mer poäng
-      return 'Win';
+      winCondition = 'Win';
+      notifyListeners();
     } else if (playerScore < dealerScore) {
       //dealern fick mer poäng
-      return 'Lose';
+      winCondition = 'Lose';
+      notifyListeners();
     } else {
       throw Exception('Något gick fel vid poängräkningen');
     }
