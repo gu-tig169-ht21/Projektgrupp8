@@ -14,7 +14,7 @@ class _StartPageState extends State<StartPage> {
     return Scaffold(
       body: Stack(
         children: [
-          _image(),
+          // _image(),
           _title(),
           _playButton(),
           _howToPlayButton(),
@@ -25,15 +25,17 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-  //Widget för bakgrundbilden
-  Widget _image() {
-    return Stack(children: const [
-      Image(
-        image: AssetImage('assets/bakgrundBlackjack.jpg'),
-        fit: BoxFit.cover,
-      ),
-    ]);
-  }
+  //Widget för bakgrundsbilden
+  // Widget _image() {
+  //   return Stack(
+  //     children: const [
+  //       Image(
+  //         image: AssetImage('assets/bakgrundBlackjack.jpg'),
+  //         fit: BoxFit.cover,
+  //       ),
+  //     ],
+  //   );
+  // }
 
   //widget för huvudtitel
   Widget _title() {
