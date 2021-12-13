@@ -79,14 +79,14 @@ class _GamePageState extends State<GamePage> {
     //Provider.of<BlackJack>(context, listen: false).startingHands();
 
     return Column(
-      mainAxisSize: MainAxisSize.max,
-      //se över
       //när spelaren tryckt på knapp så får dealrn sin tur FIXA
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Consumer<BlackJack>(
-            builder: (context, state, child) =>
-                getHand(BlackJack().getDealerHand)),
+            builder: (context, state, child) => getHand(
+                Provider.of<BlackJack>(context, listen: false).getDealerHand)),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
               onPressed: () {
@@ -102,8 +102,8 @@ class _GamePageState extends State<GamePage> {
               children: [
                 const Icon(Icons.money),
                 Consumer(
-                    builder: (context, state, child) =>
-                        Text('${BlackJack().getPlayerBet}'))
+                    builder: (context, state, child) => Text(
+                        '${Provider.of<BlackJack>(context, listen: false).getPlayerBet}'))
               ],
             ),
             IconButton(
@@ -113,9 +113,11 @@ class _GamePageState extends State<GamePage> {
                 icon: const Icon(Icons.stop))
           ],
         ),
-        Consumer<BlackJack>(
-            builder: (context, state, child) =>
-                getHand(BlackJack().getPlayerHand)),
+        Column(children: [
+          Consumer<BlackJack>(
+              builder: (context, state, child) => getHand(
+                  Provider.of<BlackJack>(context, listen: false).getPlayerHand))
+        ]),
       ],
     );
   }
@@ -123,11 +125,11 @@ class _GamePageState extends State<GamePage> {
   Widget getHand(List<PlayingCard> hand) {
     List<Widget> viewHand = <Widget>[];
     for (PlayingCard card in hand) {
-      viewHand.add(PlayingCardView(card: card));
+      viewHand.add(
+          SizedBox(height: 133, width: 96, child: PlayingCardView(card: card)));
     }
     return Row(
-      mainAxisSize: MainAxisSize.max,
-      // se över
+      mainAxisAlignment: MainAxisAlignment.center,
       children: viewHand,
     );
   }
