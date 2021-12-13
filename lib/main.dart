@@ -8,18 +8,20 @@ import 'package:my_first_app/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => HowToPlay()),
-        ChangeNotifierProvider(
-          create: (context) => BlackJack(),
-        )
-      ],
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'blackjack:)',
-        home: StartPage(),
-      ),
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => HowToPlay()),
+      ChangeNotifierProvider(
+        create: (context) => BlackJack(),
+      )
+    ],
+    child: MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'blackjack:)',
+      home: const StartPage(),
+      theme: ThemeCustom.StandardTheme,
+      darkTheme: ThemeCustom.DarkTheme,
+      themeMode: ThemeMode.light,
+    ),
+  ));
 }

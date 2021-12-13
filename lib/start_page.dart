@@ -1,4 +1,6 @@
 import 'package:my_first_app/game_page.dart';
+import 'package:my_first_app/settings_page.dart';
+import 'package:my_first_app/statistics.dart';
 
 import 'how_to_play.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +117,7 @@ class _StartPageState extends State<StartPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const HelpPage(),
+                builder: (context) => const Statistics(),
               ),
             );
           },
@@ -138,7 +140,7 @@ class _StartPageState extends State<StartPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const HelpPage(),
+                    builder: (context) => const Settings(),
                   ),
                 );
               }),

@@ -6,30 +6,30 @@ class Settings extends StatefulWidget {
   State<Settings> createState() => _SettingsState();
 }
 
-class _Settings extends State<Settings> {
-
-bool darkThemeValue = true;
+class _SettingsState extends State<Settings> {
+  bool darkThemeValue = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(
-      title: const Text("Settings"),
-      centerTitle: true,
-    )
-    body: Column(
-      children: [],
-    ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Settings"),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [],
+      ),
     );
   }
-  Widget _buildSettingsDarkTheme(){
-    return ThemeData.DarkTheme;
-    
+
+  void _buildSettingsDarkTheme() {
+    //return ThemeMode.dark;
+
     /*if (darkThemeValue == true){
     return ThemeData(DarkTheme);
     }
     else {
       return ThemeData(StandardTheme);
       }*/
-    
-}
+  }
 }
