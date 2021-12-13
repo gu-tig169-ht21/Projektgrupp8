@@ -12,11 +12,56 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          const Text('BLAACKJAAAACCKK'),
-          TextButton(
-            child: const Text('Tryck här'),
+          _image(),
+          _title(),
+          _playButton(),
+          _howToPlayButton(),
+          _statisticsButton(),
+          _settingsIcon(),
+        ],
+      ),
+    );
+  }
+
+  //Widget för bakgrundsbilden
+  Widget _image() {
+    return Stack(
+      children: const [
+        Image(
+          image: AssetImage('assets/bakgrundBlackjack.jpg'),
+          height: 600,
+          width: 500,
+          fit: BoxFit.cover,
+        ),
+      ],
+    );
+  }
+
+  //widget för huvudtitel
+  Widget _title() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Text(
+          'Blackjack',
+          style: TextStyle(fontSize: 50),
+        ),
+      ],
+    );
+  }
+
+//Widget för play knapp
+  Widget _playButton() {
+    return Stack(
+      children: [
+        Positioned(
+          bottom: 280,
+          left: 150,
+          right: 150,
+          child: ElevatedButton(
+            child: const Text('PLAY NOW'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -26,8 +71,75 @@ class _StartPageState extends State<StartPage> {
               );
             },
           ),
-        ],
+        ),
+      ],
+    );
+  }
+
+  //Widget för hjälp/how to play knapp
+  Widget _howToPlayButton() {
+    return Stack(children: [
+      Positioned(
+        bottom: 240,
+        left: 100,
+        right: 100,
+        child: ElevatedButton(
+          child: const Text('HOW TO PLAY'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HelpPage(),
+              ),
+            );
+          },
+        ),
       ),
+    ]);
+  }
+
+  //Widget för statistik knapp
+  Widget _statisticsButton() {
+    return Stack(children: [
+      Positioned(
+        bottom: 200,
+        left: 100,
+        right: 100,
+        child: ElevatedButton(
+          child: const Text('STATISTICS'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HelpPage(),
+              ),
+            );
+          },
+        ),
+      ),
+    ]);
+  }
+
+  //widget för inställningsikon
+  Widget _settingsIcon() {
+    return Stack(
+      children: [
+        Positioned(
+          bottom: 50,
+          right: 50,
+          child: IconButton(
+              icon: const Icon(Icons.settings),
+              iconSize: 50,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HelpPage(),
+                  ),
+                );
+              }),
+        ),
+      ],
     );
   }
 }
