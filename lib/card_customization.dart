@@ -14,9 +14,11 @@ class _CustomizationPageState extends State<CustomizationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: _title(),
+      ),
       body: Stack(
         children: [
-          _title(),
           _card(),
           _leftButton(),
           _rightButton(),
@@ -30,11 +32,10 @@ class _CustomizationPageState extends State<CustomizationPage> {
 //widget för titlen
   Widget _title() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: const [
         Text(
           'Card Customization',
-          style: TextStyle(fontSize: 50),
+          style: TextStyle(fontSize: 15),
         ),
       ],
     );
@@ -42,7 +43,8 @@ class _CustomizationPageState extends State<CustomizationPage> {
 
 //widget för kortet
   Widget _card() {
-    return const Text('här skall vi göra ett kort');
+    //här skall vi göra kort funktionen
+    return const Text('Här skall vi göra ett kort');
   }
 
 //widget för den vänstra byt-kort-knappen
@@ -50,11 +52,11 @@ class _CustomizationPageState extends State<CustomizationPage> {
     return Stack(
       children: [
         Positioned(
-          bottom: 240,
-          left: 100,
-          right: 100,
+          bottom: 300,
+          left: 20,
           child: IconButton(
             icon: const Icon(Icons.arrow_left),
+            iconSize: 40,
             onPressed: () {},
           ),
         ),
@@ -67,10 +69,10 @@ class _CustomizationPageState extends State<CustomizationPage> {
     return Stack(
       children: [
         Positioned(
-          bottom: 240,
-          left: 100,
-          right: 100,
+          bottom: 300,
+          right: 20,
           child: IconButton(
+            iconSize: 40,
             icon: const Icon(Icons.arrow_right),
             onPressed: () {},
           ),
@@ -81,12 +83,15 @@ class _CustomizationPageState extends State<CustomizationPage> {
 
 //widget som visar en text med namnet på kortleken
   Widget _chosenCardTitle() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
       children: const [
-        Text(
-          'här skall stå namn på vald kortlek:)',
-          style: TextStyle(fontSize: 50),
+        Positioned(
+          bottom: 150,
+          right: 70,
+          child: Text(
+            'Här skall stå namn på vald kortlek',
+            style: TextStyle(fontSize: 15),
+          ),
         ),
       ],
     );
@@ -98,10 +103,11 @@ class _CustomizationPageState extends State<CustomizationPage> {
     return Stack(
       children: [
         Positioned(
-          bottom: 240,
-          left: 100,
-          right: 100,
+          bottom: 80,
+          left: 70,
+          right: 70,
           child: ElevatedButton(
+            style: ElevatedButton.styleFrom(minimumSize: const Size(80, 20)),
             child: const Text('Choose this deck'),
             onPressed: () {
               Navigator.push(
