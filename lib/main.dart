@@ -1,4 +1,4 @@
-import 'dart:js';
+//import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:my_first_app/blackjack.dart';
