@@ -85,7 +85,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
         Text(
-          'här skall stå namn på vald kortlek',
+          'här skall stå namn på vald kortlek:)',
           style: TextStyle(fontSize: 50),
         ),
       ],
