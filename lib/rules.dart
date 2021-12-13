@@ -1,11 +1,13 @@
+// klass med en IF sats som returnerar regler och kortvärden
+
 class RuleText {
   static String returnRules(String chosenRules) {
-    if (chosenRules == 'how to play') {
+    if (chosenRules == 'How to play') {
       return 'Här skall vi skriva regler';
-    } else if (chosenRules == 'card values') {
-      return 'här skall vi skriva kort värdena';
+    } else if (chosenRules == 'Card values') {
+      return 'Här skall vi skriva kort värdena';
     } else {
-      return 'du gjorde fel';
+      return 'Du gjorde fel';
     }
   }
 }
