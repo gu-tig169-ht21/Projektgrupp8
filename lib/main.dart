@@ -15,7 +15,7 @@ void main() {
           create: (context) => BlackJack(),
         )
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'blackjack:)',
         home: StartPage(),

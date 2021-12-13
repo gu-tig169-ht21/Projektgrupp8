@@ -15,6 +15,16 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   @override
+  void initState() {
+    Provider.of<BlackJack>(context, listen: false).resetDeck();
+
+    Provider.of<BlackJack>(context, listen: false).clearHands();
+
+    Provider.of<BlackJack>(context, listen: false).startingHands();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -69,16 +79,18 @@ class _GamePageState extends State<GamePage> {
 
   Widget startNewGame() {
     //här skapas ett nytt spel och startkort delas ut, ska kanske ha något med bet att göra
-    BlackJack().resetDeck();
-    BlackJack().clearHands();
-    BlackJack().startingHands();
+    //Provider.of<BlackJack>(context, listen: false).resetDeck();
+
+    //Provider.of<BlackJack>(context, listen: false).clearHands();
+
+    //Provider.of<BlackJack>(context, listen: false).startingHands();
 
     return Column(
       //när spelaren tryckt på knapp så får dealrn sin tur FIXA
       children: [
         Consumer<BlackJack>(
             builder: (context, state, child) =>
-                getHand(BlackJack().dealerHand)),
+                getHand(BlackJack().getDealerHand)),
         Row(
           children: [
             IconButton(
@@ -96,7 +108,7 @@ class _GamePageState extends State<GamePage> {
                 const Icon(Icons.money),
                 Consumer(
                     builder: (context, state, child) =>
-                        Text('${BlackJack().playerBet}'))
+                        Text('${BlackJack().getPlayerBet}'))
               ],
             ),
             IconButton(
@@ -108,7 +120,7 @@ class _GamePageState extends State<GamePage> {
         ),
         Consumer<BlackJack>(
             builder: (context, state, child) =>
-                getHand(BlackJack().playerHand)),
+                getHand(BlackJack().getPlayerHand)),
       ],
     );
   }

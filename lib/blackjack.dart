@@ -18,6 +18,22 @@ class BlackJack extends ChangeNotifier {
   bool split = false;
   String winCondition = '';
 
+  List<PlayingCard> get getPlayerHand {
+    return playerHand;
+  }
+
+  List<PlayingCard> get getSplitHand {
+    return splitHand;
+  }
+
+  List<PlayingCard> get getDealerHand {
+    return dealerHand;
+  }
+
+  int get getPlayerBet {
+    return playerBet;
+  }
+
   void clearHands() {
     playerHand.clear();
     dealerHand.clear();

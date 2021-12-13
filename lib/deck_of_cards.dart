@@ -8,7 +8,7 @@ class DeckOfCards {
 
   PlayingCard pickACard(List<PlayingCard> deck) {
     //returnerar ett kort och tar bort det ur leken
-    int i = _random.nextInt(deck.length + 1);
+    int i = _random.nextInt(deck.length);
     PlayingCard card = deck[i];
     //deck.removeAt(i);
     return card;
