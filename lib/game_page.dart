@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'blackjack.dart';
@@ -15,18 +17,9 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   @override
-  void initState() {
-    Provider.of<BlackJack>(context, listen: false).resetDeck();
-
-    Provider.of<BlackJack>(context, listen: false).clearHands();
-
-    Provider.of<BlackJack>(context, listen: false).startingHands();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        //kolla läget
         appBar: AppBar(
           leading: PopupMenuButton<String>(
             icon: const Icon(Icons.menu),
@@ -86,6 +79,8 @@ class _GamePageState extends State<GamePage> {
     //Provider.of<BlackJack>(context, listen: false).startingHands();
 
     return Column(
+      mainAxisSize: MainAxisSize.max,
+      //se över
       //när spelaren tryckt på knapp så får dealrn sin tur FIXA
       children: [
         Consumer<BlackJack>(
@@ -131,6 +126,8 @@ class _GamePageState extends State<GamePage> {
       viewHand.add(PlayingCardView(card: card));
     }
     return Row(
+      mainAxisSize: MainAxisSize.max,
+      // se över
       children: viewHand,
     );
   }
