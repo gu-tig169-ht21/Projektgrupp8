@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'rules.dart';
 
-String dropDownValue = 'how to play';
+String dropDownValue = 'How to play';
 
 //class med changenotifier
 class HowToPlay extends ChangeNotifier {
-  String chosenChapter = 'how to play';
+  String chosenChapter = 'How to play';
 
   void chooseChapter(String choice) {
     dropDownValue = choice;
@@ -28,7 +28,9 @@ class _HelpPageState extends State<HelpPage> {
         appBar: AppBar(
           //appbar med en dropdownbutton
           title: DropdownButton(
-            style: const TextStyle(fontSize: 20, fontStyle: FontStyle.normal),
+            iconSize: 40,
+            iconEnabledColor: Colors.white,
+            style: const TextStyle(fontSize: 20),
             value: dropDownValue,
             onChanged: (String? chosenValue) {
               //kallar på funktionen med hjälp av en provider
@@ -37,8 +39,8 @@ class _HelpPageState extends State<HelpPage> {
             },
             //lista med de alternativ användaren får
             items: <String>[
-              'how to play',
-              'card values',
+              'How to play',
+              'Card values',
             ].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(value: value, child: Text(value));
             }).toList(),
@@ -51,8 +53,10 @@ class _HelpPageState extends State<HelpPage> {
   Widget getText(String chosenText) {
     return Column(
       children: [
-        Text(
-          RuleText.returnRules(chosenText),
+        Center(
+          child: Text(
+            RuleText.returnRules(chosenText),
+          ),
         ),
       ],
     );
