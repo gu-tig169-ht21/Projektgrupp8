@@ -107,7 +107,7 @@ class _CustomizationPageState extends State<CustomizationPage> {
           left: 70,
           right: 70,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(minimumSize: const Size(80, 20)),
+            style: ElevatedButton.styleFrom(minimumSize: const Size(70, 20)),
             child: const Text('Choose this deck'),
             onPressed: () {
               Navigator.push(
