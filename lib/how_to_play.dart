@@ -36,6 +36,9 @@ class _HelpPageState extends State<HelpPage> {
               //kallar på funktionen med hjälp av en provider
               Provider.of<HowToPlay>(context, listen: false)
                   .chooseChapter(chosenValue!);
+              setState(() {
+                dropDownValue = chosenValue; //kolla över detta
+              });
             },
             //lista med de alternativ användaren får
             items: <String>[
