@@ -15,7 +15,7 @@ class _StatisticsState extends State<Statistics> {
         title: const Text('Statisctis'),
         centerTitle: true,
       ),
-      body: Column(children: [
+      body: Stack(children: [
         _gamesWon(),
         _playTime(),
         _gamesLost(),
@@ -39,7 +39,7 @@ Widget _gamesWon() {
         height: 70,
         child: const Text(
           'Games won',
-          style: TextStyle(color: Colors.black, fontSize: 20),
+          style: TextStyle(fontSize: 20),
         ),
       ),
     ),
@@ -60,7 +60,7 @@ Widget _playTime() {
         height: 70,
         child: const Text(
           'Hours played',
-          style: TextStyle(color: Colors.red, fontSize: 20),
+          style: TextStyle(fontSize: 20),
         ),
       ),
     ),
@@ -70,18 +70,18 @@ Widget _playTime() {
 // vyn/positionering till antalet förlorade matcher, saknar det verkliga värdet
 
 Widget _gamesLost() {
-  return Stack(children: [
+  return Stack(children: const [
     Positioned(
       top: 30,
       left: 100,
       height: 100,
       width: 100,
-      child: Container(
+      child: SizedBox(
         width: 70,
         height: 70,
-        child: const Text(
+        child: Text(
           'Games Lost',
-          style: TextStyle(color: Colors.green, fontSize: 20),
+          style: TextStyle(fontSize: 20),
         ),
       ),
     ),
@@ -91,18 +91,18 @@ Widget _gamesLost() {
 // vyn/positionering till bilden av kortet för mest dragna kortet, saknar det verkliga värdet
 
 Widget _mostCommonCard() {
-  return Stack(children: [
+  return Stack(children: const [
     Positioned(
       top: 60,
       left: 100,
       height: 100,
       width: 100,
-      child: Container(
+      child: SizedBox(
         width: 70,
         height: 70,
-        child: const Text(
+        child: Text(
           'This is your most common card',
-          style: TextStyle(color: Colors.black, fontSize: 20),
+          style: TextStyle(fontSize: 20),
           //implementera in värdet
         ),
       ),
@@ -113,18 +113,18 @@ Widget _mostCommonCard() {
 // vyn/positionering till barcharten, saknar det verkliga värdet
 
 Widget _statisticsMostCommonCard() {
-  return Stack(children: [
+  return Stack(children: const [
     Positioned(
       top: 100,
       left: 100,
       height: 100,
       width: 100,
-      child: Container(
+      child: SizedBox(
         width: 70,
         height: 70,
-        child: const Text(
+        child: Text(
           'Statistics of your most drawn cards',
-          style: TextStyle(color: Colors.green, fontSize: 20),
+          style: TextStyle(fontSize: 20),
           //implementera in barchart-widget
         ),
       ),
