@@ -11,6 +11,8 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  bool showDealerCard = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,8 +132,13 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget getHand(List<PlayingCard> hand, {required bool dealer}) {
+    //lägg till en counter som räknar dealerns rundor. om rundan är < 1 så visas inte kortet
     //genererar vyn för spelaren och dealerns kort
     //lägg till så att dealern visar alla kort när du elelr han vinner
+
+    bool showDealerCard =
+        Provider.of<BlackJack>(context, listen: false).getDealerCardShown;
+
     List<Widget> viewHand = <Widget>[];
     for (int i = 0; i < hand.length; i++) {
       viewHand.add(SizedBox(
@@ -142,7 +149,9 @@ class _GamePageState extends State<GamePage> {
               elevation: 3.0,
               showBack: dealer
                   ? i == 0
-                      ? true
+                      ? showDealerCard
+                          ? false
+                          : true
                       : false
                   : false)));
     }

@@ -18,6 +18,7 @@ class BlackJack extends ChangeNotifier {
   bool doubled = false;
   bool split = false;
   String winCondition = 'NoWinnerYet';
+  bool dealerCardShown = false;
 
   BlackJack() {
     //funktioner som görs vid första instansiering
@@ -38,8 +39,14 @@ class BlackJack extends ChangeNotifier {
     doubled = false;
     split = false;
     winCondition = 'NoWinnerYet';
+    dealerCardShown = false;
 
     startingHands();
+    notifyListeners();
+  }
+
+  void showDealercard() {
+    dealerCardShown = true;
     notifyListeners();
   }
 
@@ -57,6 +64,10 @@ class BlackJack extends ChangeNotifier {
 
   List<PlayingCard> get getDealerHand {
     return dealerHand;
+  }
+
+  bool get getDealerCardShown {
+    return dealerCardShown;
   }
 
   int get getPlayerBet {
@@ -98,9 +109,10 @@ class BlackJack extends ChangeNotifier {
   }
 
   void dealersTurn() {
-    PlayingCard card = DeckOfCards().pickACard(deck);
-
+    PlayingCard card;
+    showDealercard();
     while (DeckOfCards().handValue(dealerHand) < 17) {
+      card = DeckOfCards().pickACard(deck);
       dealerHand.add(card);
       deck.removeWhere((element) => element == card);
       notifyListeners();
