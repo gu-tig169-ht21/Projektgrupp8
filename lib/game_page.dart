@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'blackjack.dart';
 import 'package:playing_cards/playing_cards.dart';
 
-int saldo = 300;
-
 class GamePage extends StatefulWidget {
   const GamePage({Key? key}) : super(key: key);
 
@@ -73,12 +71,17 @@ class _GamePageState extends State<GamePage> {
       //när spelaren tryckt på knapp så får dealrn sin tur FIXA
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        Consumer<BlackJack>(
+            builder: (context, state, child) => winOrLosePopUp(
+                Provider.of<BlackJack>(context, listen: false)
+                    .getWinCondition)),
         SizedBox(
             width: 200,
             child: Consumer<BlackJack>(
                 builder: (context, state, child) => getHand(
                     Provider.of<BlackJack>(context, listen: false)
-                        .getDealerHand))),
+                        .getDealerHand,
+                    dealer: true))),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -87,7 +90,7 @@ class _GamePageState extends State<GamePage> {
                 try {
                   Provider.of<BlackJack>(context, listen: false).getNewCard();
                   Provider.of<BlackJack>(context, listen: false)
-                      .winOrLose('Player');
+                      .blackJackOrBustCheck('Player');
                 } catch (e) {
                   //gör en popup som säger att du inte kan dra kort FIXA
                 }
@@ -120,32 +123,39 @@ class _GamePageState extends State<GamePage> {
             child: Consumer<BlackJack>(
                 builder: (context, state, child) => getHand(
                     Provider.of<BlackJack>(context, listen: false)
-                        .getPlayerHand))),
+                        .getPlayerHand,
+                    dealer: false))),
       ],
     );
   }
 
-  Widget getHand(List<PlayingCard> hand) {
+  Widget getHand(List<PlayingCard> hand, {required bool dealer}) {
+    //genererar vyn för spelaren och dealerns kort
+    //lägg till så att dealern visar alla kort när du elelr han vinner
     List<Widget> viewHand = <Widget>[];
-    for (PlayingCard card in hand) {
+    for (int i = 0; i < hand.length; i++) {
       viewHand.add(SizedBox(
-          height: 133,
-          width: 96,
+          height: 153,
+          width: 116,
           child: PlayingCardView(
-            card: card,
-            elevation: 3.0,
-          )));
+              card: hand[i],
+              elevation: 3.0,
+              showBack: dealer
+                  ? i == 0
+                      ? true
+                      : false
+                  : false)));
     }
     return FlatCardFan(children: viewHand);
   }
 
-  Widget? winOrLosePopUp(String winOrLose) {
+  Widget winOrLosePopUp(String winOrLose) {
     switch (winOrLose) {
       case 'NoWinnerYet':
         {
           return const SizedBox.shrink();
         }
-      case 'Winner':
+      case 'Win':
         {
           return AlertDialog(
             title: const Text('Congratulations'),
@@ -153,15 +163,53 @@ class _GamePageState extends State<GamePage> {
             actions: <Widget>[
               TextButton(
                   onPressed: () {
-                    Provider.of<BlackJack>(context, listen: false).resetDeck();
-                    Provider.of<BlackJack>(context, listen: false).clearHands();
                     Provider.of<BlackJack>(context, listen: false)
-                        .startingHands();
+                        .winnings('Player');
+                    Provider.of<BlackJack>(context, listen: false)
+                        .setUpNewGame();
                     //lägg till förändringar till saldo samt bet här
                   },
                   child: const Text('Ok'))
             ],
           );
+        }
+      case 'Lose':
+        {
+          return AlertDialog(
+            title: const Text('Bad luck!'),
+            content: const Text('You Lost the round'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Provider.of<BlackJack>(context, listen: false)
+                        .setUpNewGame();
+                    //lägg till förändringar till saldo samt bet här
+                  },
+                  child: const Text('Ok'))
+            ],
+          );
+        }
+      case 'Draw':
+        {
+          return AlertDialog(
+            title: const Text('Bad luck!'),
+            content: const Text('You Lost the round'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Provider.of<BlackJack>(context, listen: false)
+                        .drawBet('Player');
+                    Provider.of<BlackJack>(context, listen: false)
+                        .setUpNewGame();
+                    //lägg till förändringar till saldo samt bet här
+                  },
+                  child: const Text('Ok'))
+            ],
+          );
+        }
+      default:
+        {
+          return const SizedBox.shrink();
         }
     }
   }

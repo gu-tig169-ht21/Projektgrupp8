@@ -12,6 +12,7 @@ class BlackJack extends ChangeNotifier {
   List<PlayingCard> dealerHand = <PlayingCard>[];
   bool dealerStop = false;
   bool playerStop = false;
+  int saldo = 200;
   int playerBet = 0;
   int splitBet = 0;
   bool doubled = false;
@@ -19,11 +20,27 @@ class BlackJack extends ChangeNotifier {
   String winCondition = 'NoWinnerYet';
 
   BlackJack() {
+    //funktioner som görs vid första instansiering
     resetDeck();
-
+    //hämta saldo från server här
     clearHands();
 
     startingHands();
+  }
+
+  void setUpNewGame() {
+    resetDeck();
+    clearHands();
+    playerBet = 0;
+    splitBet = 0;
+    dealerStop = false;
+    playerStop = false;
+    doubled = false;
+    split = false;
+    winCondition = 'NoWinnerYet';
+
+    startingHands();
+    notifyListeners();
   }
 
   String get getWinCondition {
@@ -47,6 +64,7 @@ class BlackJack extends ChangeNotifier {
   }
 
   void clearHands() {
+    //tar bort kort från spelarnas händer
     playerHand.clear();
     dealerHand.clear();
     splitHand.clear();
@@ -54,6 +72,7 @@ class BlackJack extends ChangeNotifier {
   }
 
   void startingHands() {
+    //drar de första korten för dealrn och spelaren
     PlayingCard card = DeckOfCards().pickACard(deck);
     playerHand.add(card);
     deck.removeWhere((element) => element == card);
@@ -67,12 +86,13 @@ class BlackJack extends ChangeNotifier {
     dealerHand.add(card);
     deck.removeWhere((element) => element == card);
 
-    winOrLose('Player');
+    blackJackOrBustCheck('Player');
 
     notifyListeners();
   }
 
   void resetDeck() {
+    //resettar kortleken
     deck = standardFiftyTwoCardDeck();
     notifyListeners();
   }
@@ -80,14 +100,14 @@ class BlackJack extends ChangeNotifier {
   void dealersTurn() {
     PlayingCard card = DeckOfCards().pickACard(deck);
 
-    if (DeckOfCards().handValue(dealerHand) < 17) {
+    while (DeckOfCards().handValue(dealerHand) < 17) {
       dealerHand.add(card);
       deck.removeWhere((element) => element == card);
       notifyListeners();
+
       //Kör vinstfunktion när dealern blir tjock eller får blackjack
-    } else {
-      stop('Dealer');
     }
+    stop('Dealer');
   }
 
   void stop(String playerOrDealer) {
@@ -108,6 +128,29 @@ class BlackJack extends ChangeNotifier {
         {
           break;
         }
+    }
+  }
+
+  void winnings(String playerOrSplit) {
+    //hanterar dina vunna riksdaler
+    if (playerOrSplit == 'Player') {
+      saldo = saldo + playerBet * 2;
+      notifyListeners();
+    } else if (playerOrSplit == 'Split') {
+      saldo = saldo + splitBet * 2;
+      notifyListeners();
+    } else {
+      throw Exception('Player or split not assigned');
+    }
+  }
+
+  void drawBet(String playerOrSplit) {
+    if (playerOrSplit == 'Player') {
+      saldo += playerBet;
+    } else if (playerOrSplit == 'Split') {
+      saldo += splitBet;
+    } else {
+      throw Exception('Player or split not assigned');
     }
   }
 
@@ -222,6 +265,43 @@ class BlackJack extends ChangeNotifier {
       notifyListeners();
     } else {
       winCondition = 'NoWinnerYet';
+    }
+  }
+
+  void blackJackOrBustCheck(String playerOrSplit) {
+    int dealerScore = DeckOfCards().handValue(dealerHand);
+    int playerScore;
+    if (playerOrSplit == 'Player') {
+      playerScore = DeckOfCards().handValue(playerHand);
+    } else if (playerOrSplit == 'Split') {
+      playerScore = DeckOfCards().handValue(splitHand);
+    } else {
+      throw Exception('Didnt choose hand');
+    }
+
+    if (dealerScore == 21 && playerScore == 21) {
+      //båda har blackjack
+      winCondition = 'Draw';
+      notifyListeners();
+    } else if (dealerScore == 21 && playerScore != 21) {
+      //dealern har blackjack
+      winCondition = 'Lose';
+      notifyListeners();
+    } else if (dealerScore != 21 && playerScore == 21) {
+      //spelaren har blackjack
+      winCondition = 'Win';
+      notifyListeners();
+    } else if (dealerScore > 21) {
+      //dealern blev tjock
+      winCondition = 'Win';
+      notifyListeners();
+    } else if (playerScore > 21) {
+      //spelaren blev tjock
+      winCondition = 'Lose';
+      notifyListeners();
+    } else {
+      winCondition = 'NoWinnerYet';
+      notifyListeners();
     }
   }
 }
