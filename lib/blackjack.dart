@@ -16,7 +16,7 @@ class BlackJack extends ChangeNotifier {
   int splitBet = 0;
   bool doubled = false;
   bool split = false;
-  String winCondition = '';
+  String winCondition = 'NoWinnerYet';
 
   BlackJack() {
     resetDeck();
@@ -24,6 +24,10 @@ class BlackJack extends ChangeNotifier {
     clearHands();
 
     startingHands();
+  }
+
+  String get getWinCondition {
+    return winCondition;
   }
 
   List<PlayingCard> get getPlayerHand {
@@ -62,6 +66,9 @@ class BlackJack extends ChangeNotifier {
     card = DeckOfCards().pickACard(deck);
     dealerHand.add(card);
     deck.removeWhere((element) => element == card);
+
+    winOrLose('Player');
+
     notifyListeners();
   }
 
@@ -169,10 +176,17 @@ class BlackJack extends ChangeNotifier {
     }
   }
 
-  void winOrLose(List<PlayingCard> hand) {
+  void winOrLose(String playerOrSplit) {
     //kalla en gång, eller två vid en split
     int dealerScore = DeckOfCards().handValue(dealerHand);
-    int playerScore = DeckOfCards().handValue(hand);
+    int playerScore;
+    if (playerOrSplit == 'Player') {
+      playerScore = DeckOfCards().handValue(playerHand);
+    } else if (playerOrSplit == 'Split') {
+      playerScore = DeckOfCards().handValue(splitHand);
+    } else {
+      throw Exception('Didnt choose hand');
+    }
 
     if (dealerScore == 21 && playerScore == 21) {
       //båda har blackjack
@@ -207,7 +221,7 @@ class BlackJack extends ChangeNotifier {
       winCondition = 'Lose';
       notifyListeners();
     } else {
-      throw Exception('Något gick fel vid poängräkningen');
+      winCondition = 'NoWinnerYet';
     }
   }
 }
