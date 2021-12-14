@@ -58,6 +58,7 @@ class _GamePageState extends State<GamePage> {
                 case 'Quit to main menu':
                   {
                     //forfeitar och quittar till main
+                    Navigator.pop(context);
                     break;
                   }
               }
@@ -202,8 +203,8 @@ class _GamePageState extends State<GamePage> {
       case 'Draw':
         {
           return AlertDialog(
-            title: const Text('Bad luck!'),
-            content: const Text('You Lost the round'),
+            title: const Text('Draw!'),
+            content: const Text('You got the same score as the dealer'),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
