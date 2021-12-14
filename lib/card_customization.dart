@@ -21,8 +21,6 @@ class _CustomizationPageState extends State<CustomizationPage> {
       body: Stack(
         children: [
           _card(),
-          //_leftButton(),
-          //_rightButton(),
           _chosenCardTitle(),
           _changeDeckButton(),
         ],
@@ -42,32 +40,31 @@ class _CustomizationPageState extends State<CustomizationPage> {
     );
   }
 
-  int _index = 0;
-
 //widget för kortet
   Widget _card() {
     //här skall vi göra kort funktionen
     return Align(
-        alignment: Alignment.center,
-        child: SizedBox(
-            height: 350,
-            width: 310,
+      alignment: Alignment.center,
+      child: SizedBox(
+        height: 350,
+        width: 310,
 
-            //Funktion som gör att man kan scrolla bland korten
-            child: PageView.builder(
-                itemCount: 3,
-                controller: PageController(viewportFraction: 0.7),
-                onPageChanged: (int index) => setState(() => _index = index),
-                itemBuilder: (_, i) {
-                  return Transform.scale(
-                      scale: i == _index ? 1 : 0.9,
-                      child: PlayingCardView(
-                          card: PlayingCard(Suit.clubs, CardValue.nine)));
-                })));
+        //Funktion som gör att man kan scrolla bland korten
+        child: PageView(
+          controller: PageController(
+              viewportFraction: 0.7), //Hur mycket av nästa kort man ser
+          children: [
+            PlayingCardView(card: PlayingCard(Suit.spades, CardValue.eight)),
+            PlayingCardView(card: PlayingCard(Suit.diamonds, CardValue.nine)),
+            PlayingCardView(card: PlayingCard(Suit.clubs, CardValue.ten)),
+          ],
+        ),
+      ),
+    );
   }
 
-//Gör en funktion som visar tre olika kort
-//Gör en Lista med tre kort
+//Gör en lista där de olika korten ligger
+//Göra så att titel på kort "följer med"
 
 //widget som visar en text med namnet på kortleken
   Widget _chosenCardTitle() {
