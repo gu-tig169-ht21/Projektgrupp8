@@ -132,9 +132,8 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget getHand(List<PlayingCard> hand, {required bool dealer}) {
-    //lägg till en counter som räknar dealerns rundor. om rundan är < 1 så visas inte kortet
     //genererar vyn för spelaren och dealerns kort
-    //lägg till så att dealern visar alla kort när du elelr han vinner
+    //ska dealern även visa kort om du blir tjock eller får blackjack utan att den tar en tur
 
     bool showDealerCard =
         Provider.of<BlackJack>(context, listen: false).getDealerCardShown;
@@ -155,10 +154,12 @@ class _GamePageState extends State<GamePage> {
                       : false
                   : false)));
     }
-    return FlatCardFan(children: viewHand);
+    return FlatCardFan(
+        children: viewHand); //flatcardfan låter korten ligga "ovanpå" varandra
   }
 
   Widget winOrLosePopUp(String winOrLose) {
+    //popup om du vinner eller förlorar där du kan starta en ny runa eller gå till startsidan?
     switch (winOrLose) {
       case 'NoWinnerYet':
         {

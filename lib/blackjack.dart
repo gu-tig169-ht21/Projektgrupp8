@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/game_page.dart';
 import 'package:playing_cards/playing_cards.dart';
 
 import 'deck_of_cards.dart';
+
+//om du gör en split så kör du i turordning, först agerar du färdigt med första handen sedan med nästa
+//då behöver bara knapparna påverka olika varibaler beroende på om du agerar för splithanden eller bethanden
 
 class BlackJack extends ChangeNotifier {
   List<PlayingCard> deck = standardFiftyTwoCardDeck();
@@ -29,27 +31,6 @@ class BlackJack extends ChangeNotifier {
     startingHands();
   }
 
-  void setUpNewGame() {
-    resetDeck();
-    clearHands();
-    playerBet = 0;
-    splitBet = 0;
-    dealerStop = false;
-    playerStop = false;
-    doubled = false;
-    split = false;
-    winCondition = 'NoWinnerYet';
-    dealerCardShown = false;
-
-    startingHands();
-    notifyListeners();
-  }
-
-  void showDealercard() {
-    dealerCardShown = true;
-    notifyListeners();
-  }
-
   String get getWinCondition {
     return winCondition;
   }
@@ -72,6 +53,29 @@ class BlackJack extends ChangeNotifier {
 
   int get getPlayerBet {
     return playerBet;
+  }
+
+  void setUpNewGame() {
+    //resettar alla variabler till defaultvärdet och drar nya kort
+    resetDeck();
+    clearHands();
+    playerBet = 0;
+    splitBet = 0;
+    dealerStop = false;
+    playerStop = false;
+    doubled = false;
+    split = false;
+    winCondition = 'NoWinnerYet';
+    dealerCardShown = false;
+
+    startingHands();
+    notifyListeners();
+  }
+
+  void showDealercard() {
+    //ändrar dealerCardsShown till true
+    dealerCardShown = true;
+    notifyListeners();
   }
 
   void clearHands() {
@@ -109,20 +113,21 @@ class BlackJack extends ChangeNotifier {
   }
 
   void dealersTurn() {
+    //funktionen för dealerns tur
     PlayingCard card;
     showDealercard();
     while (DeckOfCards().handValue(dealerHand) < 17) {
+      //dealern drar kort till summan är över 17
       card = DeckOfCards().pickACard(deck);
       dealerHand.add(card);
       deck.removeWhere((element) => element == card);
       notifyListeners();
-
-      //Kör vinstfunktion när dealern blir tjock eller får blackjack
     }
-    stop('Dealer');
+    stop('Dealer'); //när dealern inte får göra mera stannar den
   }
 
   void stop(String playerOrDealer) {
+    //sätter stanna variablerna till true
     switch (playerOrDealer) {
       case 'Player':
         {
@@ -144,6 +149,7 @@ class BlackJack extends ChangeNotifier {
   }
 
   void winnings(String playerOrSplit) {
+    //delar upp vinsten, beroende på angivet argument för player eller split bet
     //hanterar dina vunna riksdaler
     if (playerOrSplit == 'Player') {
       saldo = saldo + playerBet * 2;
@@ -157,6 +163,7 @@ class BlackJack extends ChangeNotifier {
   }
 
   void drawBet(String playerOrSplit) {
+    //ger tillbaka dina pengar om du får en draw med dealern
     if (playerOrSplit == 'Player') {
       saldo += playerBet;
     } else if (playerOrSplit == 'Split') {
