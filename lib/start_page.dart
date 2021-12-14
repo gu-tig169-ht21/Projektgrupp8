@@ -35,8 +35,8 @@ class _StartPageState extends State<StartPage> {
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 1,
       child: const Image(
-        image: AssetImage('assets/bakgrundBlackjack.jpg'),
-        //fit: BoxFit.cover,
+        image: AssetImage('assets/BackgroundForStartpage.jpg'),
+        fit: BoxFit.fill,
       ),
     );
   }
