@@ -51,6 +51,7 @@ class _SettingsState extends State<Settings> {
     );
   }*/
 
+  //darktheme knappen
   Widget _darkTheme() {
     return Align(
         alignment: const Alignment(0.3, -0.4),
