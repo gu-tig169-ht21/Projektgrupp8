@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'card_customization.dart';
+import 'theme.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -110,8 +111,8 @@ class _SettingsState extends State<Settings> {
                         builder: (context) => const CustomizationPage()));
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green[200],
-                onPrimary: Colors.black87,
+                //   primary: Colors.green[200],
+                //   onPrimary: Colors.black87,
                 textStyle:
                     const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
