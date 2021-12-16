@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'how_to_play.dart';
 import 'package:playing_cards/playing_cards.dart';
+import 'card_themes.dart';
 
 class CustomizationPage extends StatefulWidget {
   const CustomizationPage({Key? key}) : super(key: key);
@@ -17,7 +18,9 @@ class _CustomizationPageState extends State<CustomizationPage> {
     return Scaffold(
       appBar: AppBar(
         title: _title(),
-        flexibleSpace: _balance(),
+        actions: [
+          _balance(),
+        ],
       ),
       body: Stack(
         children: [
@@ -40,13 +43,15 @@ class _CustomizationPageState extends State<CustomizationPage> {
     );
   }
 
+//widget för den aktuella balansen/saldot du har i appen
   Widget _balance() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: const [
         Text(
-          '100€',
+          '100kr',
           style: TextStyle(fontSize: 15),
-        ),
+        )
       ],
     );
   }
@@ -74,9 +79,6 @@ class _CustomizationPageState extends State<CustomizationPage> {
     );
   }
 
-//Gör en lista där de olika korten ligger
-//Göra så att titel på kort "följer med"
-
 //skriva in priset på de olika decken
 //plus göra en text med ditt saldo
 
@@ -103,10 +105,6 @@ class _CustomizationPageState extends State<CustomizationPage> {
   }
 }
 
-// class ListWithCards {
-//   final List<ListWithCards> _cardsList = [];
-// }
-
 Widget _card1() {
   return SizedBox(
     width: 1000,
@@ -131,7 +129,7 @@ Widget _card1() {
           textAlign: TextAlign.center,
         ),
         const Text(
-          '100kr',
+          'Upplåst',
           style: TextStyle(fontSize: 15),
           textAlign: TextAlign.center,
         )
@@ -146,13 +144,9 @@ Widget _card2() {
       FlatCardFan(
         children: [
           PlayingCardView(
-            card: PlayingCard(Suit.hearts, CardValue.queen),
-            showBack: true,
+            card: PlayingCard(Suit.spades, CardValue.queen),
+            style: starWarsDeck.starWarsStyle,
             elevation: 10.0,
-          ),
-          PlayingCardView(
-            card: PlayingCard(Suit.hearts, CardValue.queen),
-            elevation: 3.0,
           ),
         ],
       ),
