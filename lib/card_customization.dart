@@ -17,11 +17,11 @@ class _CustomizationPageState extends State<CustomizationPage> {
     return Scaffold(
       appBar: AppBar(
         title: _title(),
+        flexibleSpace: _balance(),
       ),
       body: Stack(
         children: [
           _card(),
-          _chosenCardTitle(),
           _changeDeckButton(),
         ],
       ),
@@ -34,6 +34,17 @@ class _CustomizationPageState extends State<CustomizationPage> {
       children: const [
         Text(
           'Card Customization',
+          style: TextStyle(fontSize: 15),
+        ),
+      ],
+    );
+  }
+
+  Widget _balance() {
+    return Row(
+      children: const [
+        Text(
+          '100€',
           style: TextStyle(fontSize: 15),
         ),
       ],
@@ -54,9 +65,9 @@ class _CustomizationPageState extends State<CustomizationPage> {
           controller: PageController(
               viewportFraction: 0.7), //Hur mycket av nästa kort man ser
           children: [
-            PlayingCardView(card: PlayingCard(Suit.spades, CardValue.eight)),
-            PlayingCardView(card: PlayingCard(Suit.diamonds, CardValue.nine)),
-            PlayingCardView(card: PlayingCard(Suit.clubs, CardValue.ten)),
+            _card1(),
+            _card2(),
+            _card3(),
           ],
         ),
       ),
@@ -66,19 +77,8 @@ class _CustomizationPageState extends State<CustomizationPage> {
 //Gör en lista där de olika korten ligger
 //Göra så att titel på kort "följer med"
 
-//widget som visar en text med namnet på kortleken
-  Widget _chosenCardTitle() {
-    return const Positioned(
-      bottom: 100,
-      left: 70,
-      right: 70,
-      child: Text(
-        'Normal Deck',
-        style: TextStyle(fontSize: 15),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
+//skriva in priset på de olika decken
+//plus göra en text med ditt saldo
 
 // widget som returnerar en knapp som du trycker på
 //för att ändra din valda kortlek till en ny kortlek
@@ -101,4 +101,101 @@ class _CustomizationPageState extends State<CustomizationPage> {
       ),
     );
   }
+}
+
+// class ListWithCards {
+//   final List<ListWithCards> _cardsList = [];
+// }
+
+Widget _card1() {
+  return SizedBox(
+    width: 1000,
+    child: Column(
+      children: [
+        FlatCardFan(
+          children: [
+            PlayingCardView(
+              card: PlayingCard(Suit.hearts, CardValue.king),
+              showBack: true,
+              elevation: 10.0,
+            ),
+            PlayingCardView(
+              card: PlayingCard(Suit.hearts, CardValue.ace),
+              elevation: 3.0,
+            ),
+          ],
+        ),
+        const Text(
+          'Standard Deck',
+          style: TextStyle(fontSize: 25),
+          textAlign: TextAlign.center,
+        ),
+        const Text(
+          '100kr',
+          style: TextStyle(fontSize: 15),
+          textAlign: TextAlign.center,
+        )
+      ],
+    ),
+  );
+}
+
+Widget _card2() {
+  return Column(
+    children: [
+      FlatCardFan(
+        children: [
+          PlayingCardView(
+            card: PlayingCard(Suit.hearts, CardValue.queen),
+            showBack: true,
+            elevation: 10.0,
+          ),
+          PlayingCardView(
+            card: PlayingCard(Suit.hearts, CardValue.queen),
+            elevation: 3.0,
+          ),
+        ],
+      ),
+      const Text(
+        'Star Wars Edition',
+        style: TextStyle(fontSize: 25),
+        textAlign: TextAlign.center,
+      ),
+      const Text(
+        '10kr',
+        style: TextStyle(fontSize: 15),
+        textAlign: TextAlign.center,
+      )
+    ],
+  );
+}
+
+Widget _card3() {
+  return Column(
+    children: [
+      FlatCardFan(
+        children: [
+          PlayingCardView(
+            card: PlayingCard(Suit.spades, CardValue.ace),
+            showBack: true,
+            elevation: 10.0,
+          ),
+          PlayingCardView(
+            card: PlayingCard(Suit.spades, CardValue.ace),
+            elevation: 3.0,
+          ),
+        ],
+      ),
+      const Text(
+        'Golden Deck',
+        style: TextStyle(fontSize: 25),
+        textAlign: TextAlign.center,
+      ),
+      const Text(
+        '1 000 000kr',
+        style: TextStyle(fontSize: 15),
+        textAlign: TextAlign.center,
+      )
+    ],
+  );
 }
