@@ -251,34 +251,42 @@ class BlackJack extends ChangeNotifier {
     }
 
     if (dealerScore == 21 && playerScore == 21) {
+      showDealercard();
       //båda har blackjack
       winCondition = 'Draw';
       notifyListeners();
     } else if (dealerScore == 21 && playerScore != 21) {
+      showDealercard();
       //dealern har blackjack
       winCondition = 'Lose';
       notifyListeners();
     } else if (dealerScore != 21 && playerScore == 21) {
+      showDealercard();
       //spelaren har blackjack
       winCondition = 'Win';
       notifyListeners();
     } else if (dealerScore > 21) {
+      showDealercard();
       //dealern blev tjock
       winCondition = 'Win';
       notifyListeners();
     } else if (playerScore > 21) {
+      showDealercard();
       //spelaren blev tjock
       winCondition = 'Lose';
       notifyListeners();
     } else if (dealerScore == playerScore) {
+      showDealercard();
       //båda fick samma poäng
       winCondition = 'Draw';
       notifyListeners();
     } else if (playerScore > dealerScore) {
+      showDealercard();
       //spelaren fick mer poäng
       winCondition = 'Win';
       notifyListeners();
     } else if (playerScore < dealerScore) {
+      showDealercard();
       //dealern fick mer poäng
       winCondition = 'Lose';
       notifyListeners();
@@ -299,22 +307,27 @@ class BlackJack extends ChangeNotifier {
     }
 
     if (dealerScore == 21 && playerScore == 21) {
+      showDealercard();
       //båda har blackjack
       winCondition = 'Draw';
       notifyListeners();
     } else if (dealerScore == 21 && playerScore != 21) {
       //dealern har blackjack
+      showDealercard();
       winCondition = 'Lose';
       notifyListeners();
     } else if (dealerScore != 21 && playerScore == 21) {
+      showDealercard();
       //spelaren har blackjack
       winCondition = 'Win';
       notifyListeners();
     } else if (dealerScore > 21) {
+      showDealercard();
       //dealern blev tjock
       winCondition = 'Win';
       notifyListeners();
     } else if (playerScore > 21) {
+      showDealercard();
       //spelaren blev tjock
       winCondition = 'Lose';
       notifyListeners();

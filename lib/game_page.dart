@@ -65,7 +65,13 @@ class _GamePageState extends State<GamePage> {
             },
           ),
         ),
-        body: startNewGame());
+        body: Stack(children: [
+          startNewGame(),
+          Consumer<BlackJack>(
+              builder: (context, state, child) => winOrLosePopUp(
+                  Provider.of<BlackJack>(context, listen: false)
+                      .getWinCondition)),
+        ]));
   }
 
   Widget startNewGame() {
@@ -74,10 +80,6 @@ class _GamePageState extends State<GamePage> {
       //när spelaren tryckt på knapp så får dealrn sin tur FIXA
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Consumer<BlackJack>(
-            builder: (context, state, child) => winOrLosePopUp(
-                Provider.of<BlackJack>(context, listen: false)
-                    .getWinCondition)),
         SizedBox(
             width: 200,
             child: Consumer<BlackJack>(
@@ -184,6 +186,7 @@ class _GamePageState extends State<GamePage> {
             ],
           );
         }
+
       case 'Lose':
         {
           return AlertDialog(
@@ -200,6 +203,7 @@ class _GamePageState extends State<GamePage> {
             ],
           );
         }
+
       case 'Draw':
         {
           return AlertDialog(
@@ -218,6 +222,7 @@ class _GamePageState extends State<GamePage> {
             ],
           );
         }
+
       default:
         {
           return const SizedBox.shrink();
