@@ -21,6 +21,7 @@ class BlackJack extends ChangeNotifier {
   bool split = false;
   String winCondition = 'NoWinnerYet';
   bool dealerCardShown = false;
+  bool firstRound = true;
 
   BlackJack() {
     //funktioner som görs vid första instansiering
@@ -29,6 +30,10 @@ class BlackJack extends ChangeNotifier {
     clearHands();
 
     startingHands();
+  }
+
+  bool get getfirstRound {
+    return firstRound;
   }
 
   String get getWinCondition {
@@ -53,6 +58,11 @@ class BlackJack extends ChangeNotifier {
 
   int get getPlayerBet {
     return playerBet;
+  }
+
+  void firstRoundToFalse() {
+    firstRound = false;
+    notifyListeners();
   }
 
   void setUpNewGame() {

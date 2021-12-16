@@ -71,6 +71,10 @@ class _GamePageState extends State<GamePage> {
               builder: (context, state, child) => winOrLosePopUp(
                   Provider.of<BlackJack>(context, listen: false)
                       .getWinCondition)),
+          Consumer<BlackJack>(
+              builder: (context, state, child) => popUpBet(
+                  Provider.of<BlackJack>(context, listen: false)
+                      .getfirstRound)),
         ]));
   }
 
@@ -221,6 +225,38 @@ class _GamePageState extends State<GamePage> {
                   child: const Text('Ok'))
             ],
           );
+        }
+
+      default:
+        {
+          return const SizedBox.shrink();
+        }
+    }
+  }
+
+  Widget popUpBet(bool firstRound) {
+    switch (firstRound) {
+      case true:
+        {
+          return AlertDialog(
+            title: const Text('Time to place your bet'),
+            content: const Text('Choose your amount'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Provider.of<BlackJack>(context, listen: false)
+                      .increaseBet(25);
+                  Provider.of<BlackJack>(context, listen: false)
+                      .firstRoundToFalse;
+                },
+                child: const Text('25'),
+              )
+            ],
+          );
+        }
+      case false:
+        {
+          return const SizedBox.shrink();
         }
 
       default:
