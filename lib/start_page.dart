@@ -1,3 +1,4 @@
+import 'package:my_first_app/card_customization.dart';
 import 'package:my_first_app/game_page.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:my_first_app/statistics.dart';
