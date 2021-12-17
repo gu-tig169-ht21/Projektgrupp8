@@ -67,8 +67,8 @@ class _CustomizationPageState extends State<CustomizationPage> {
 
         //Funktion som gör att man kan scrolla bland korten
         child: PageView(
-          controller: PageController(
-              viewportFraction: 0.7), //Hur mycket av nästa kort man ser
+          controller: PageController(viewportFraction: 0.7),
+          // onPageChanged: (),//Hur mycket av nästa kort man ser
           children: [
             _card1(),
             _card2(),
@@ -114,7 +114,8 @@ Widget _card1() {
           children: [
             PlayingCardView(
               card: PlayingCard(Suit.hearts, CardValue.king),
-              showBack: true,
+              // style: StarWarsDeck.starWarsStyle,
+              // showBack: true,
               elevation: 10.0,
             ),
             PlayingCardView(
@@ -144,9 +145,14 @@ Widget _card2() {
       FlatCardFan(
         children: [
           PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.queen),
-            style: starWarsDeck.starWarsStyle,
+            card: PlayingCard(Suit.hearts, CardValue.king),
+            // showBack: true,
             elevation: 10.0,
+          ),
+          PlayingCardView(
+            card: PlayingCard(Suit.hearts, CardValue.ace),
+            elevation: 3.0,
+            // style: StarWarsDeck.starWarsStyle,
           ),
         ],
       ),
@@ -170,13 +176,15 @@ Widget _card3() {
       FlatCardFan(
         children: [
           PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.ace),
+            card: PlayingCard(Suit.spades, CardValue.queen),
             showBack: true,
             elevation: 10.0,
+            style: StarWarsDeck.starWarsStyle,
           ),
           PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.ace),
+            card: PlayingCard(Suit.spades, CardValue.queen),
             elevation: 3.0,
+            style: StarWarsDeck.starWarsStyle,
           ),
         ],
       ),
