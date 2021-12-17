@@ -22,6 +22,7 @@ class BlackJack extends ChangeNotifier {
   String winCondition = 'NoWinnerYet';
   bool dealerCardShown = false;
   bool firstRound = true;
+  bool canDoubleOrSplit = true;
 
   BlackJack() {
     //funktioner som görs vid första instansiering
@@ -30,6 +31,10 @@ class BlackJack extends ChangeNotifier {
     clearHands();
 
     startingHands();
+  }
+
+  bool get getCanDoubleOrSplit {
+    return canDoubleOrSplit;
   }
 
   bool get getfirstRound {
@@ -66,6 +71,11 @@ class BlackJack extends ChangeNotifier {
 
   set setFirstRound(bool value) {
     firstRound = value;
+    notifyListeners();
+  }
+
+  set setCanDoubleOrSplit(bool value) {
+    canDoubleOrSplit = value;
     notifyListeners();
   }
 
@@ -220,10 +230,12 @@ class BlackJack extends ChangeNotifier {
 
   void doDouble() {
     //en dubblering av insatsen
+    print('$playerBet');
     if (balance >= playerBet) {
       balance -= playerBet;
       playerBet = playerBet * 2;
       doubled = true;
+
       notifyListeners();
     } else {
       throw Exception('Not enough money');

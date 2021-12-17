@@ -77,6 +77,10 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false)
                       .getWinCondition)),
           Consumer<BlackJack>(
+              builder: (context, state, child) => splitOrDouble(
+                  Provider.of<BlackJack>(context, listen: false)
+                      .getCanDoubleOrSplit)),
+          Consumer<BlackJack>(
               builder: (context, state, child) => popUpBet(
                   Provider.of<BlackJack>(context, listen: false)
                       .getfirstRound)),
@@ -287,5 +291,31 @@ class _GamePageState extends State<GamePage> {
     }
   }
 
-  Widget splitOrDouble() {}
+  Widget splitOrDouble(bool firstRound) {
+    if (firstRound) {
+      return AlertDialog(
+          title: const Text('Double or Split'),
+          content: const Text('Choose what you want to do'),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  Provider.of<BlackJack>(context, listen: false).doSplit();
+                  Provider.of<BlackJack>(context, listen: false)
+                      .canDoubleOrSplit = false;
+                },
+                child: const Text('Split')),
+            TextButton(
+                onPressed: () {
+                  Provider.of<BlackJack>(context, listen: false).doDouble();
+                  Provider.of<BlackJack>(context, listen: false)
+                      .setCanDoubleOrSplit = false;
+                },
+                child: const Text('Double'))
+          ]);
+    } else if (!firstRound) {
+      return const SizedBox.shrink();
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
 }
