@@ -1,11 +1,9 @@
+import 'package:my_first_app/card_customization.dart';
 import 'package:my_first_app/game_page.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:my_first_app/statistics.dart';
-
 import 'how_to_play.dart';
 import 'package:flutter/material.dart';
-import 'rules.dart';
-import 'main.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -21,6 +19,7 @@ class _StartPageState extends State<StartPage> {
       body: Stack(
         children: [
           _image(),
+          _container(),
           _title(),
           _playButton(),
           _howToPlayButton(),
@@ -33,39 +32,44 @@ class _StartPageState extends State<StartPage> {
 
   //Widget för bakgrundsbilden
   Widget _image() {
-    return Stack(
-      children: const [
-        Image(
-          image: AssetImage('assets/bakgrundBlackjack.jpg'),
-          height: 600,
-          width: 500,
-          fit: BoxFit.cover,
-        ),
-      ],
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 1,
+      height: MediaQuery.of(context).size.height * 1,
+      child: const Image(
+        image: AssetImage('assets/BackgroundForStartpage.jpg'),
+        fit: BoxFit.fill,
+      ),
+    );
+  }
+
+//Widget för att fadea bilden
+  Widget _container() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 1,
+      height: MediaQuery.of(context).size.height * 1,
+      color: Colors.white30, //Flytta/ändra till respektive tema
     );
   }
 
   //widget för huvudtitel
   Widget _title() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Text(
+    return const Align(
+        alignment: Alignment(0, -0.7),
+        child: Text(
           'Blackjack',
-          style: TextStyle(fontSize: 50),
-        ),
-      ],
-    );
+          style: TextStyle(
+            fontSize: 70, //Tema filen?
+          ),
+        ));
   }
 
 //Widget för play knapp
   Widget _playButton() {
-    return Stack(
-      children: [
-        Positioned(
-          bottom: 280,
-          left: 150,
-          right: 150,
+    return Align(
+        alignment: const Alignment(0, -0.3),
+        child: FractionallySizedBox(
+          widthFactor: 0.5,
+          heightFactor: 0.1,
           child: ElevatedButton(
             child: const Text('PLAY NOW'),
             onPressed: () {
@@ -77,75 +81,70 @@ class _StartPageState extends State<StartPage> {
               );
             },
           ),
-        ),
-      ],
-    );
+        ));
   }
 
   //Widget för hjälp/how to play knapp
   Widget _howToPlayButton() {
-    return Stack(children: [
-      Positioned(
-        bottom: 240,
-        left: 100,
-        right: 100,
-        child: ElevatedButton(
-          child: const Text('HOW TO PLAY'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HelpPage(),
-              ),
-            );
-          },
-        ),
-      ),
-    ]);
+    return Align(
+        alignment: const Alignment(0, 0.10),
+        child: FractionallySizedBox(
+          widthFactor: 0.6,
+          heightFactor: 0.1,
+          child: ElevatedButton(
+            child: const Text('HOW TO PLAY'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HelpPage(),
+                ),
+              );
+            },
+          ),
+        ));
   }
 
   //Widget för statistik knapp
   Widget _statisticsButton() {
-    return Stack(children: [
-      Positioned(
-        bottom: 200,
-        left: 100,
-        right: 100,
-        child: ElevatedButton(
-          child: const Text('STATISTICS'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Statistics(),
-              ),
-            );
-          },
-        ),
-      ),
-    ]);
+    return Align(
+        alignment: const Alignment(0, 0.5),
+        child: FractionallySizedBox(
+          widthFactor: 0.5,
+          heightFactor: 0.1,
+          child: ElevatedButton(
+            child: const Text('STATISTICS'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Statistics(),
+                ),
+              );
+            },
+          ),
+        ));
   }
 
   //widget för inställningsikon
   Widget _settingsIcon() {
-    return Stack(
-      children: [
-        Positioned(
-          bottom: 50,
-          right: 50,
+    return Align(
+        alignment: const Alignment(1.5, 0.89),
+        child: FractionallySizedBox(
+          widthFactor: 0.5,
+          heightFactor: 0.1,
           child: IconButton(
-              icon: const Icon(Icons.settings),
-              iconSize: 50,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Settings(),
-                  ),
-                );
-              }),
-        ),
-      ],
-    );
+            icon: const Icon(Icons.settings),
+            iconSize: 50,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Settings(),
+                ),
+              );
+            },
+          ),
+        ));
   }
 }
