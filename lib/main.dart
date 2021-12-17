@@ -21,7 +21,7 @@ void main() {
       home: const StartPage(),
       theme: ThemeCustom.StandardTheme,
       darkTheme: ThemeCustom.DarkTheme,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
     ),
   ));
 }

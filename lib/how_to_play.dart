@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'rules.dart';
 
-String dropDownValue = 'How to play';
+//fixa så att texten ändras i rutan utan att använda setstate eftersom vi använder provider.
 
 //class med changenotifier
 class HowToPlay extends ChangeNotifier {
   String chosenChapter = 'How to play';
 
+  String get getChosenChapter {
+    return chosenChapter;
+  }
+
   void chooseChapter(String choice) {
-    dropDownValue = choice;
+    chosenChapter = choice;
     notifyListeners();
   }
 }
@@ -31,14 +35,12 @@ class _HelpPageState extends State<HelpPage> {
             iconSize: 40,
             iconEnabledColor: Colors.white,
             style: const TextStyle(fontSize: 20),
-            value: dropDownValue,
+            value:
+                Provider.of<HowToPlay>(context, listen: false).getChosenChapter,
             onChanged: (String? chosenValue) {
               //kallar på funktionen med hjälp av en provider
               Provider.of<HowToPlay>(context, listen: false)
                   .chooseChapter(chosenValue!);
-              setState(() {
-                dropDownValue = chosenValue; //kolla över detta
-              });
             },
             //lista med de alternativ användaren får
             items: <String>[
@@ -50,7 +52,9 @@ class _HelpPageState extends State<HelpPage> {
           ),
         ),
         body: Consumer<HowToPlay>(
-            builder: (context, state, child) => getText(dropDownValue)));
+            builder: (context, state, child) => getText(
+                Provider.of<HowToPlay>(context, listen: false)
+                    .getChosenChapter)));
   }
 
   Widget getText(String chosenText) {
