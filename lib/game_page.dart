@@ -64,6 +64,11 @@ class _GamePageState extends State<GamePage> {
               }
             },
           ),
+          actions: [
+            Consumer(
+                builder: (context, state, child) => Text(
+                    '${Provider.of<BlackJack>(context, listen: true).getBalance}'))
+          ],
         ),
         body: Stack(children: [
           startNewGame(),
@@ -114,7 +119,7 @@ class _GamePageState extends State<GamePage> {
                 const Icon(Icons.money, size: 50),
                 Consumer(
                     builder: (context, state, child) => Text(
-                        '${Provider.of<BlackJack>(context, listen: false).getPlayerBet}'))
+                        '${Provider.of<BlackJack>(context, listen: true).getPlayerBet}'))
               ],
             ),
             IconButton(
@@ -235,34 +240,52 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget popUpBet(bool firstRound) {
-    switch (firstRound) {
-      case true:
-        {
-          return AlertDialog(
-            title: const Text('Time to place your bet'),
-            content: const Text('Choose your amount'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false)
-                      .increaseBet(25);
-                  Provider.of<BlackJack>(context, listen: false)
-                      .firstRoundToFalse;
-                },
-                child: const Text('25'),
-              )
-            ],
-          );
-        }
-      case false:
-        {
-          return const SizedBox.shrink();
-        }
-
-      default:
-        {
-          return const SizedBox.shrink();
-        }
+    if (firstRound) {
+      return AlertDialog(
+        title: const Text('Time to place your bet'),
+        content: const Text('Choose your amount'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Provider.of<BlackJack>(context, listen: false).increaseBet(25);
+              Provider.of<BlackJack>(context, listen: false).setFirstRound =
+                  false;
+            },
+            child: const Text('25'),
+          ),
+          TextButton(
+            onPressed: () {
+              Provider.of<BlackJack>(context, listen: false).increaseBet(50);
+              Provider.of<BlackJack>(context, listen: false).setFirstRound =
+                  false;
+            },
+            child: const Text('50'),
+          ),
+          TextButton(
+            onPressed: () {
+              Provider.of<BlackJack>(context, listen: false).increaseBet(100);
+              Provider.of<BlackJack>(context, listen: false).setFirstRound =
+                  false;
+            },
+            child: const Text('100'),
+          ),
+          TextButton(
+            onPressed: () {
+              Provider.of<BlackJack>(context, listen: false).increaseBet(
+                  Provider.of<BlackJack>(context, listen: false).getBalance);
+              Provider.of<BlackJack>(context, listen: false).setFirstRound =
+                  false;
+            },
+            child: const Text('All in'),
+          ),
+        ],
+      );
+    } else if (!firstRound) {
+      return const SizedBox.shrink();
+    } else {
+      return const SizedBox.shrink();
     }
   }
+
+  Widget splitOrDouble() {}
 }

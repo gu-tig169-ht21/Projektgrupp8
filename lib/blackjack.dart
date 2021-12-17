@@ -14,7 +14,7 @@ class BlackJack extends ChangeNotifier {
   List<PlayingCard> dealerHand = <PlayingCard>[];
   bool dealerStop = false;
   bool playerStop = false;
-  int saldo = 200;
+  int balance = 200;
   int playerBet = 0;
   int splitBet = 0;
   bool doubled = false;
@@ -60,8 +60,12 @@ class BlackJack extends ChangeNotifier {
     return playerBet;
   }
 
-  void firstRoundToFalse() {
-    firstRound = false;
+  int get getBalance {
+    return balance;
+  }
+
+  set setFirstRound(bool value) {
+    firstRound = value;
     notifyListeners();
   }
 
@@ -78,6 +82,7 @@ class BlackJack extends ChangeNotifier {
     winCondition = 'NoWinnerYet';
     dealerCardShown = false;
 
+    setFirstRound = true;
     startingHands();
     notifyListeners();
   }
@@ -162,10 +167,10 @@ class BlackJack extends ChangeNotifier {
     //delar upp vinsten, beroende på angivet argument för player eller split bet
     //hanterar dina vunna riksdaler
     if (playerOrSplit == 'Player') {
-      saldo = saldo + playerBet * 2;
+      balance = balance + playerBet * 2;
       notifyListeners();
     } else if (playerOrSplit == 'Split') {
-      saldo = saldo + splitBet * 2;
+      balance = balance + splitBet * 2;
       notifyListeners();
     } else {
       throw Exception('Player or split not assigned');
@@ -175,9 +180,9 @@ class BlackJack extends ChangeNotifier {
   void drawBet(String playerOrSplit) {
     //ger tillbaka dina pengar om du får en draw med dealern
     if (playerOrSplit == 'Player') {
-      saldo += playerBet;
+      balance += playerBet;
     } else if (playerOrSplit == 'Split') {
-      saldo += splitBet;
+      balance += splitBet;
     } else {
       throw Exception('Player or split not assigned');
     }
@@ -186,11 +191,11 @@ class BlackJack extends ChangeNotifier {
   void increaseBet(int bet) {
     //returna det nya bettet istället
     //ökar spelarens insats
-    if (bet <= saldo) {
+    if (bet <= balance) {
       playerBet += bet;
-      saldo -= bet;
+      balance -= bet;
       notifyListeners();
-    } else if (bet > saldo) {
+    } else if (bet > balance) {
       throw Exception('Not enough money');
     } else {
       throw Exception('Something went wrong setting bet');
@@ -215,8 +220,8 @@ class BlackJack extends ChangeNotifier {
 
   void doDouble() {
     //en dubblering av insatsen
-    if (saldo >= playerBet) {
-      saldo -= playerBet;
+    if (balance >= playerBet) {
+      balance -= playerBet;
       playerBet = playerBet * 2;
       doubled = true;
       notifyListeners();
@@ -230,12 +235,12 @@ class BlackJack extends ChangeNotifier {
     PlayingCard card = DeckOfCards().pickACard(deck);
     if (DeckOfCards().valueOfCard(playerHand[0]) ==
             DeckOfCards().valueOfCard(playerHand[1]) &&
-        saldo >= playerBet) {
+        balance >= playerBet) {
       splitHand.add(playerHand[1]);
       playerHand.removeAt(1);
 
       splitBet = playerBet;
-      saldo -= splitBet;
+      balance -= splitBet;
       playerHand.add(card);
       deck.removeWhere((element) => element == card);
       card = DeckOfCards().pickACard(deck);
