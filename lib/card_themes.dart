@@ -1,6 +1,7 @@
 //ändra bilder på de klädda korten
 import 'package:flutter/material.dart';
 import 'package:playing_cards/playing_cards.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class StandardDeck {}
 
@@ -13,10 +14,12 @@ class StarWarsDeck {
         Suit.spades: SuitStyle(
           builder: (context) => const FittedBox(
             fit: BoxFit.fitHeight,
-            child: Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
+            child: Text('♠'),
+
+            // Icon(
+            //   Icons.favorite,
+            //   color: Colors.red,
+            // ),
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
@@ -48,10 +51,7 @@ class StarWarsDeck {
         Suit.diamonds: SuitStyle(
           builder: (context) => const FittedBox(
             fit: BoxFit.fitHeight,
-            child: Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
+            child: Text('♦'),
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
@@ -65,10 +65,7 @@ class StarWarsDeck {
         Suit.clubs: SuitStyle(
             builder: (context) => const FittedBox(
                   fit: BoxFit.fitHeight,
-                  child: Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
+                  child: Text('♠'),
                 ),
             style: const TextStyle(color: Colors.brown),
             cardContentBuilders: {
@@ -91,10 +88,7 @@ class GoldenDeck {
         Suit.spades: SuitStyle(
           builder: (context) => const FittedBox(
             fit: BoxFit.fitHeight,
-            child: Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
+            child: Text('♠'),
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
@@ -126,10 +120,7 @@ class GoldenDeck {
         Suit.diamonds: SuitStyle(
           builder: (context) => const FittedBox(
             fit: BoxFit.fitHeight,
-            child: Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
+            child: Text('♦'),
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
@@ -143,10 +134,7 @@ class GoldenDeck {
         Suit.clubs: SuitStyle(
             builder: (context) => const FittedBox(
                   fit: BoxFit.fitHeight,
-                  child: Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
+                  child: Text('♣️'),
                 ),
             style: const TextStyle(color: Colors.brown),
             cardContentBuilders: {

@@ -116,6 +116,10 @@ Widget _card1() {
               card: PlayingCard(Suit.hearts, CardValue.king),
               elevation: 10.0,
             ),
+            PlayingCardView(
+              card: PlayingCard(Suit.hearts, CardValue.ace),
+              elevation: 3.0,
+            ),
           ],
         ),
         const Text(
@@ -139,14 +143,14 @@ Widget _card2() {
       FlatCardFan(
         children: [
           PlayingCardView(
-            card: PlayingCard(Suit.hearts, CardValue.king),
+            card: PlayingCard(Suit.clubs, CardValue.king),
             // showBack: true,
             elevation: 10.0,
           ),
           PlayingCardView(
-            card: PlayingCard(Suit.hearts, CardValue.ace),
+            card: PlayingCard(Suit.clubs, CardValue.king),
             elevation: 3.0,
-            // style: StarWarsDeck.starWarsStyle,
+            style: StarWarsDeck.starWarsStyle,
           ),
         ],
       ),
