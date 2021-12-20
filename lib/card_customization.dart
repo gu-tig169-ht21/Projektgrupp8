@@ -114,13 +114,7 @@ Widget _card1() {
           children: [
             PlayingCardView(
               card: PlayingCard(Suit.hearts, CardValue.king),
-              // style: StarWarsDeck.starWarsStyle,
-              // showBack: true,
               elevation: 10.0,
-            ),
-            PlayingCardView(
-              card: PlayingCard(Suit.hearts, CardValue.ace),
-              elevation: 3.0,
             ),
           ],
         ),
@@ -179,12 +173,12 @@ Widget _card3() {
             card: PlayingCard(Suit.spades, CardValue.queen),
             showBack: true,
             elevation: 10.0,
-            style: StarWarsDeck.starWarsStyle,
+            style: GoldenDeck.goldenStyle,
           ),
           PlayingCardView(
             card: PlayingCard(Suit.spades, CardValue.queen),
             elevation: 3.0,
-            style: StarWarsDeck.starWarsStyle,
+            style: GoldenDeck.goldenStyle,
           ),
         ],
       ),

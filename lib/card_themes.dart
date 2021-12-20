@@ -1,5 +1,4 @@
 //ändra bilder på de klädda korten
-
 import 'package:flutter/material.dart';
 import 'package:playing_cards/playing_cards.dart';
 
@@ -22,8 +21,7 @@ class StarWarsDeck {
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
             CardValue.jack: (context) => Image.asset(''),
-            CardValue.queen: (context) =>
-                Image.asset('assets/bakgrundBlackjack.jpg'),
+            CardValue.queen: (context) => Image.asset(''),
             CardValue.king: (context) => Image.asset(''),
             CardValue.ace: (context) => Image.asset('')
           },
@@ -100,9 +98,9 @@ class GoldenDeck {
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
-            CardValue.jack: (context) => Image.asset(''),
-            CardValue.queen: (context) => Image.asset(''),
-            CardValue.king: (context) => Image.asset(''),
+            CardValue.jack: (context) => Image.asset('assets/Gold1.jpg'),
+            CardValue.queen: (context) => Image.asset('assets/Gold2.jpg'),
+            CardValue.king: (context) => Image.asset('assets/Gold3.jpg'),
             CardValue.ace: (context) => Image.asset('')
           },
         ),
@@ -117,9 +115,9 @@ class GoldenDeck {
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
-            CardValue.jack: (context) => Image.asset(''),
-            CardValue.queen: (context) => Image.asset(''),
-            CardValue.king: (context) => Image.asset(''),
+            CardValue.jack: (context) => Image.asset('assets/Gold1.jpg'),
+            CardValue.queen: (context) => Image.asset('assets/Gold2.jpg'),
+            CardValue.king: (context) => Image.asset('assets/Gold3.jpg'),
             CardValue.ace: (context) => Image.asset('')
           },
         ),
@@ -135,9 +133,9 @@ class GoldenDeck {
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
-            CardValue.jack: (context) => Image.asset(''),
-            CardValue.queen: (context) => Image.asset(''),
-            CardValue.king: (context) => Image.asset(''),
+            CardValue.jack: (context) => Image.asset('assets/Gold1.jpg'),
+            CardValue.queen: (context) => Image.asset('assets/Gold2.jpg'),
+            CardValue.king: (context) => Image.asset('assets/Gold3.jpg'),
             CardValue.ace: (context) => Image.asset('')
           },
         ),
@@ -152,9 +150,9 @@ class GoldenDeck {
                 ),
             style: const TextStyle(color: Colors.brown),
             cardContentBuilders: {
-              CardValue.jack: (context) => Image.asset(''),
-              CardValue.queen: (context) => Image.asset(''),
-              CardValue.king: (context) => Image.asset(''),
+              CardValue.jack: (context) => Image.asset('assets/Gold1.jpg'),
+              CardValue.queen: (context) => Image.asset('assets/Gold2.jpg'),
+              CardValue.king: (context) => Image.asset('assets/Gold3.jpg'),
               CardValue.ace: (context) => Image.asset('')
             })
       },
