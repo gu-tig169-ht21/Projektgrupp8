@@ -1,12 +1,31 @@
-//ändra bilder på de klädda korten
 import 'package:flutter/material.dart';
 import 'package:playing_cards/playing_cards.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
-class StandardDeck {}
+class PLayingCardsProvider extends ChangeNotifier {
+  var themeMode = PlayingCardsThemes.standardStyle;
 
-//klass för starwars kortleken
-class StarWarsDeck {
+  //if-sats som bestämmer kort-temat utifrån scrollvyn
+  void changePlayingCardsThemes(String style) {
+    if (style == 'Standard') {
+      themeMode = PlayingCardsThemes.standardStyle;
+      notifyListeners();
+    } else if (style == 'StarWars') {
+      themeMode = PlayingCardsThemes.starWarsStyle;
+      notifyListeners();
+    } else if (style == 'Golden') {
+      themeMode = PlayingCardsThemes.goldenStyle;
+      notifyListeners();
+    }
+  }
+}
+
+//funktion för starwars kortleken
+class PlayingCardsThemes {
+  static PlayingCardViewStyle get standardStyle {
+    return const PlayingCardViewStyle();
+  }
+
   static PlayingCardViewStyle get starWarsStyle {
     return PlayingCardViewStyle(
       suitStyles: {
@@ -15,11 +34,6 @@ class StarWarsDeck {
           builder: (context) => const FittedBox(
             fit: BoxFit.fitHeight,
             child: Text('♠'),
-
-            // Icon(
-            //   Icons.favorite,
-            //   color: Colors.red,
-            // ),
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
@@ -77,10 +91,8 @@ class StarWarsDeck {
       },
     );
   }
-}
 
-//klass för goldendeck kortleken
-class GoldenDeck {
+//funktion för GoldenDeck
   static PlayingCardViewStyle get goldenStyle {
     return PlayingCardViewStyle(
       suitStyles: {

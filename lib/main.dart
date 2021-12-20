@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:my_first_app/blackjack.dart';
+import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/how_to_play.dart';
 import 'package:my_first_app/start_page.dart';
 import 'package:my_first_app/theme.dart';
@@ -13,6 +14,9 @@ void main() {
       ChangeNotifierProvider(create: (context) => HowToPlay()),
       ChangeNotifierProvider(
         create: (context) => BlackJack(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => PLayingCardsProvider(),
       )
     ],
     child: MaterialApp(

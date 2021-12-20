@@ -1,7 +1,7 @@
 //fil där vi skall göra en sida för kort redigering
 
 import 'package:flutter/material.dart';
-import 'how_to_play.dart';
+import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'card_themes.dart';
 
@@ -56,9 +56,12 @@ class _CustomizationPageState extends State<CustomizationPage> {
     );
   }
 
+//pagecontroller för att kunna behålla koll på de olika sidorna
+  PageController pageController = PageController(viewportFraction: 0.7);
+  var value = 0;
+
 //widget för kortet
   Widget _card() {
-    //här skall vi göra kort funktionen
     return Align(
       alignment: Alignment.center,
       child: SizedBox(
@@ -67,8 +70,8 @@ class _CustomizationPageState extends State<CustomizationPage> {
 
         //Funktion som gör att man kan scrolla bland korten
         child: PageView(
-          controller: PageController(viewportFraction: 0.7),
-          // onPageChanged: (),//Hur mycket av nästa kort man ser
+          controller: pageController,
+          onPageChanged: (index) => {value = index},
           children: [
             _card1(),
             _card2(),
@@ -78,9 +81,6 @@ class _CustomizationPageState extends State<CustomizationPage> {
       ),
     );
   }
-
-//skriva in priset på de olika decken
-//plus göra en text med ditt saldo
 
 // widget som returnerar en knapp som du trycker på
 //för att ändra din valda kortlek till en ny kortlek
@@ -93,12 +93,16 @@ class _CustomizationPageState extends State<CustomizationPage> {
         style: ElevatedButton.styleFrom(minimumSize: const Size(70, 20)),
         child: const Text('Choose this deck'),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HelpPage(),
-            ),
-          );
+          if (value == 0) {
+            Provider.of<PLayingCardsProvider>(context, listen: false)
+                .changePlayingCardsThemes('Standard');
+          } else if (value == 1) {
+            Provider.of<PLayingCardsProvider>(context, listen: false)
+                .changePlayingCardsThemes('StarWars');
+          } else if (value == 3) {
+            Provider.of<PLayingCardsProvider>(context, listen: false)
+                .changePlayingCardsThemes('Golden');
+          }
         },
       ),
     );
@@ -150,7 +154,7 @@ Widget _card2() {
           PlayingCardView(
             card: PlayingCard(Suit.clubs, CardValue.king),
             elevation: 3.0,
-            style: StarWarsDeck.starWarsStyle,
+            style: PlayingCardsThemes.starWarsStyle,
           ),
         ],
       ),
@@ -177,12 +181,12 @@ Widget _card3() {
             card: PlayingCard(Suit.spades, CardValue.queen),
             showBack: true,
             elevation: 10.0,
-            style: GoldenDeck.goldenStyle,
+            style: PlayingCardsThemes.goldenStyle,
           ),
           PlayingCardView(
             card: PlayingCard(Suit.spades, CardValue.queen),
             elevation: 3.0,
-            style: GoldenDeck.goldenStyle,
+            style: PlayingCardsThemes.goldenStyle,
           ),
         ],
       ),
