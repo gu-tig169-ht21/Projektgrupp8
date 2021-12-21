@@ -323,15 +323,15 @@ class BlackJack extends ChangeNotifier {
         //spelaren har blackjack
         winCondition = 'Win';
         notifyListeners();
-      } else if (dealerScore > 21) {
-        showDealercard();
-        //dealern blev tjock
-        winCondition = 'Win';
-        notifyListeners();
       } else if (playerScore > 21) {
         showDealercard();
         //spelaren blev tjock
         winCondition = 'Lose';
+        notifyListeners();
+      } else if (dealerScore > 21) {
+        showDealercard();
+        //dealern blev tjock
+        winCondition = 'Win';
         notifyListeners();
       } else if (dealerScore == playerScore) {
         showDealercard();
@@ -368,15 +368,15 @@ class BlackJack extends ChangeNotifier {
         //spelaren har blackjack
         splitWinCondition = 'Win';
         notifyListeners();
-      } else if (dealerScore > 21) {
-        showDealercard();
-        //dealern blev tjock
-        splitWinCondition = 'Win';
-        notifyListeners();
       } else if (playerScore > 21) {
         showDealercard();
         //spelaren blev tjock
         splitWinCondition = 'Lose';
+        notifyListeners();
+      } else if (dealerScore > 21) {
+        showDealercard();
+        //dealern blev tjock
+        splitWinCondition = 'Win';
         notifyListeners();
       } else if (dealerScore == playerScore) {
         showDealercard();
@@ -418,13 +418,13 @@ class BlackJack extends ChangeNotifier {
         //spelaren har blackjack
         winCondition = 'Win';
         notifyListeners();
-      } else if (dealerScore > 21) {
-        //dealern blev tjock
-        winCondition = 'Win';
-        notifyListeners();
       } else if (playerScore > 21) {
         //spelaren blev tjock
         winCondition = 'Lose';
+        notifyListeners();
+      } else if (dealerScore > 21) {
+        //dealern blev tjock
+        winCondition = 'Win';
         notifyListeners();
       } else {
         winCondition = 'NoWinnerYet';
@@ -447,15 +447,15 @@ class BlackJack extends ChangeNotifier {
         //spelaren har blackjack
         winCondition = 'Win';
         notifyListeners();
-      } else if (dealerScore > 21) {
-        showDealercard();
-        //dealern blev tjock
-        winCondition = 'Win';
-        notifyListeners();
       } else if (playerScore > 21) {
         showDealercard();
         //spelaren blev tjock
         winCondition = 'Lose';
+        notifyListeners();
+      } else if (dealerScore > 21) {
+        showDealercard();
+        //dealern blev tjock
+        winCondition = 'Win';
         notifyListeners();
       } else {
         winCondition = 'NoWinnerYet';
@@ -478,15 +478,15 @@ class BlackJack extends ChangeNotifier {
         //spelaren har blackjack
         splitWinCondition = 'Win';
         notifyListeners();
-      } else if (dealerScore > 21) {
-        showDealercard();
-        //dealern blev tjock
-        splitWinCondition = 'Win';
-        notifyListeners();
       } else if (playerScore > 21) {
         showDealercard();
         //spelaren blev tjock
         splitWinCondition = 'Lose';
+        notifyListeners();
+      } else if (dealerScore > 21) {
+        showDealercard();
+        //dealern blev tjock
+        splitWinCondition = 'Win';
         notifyListeners();
       } else {
         splitWinCondition = 'NoWinnerYet';
