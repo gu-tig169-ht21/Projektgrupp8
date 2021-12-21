@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'card_themes.dart';
 
+List<Widget> cardList = <Widget>[_card1(), _card2(), _card3()];
+
 class CustomizationPage extends StatefulWidget {
   const CustomizationPage({Key? key}) : super(key: key);
 
@@ -63,22 +65,17 @@ class _CustomizationPageState extends State<CustomizationPage> {
 //widget för kortet
   Widget _card() {
     return Align(
-      alignment: Alignment.center,
-      child: SizedBox(
-        height: 350,
-        width: 310,
-        //Funktion som gör att man kan scrolla bland korten
-        child: PageView(
-          controller: pageController,
-          onPageChanged: (index) => {value = index},
-          children: [
-            _card1(),
-            _card2(),
-            _card3(),
-          ],
-        ),
-      ),
-    );
+        alignment: Alignment.center,
+        child: SizedBox(
+            height: 350,
+            width: 310,
+            child: PageView.builder(
+              onPageChanged: (index) => {value = index},
+              controller: pageController,
+              itemBuilder: (context, index) {
+                return cardList[index % cardList.length];
+              },
+            )));
   }
 
 // widget som returnerar en knapp som du trycker på
