@@ -67,7 +67,6 @@ class _CustomizationPageState extends State<CustomizationPage> {
       child: SizedBox(
         height: 350,
         width: 310,
-
         //Funktion som gör att man kan scrolla bland korten
         child: PageView(
           controller: pageController,
@@ -121,7 +120,7 @@ Widget _card1() {
               elevation: 10.0,
             ),
             PlayingCardView(
-              card: PlayingCard(Suit.hearts, CardValue.ace),
+              card: PlayingCard(Suit.hearts, CardValue.king),
               elevation: 3.0,
             ),
           ],
@@ -178,13 +177,13 @@ Widget _card3() {
       FlatCardFan(
         children: [
           PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.queen),
+            card: PlayingCard(Suit.spades, CardValue.king),
             showBack: true,
             elevation: 10.0,
             style: PlayingCardsThemes.goldenStyle,
           ),
           PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.queen),
+            card: PlayingCard(Suit.spades, CardValue.king),
             elevation: 3.0,
             style: PlayingCardsThemes.goldenStyle,
           ),

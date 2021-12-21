@@ -24,6 +24,8 @@ class PlayingCardsProvider extends ChangeNotifier {
   }
 }
 
+// Andra bilden - assets/countDooku1.jpg
+
 //funktion för starwars kortleken
 class PlayingCardsThemes {
   static PlayingCardViewStyle get standardStyle {
@@ -41,10 +43,10 @@ class PlayingCardsThemes {
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
-            CardValue.jack: (context) => Image.asset(''),
-            CardValue.queen: (context) => Image.asset(''),
-            CardValue.king: (context) => Image.asset(''),
-            CardValue.ace: (context) => Image.asset('')
+            CardValue.jack: (context) => Image.asset('assets/grevious.jpg'),
+            CardValue.queen: (context) => Image.asset('assets/boKatan.jpg'),
+            CardValue.king: (context) => Image.asset('assets/darthMaul.jpg'),
+            CardValue.ace: (context) => Image.asset('assets/Palpatine.png')
           },
         ),
         //tema för hjärter
@@ -58,10 +60,10 @@ class PlayingCardsThemes {
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
-            CardValue.jack: (context) => Image.asset(''),
-            CardValue.queen: (context) => Image.asset(''),
-            CardValue.king: (context) => Image.asset(''),
-            CardValue.ace: (context) => Image.asset('')
+            CardValue.jack: (context) => Image.asset('assets/hanSolo.jpg'),
+            CardValue.queen: (context) => Image.asset('assets/leia.jpg'),
+            CardValue.king: (context) => Image.asset('assets/kenobi.jpg'),
+            CardValue.ace: (context) => Image.asset('assets/yoda.jpg')
           },
         ),
 
@@ -73,24 +75,26 @@ class PlayingCardsThemes {
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
-            CardValue.jack: (context) => Image.asset(''),
-            CardValue.queen: (context) => Image.asset(''),
-            CardValue.king: (context) => Image.asset(''),
-            CardValue.ace: (context) => Image.asset('')
+            CardValue.jack: (context) => Image.asset('assets/chewbacca.jpg '),
+            CardValue.queen: (context) =>
+                Image.asset('assets/QueenAmidala1.jpg'),
+            CardValue.king: (context) => Image.asset('assets/quiGonJinn.jpg'),
+            CardValue.ace: (context) => Image.asset('assets/luke.jpg')
           },
         ),
         //tema för klöver
         Suit.clubs: SuitStyle(
             builder: (context) => const FittedBox(
                   fit: BoxFit.fitHeight,
-                  child: Text('♠'),
+                  child: Text('♣️'),
                 ),
             style: const TextStyle(color: Colors.brown),
             cardContentBuilders: {
-              CardValue.jack: (context) => Image.asset(''),
-              CardValue.queen: (context) => Image.asset(''),
-              CardValue.king: (context) => Image.asset(''),
-              CardValue.ace: (context) => Image.asset('')
+              CardValue.jack: (context) => Image.asset('assets/dinDjarin.jpg'),
+              CardValue.queen: (context) => Image.asset('assets/ahsoka.jpg'),
+              CardValue.king: (context) =>
+                  Image.asset('assets/countDooku2.jpg'),
+              CardValue.ace: (context) => Image.asset('assets/darthVader.jpg')
             })
       },
     );
@@ -109,9 +113,9 @@ class PlayingCardsThemes {
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
             CardValue.jack: (context) => Image.asset('assets/Gold1.jpg'),
-            CardValue.queen: (context) => Image.asset('assets/Gold2.jpg'),
+            CardValue.queen: (context) => Image.asset('assets/Gold4.jpeg'),
             CardValue.king: (context) => Image.asset('assets/Gold3.jpg'),
-            CardValue.ace: (context) => Image.asset('')
+            CardValue.ace: (context) => Image.asset('assets/Gold2.png')
           },
         ),
         //tema för hjärter
@@ -126,9 +130,9 @@ class PlayingCardsThemes {
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
             CardValue.jack: (context) => Image.asset('assets/Gold1.jpg'),
-            CardValue.queen: (context) => Image.asset('assets/Gold2.jpg'),
+            CardValue.queen: (context) => Image.asset('assets/Gold4.jpeg'),
             CardValue.king: (context) => Image.asset('assets/Gold3.jpg'),
-            CardValue.ace: (context) => Image.asset('')
+            CardValue.ace: (context) => Image.asset('assets/Gold2.png')
           },
         ),
 
@@ -141,9 +145,9 @@ class PlayingCardsThemes {
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
             CardValue.jack: (context) => Image.asset('assets/Gold1.jpg'),
-            CardValue.queen: (context) => Image.asset('assets/Gold2.jpg'),
+            CardValue.queen: (context) => Image.asset('assets/Gold4.jpeg'),
             CardValue.king: (context) => Image.asset('assets/Gold3.jpg'),
-            CardValue.ace: (context) => Image.asset('')
+            CardValue.ace: (context) => Image.asset('assets/Gold2.png')
           },
         ),
         //tema för klöver
@@ -155,9 +159,9 @@ class PlayingCardsThemes {
             style: const TextStyle(color: Colors.brown),
             cardContentBuilders: {
               CardValue.jack: (context) => Image.asset('assets/Gold1.jpg'),
-              CardValue.queen: (context) => Image.asset('assets/Gold2.jpg'),
+              CardValue.queen: (context) => Image.asset('assets/Gold4.jpeg'),
               CardValue.king: (context) => Image.asset('assets/Gold3.jpg'),
-              CardValue.ace: (context) => Image.asset('')
+              CardValue.ace: (context) => Image.asset('assets/Gold2.png')
             })
       },
     );

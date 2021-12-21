@@ -40,6 +40,8 @@ dependencies:
   charts_flutter: ^0.12.0
   flutter_switch: ^0.3.2
 
+  infinity_page_view: ^1.0.0 
+
 
 dev_dependencies:
   flutter_test:
@@ -66,8 +68,26 @@ flutter:
   assets: 
       - assets/BackgroundForStartpage.jpg
       - assets/Gold1.jpg
-      - assets/Gold2.jpg
+      - assets/Gold2.png
       - assets/Gold3.jpg 
+      - assets/Gold4.jpeg 
+      - assets/ahsoka.jpg
+      - assets/boKatan.jpg
+      - assets/chewbacca.jpg 
+      - assets/countDooku1.jpg
+      - assets/countDooku2.jpg
+      - assets/darthMaul.jpg
+      - assets/darthVader.jpg
+      - assets/dinDjarin.jpg 
+      - assets/grevious.jpg
+      - assets/hanSolo.jpg
+      - assets/kenobi.jpg
+      - assets/leia.jpg
+      - assets/luke.jpg
+      - assets/Palpatine.png
+      - assets/QueenAmidala1.jpg
+      - assets/quiGonJinn.jpg
+      - assets/yoda.jpg 
 
   # To add assets to your application, add an assets section, like this:
   # assets:
