@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'dart:math';
+import 'card_themes.dart';
+import 'package:playing_cards/playing_cards.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({Key? key}) : super(key: key);
@@ -19,10 +21,10 @@ class _StatisticsState extends State<Statistics> {
 //värdena som presenteras i barchart
 
     final statisticsCardData = [
-      CommonCardChart('Ace of spades', '${random.nextInt(100)}'),
-      CommonCardChart('King of hearts', '${random.nextInt(100)}'),
-      CommonCardChart('Queen of diamonds', '${random.nextInt(100)}'),
-      CommonCardChart('Jack of clubs', '${random.nextInt(100)}'),
+      CommonCardChart('A of spades', '${random.nextInt(100)}'),
+      CommonCardChart('K of hearts', '${random.nextInt(100)}'),
+      CommonCardChart('Q of diamonds', '${random.nextInt(100)}'),
+      CommonCardChart('J of clubs', '${random.nextInt(100)}'),
     ];
     return [
       charts.Series<CommonCardChart, String>(
@@ -40,7 +42,7 @@ class _StatisticsState extends State<Statistics> {
     return Align(
         alignment: const Alignment(0, 1.0),
         child: FractionallySizedBox(
-            widthFactor: 0.6,
+            widthFactor: 1.0,
             heightFactor: 0.4,
             child: charts.BarChart(
               _createRandomData(),
@@ -63,12 +65,15 @@ class _StatisticsState extends State<Statistics> {
         centerTitle: true,
       ),
       body: Stack(children: [
-        _gamesWon(),
-        _gamesWonValue(),
-        _playTime(),
-        _playTimeValue(),
-        _gamesLost(),
-        _gamesLostValue(),
+        titles(),
+        //  _gamesWon(),
+        //_gamesWonValue(),
+        //  _playTime(),
+        //_playTimeValue(),
+        //  _gamesLost(),
+        //_gamesLostValue(),
+
+        // values(),
         _mostCommonCard(),
         _mostCommonCardValue(),
         _statisticsMostCommonCard(),
@@ -78,21 +83,78 @@ class _StatisticsState extends State<Statistics> {
   }
 }
 
-// vyn/positionering till antalet vunna matcher, saknar det verkliga värdet
-Widget _gamesWon() {
-  return const Align(
-    alignment: Alignment(-0.9, -0.9),
-    child: FractionallySizedBox(
-      widthFactor: 0.20,
-      heightFactor: 0.1,
-      child: Text(
-        'Games won',
-        style: TextStyle(fontSize: 15),
+Widget titles() {
+  return Row(children: const <Widget>[
+    Expanded(
+      child: SizedBox(
+        width: 200,
+        height: 50,
+        child: Card(
+          child: Text(
+            'Games won, \n 10',
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     ),
-  );
+    Expanded(
+      child: SizedBox(
+        width: 200,
+        height: 50,
+        child: Card(
+          child: Text(
+            'Games played, \n 18',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    ),
+    Expanded(
+      child: SizedBox(
+        width: 200,
+        height: 50,
+        child: Card(
+          child: Text(
+            'Games lost, \n 8',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    ),
+  ]);
 }
+/*
+Widget values() {
+  return Row(children: const <Widget>[
+    Expanded(
+      child: Text('10', textAlign: TextAlign.left),
+    ),
+    Expanded(
+      child: Text('18', textAlign: TextAlign.center),
+    ),
+    Expanded(
+      child: Text('8', textAlign: TextAlign.right),
+    )
+  ]);
+}
+*/
 
+// vyn/positionering till antalet vunna matcher, saknar det verkliga värdet
+/*
+Widget _gamesWon() {
+  return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: const [
+    /* FractionallySizedBox(
+      widthFactor: 0.20,
+      heightFactor: 0.1,
+      child:*/
+    Text(
+      'Games won',
+      style: TextStyle(fontSize: 15),
+    ),
+  ]);
+}
+*/
+/*
 Widget _gamesWonValue() {
   return const Align(
     alignment: Alignment(-0.75, -0.8),
@@ -100,7 +162,7 @@ Widget _gamesWonValue() {
       widthFactor: 0.1,
       heightFactor: 0.1,
       child: Text(
-        '8',
+        '10',
         style: TextStyle(fontSize: 15),
       ),
     ),
@@ -108,21 +170,21 @@ Widget _gamesWonValue() {
 }
 
 // vyn/positionering till antalet spelade matcher, saknar det verkliga värdet
-
+/*
 Widget _playTime() {
-  return const Align(
-    alignment: Alignment(0.0, -0.9),
-    child: FractionallySizedBox(
+  return Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
+    /* FractionallySizedBox(
       widthFactor: 0.20,
       heightFactor: 0.1,
-      child: Text(
-        'Time played',
-        style: TextStyle(fontSize: 15),
-      ),
+      child:*/
+    Text(
+      'Time played',
+      style: TextStyle(fontSize: 15),
     ),
-  );
+    //  ),
+  ]);
 }
-
+*/
 Widget _playTimeValue() {
   return const Align(
     alignment: Alignment(0.05, -0.8),
@@ -130,7 +192,7 @@ Widget _playTimeValue() {
       widthFactor: 0.1,
       heightFactor: 0.1,
       child: Text(
-        '8',
+        '18',
         style: TextStyle(fontSize: 15),
       ),
     ),
@@ -138,20 +200,22 @@ Widget _playTimeValue() {
 }
 
 // vyn/positionering till antalet förlorade matcher, saknar det verkliga värdet
-
+/*
 Widget _gamesLost() {
-  return const Align(
-    alignment: Alignment(0.9, -0.9),
-    child: FractionallySizedBox(
-      widthFactor: 0.20,
-      heightFactor: 0.1,
-      child: Text(
-        'Games lost',
-        style: TextStyle(fontSize: 15),
-      ),
-    ),
-  );
-}
+  return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: const [
+        /*FractionallySizedBox(
+          widthFactor: 0.20,
+          heightFactor: 0.1,
+          child:*/
+        Text(
+          'Games lost',
+          style: TextStyle(fontSize: 15),
+        ),
+        // ),
+      ]);
+}*/
 
 Widget _gamesLostValue() {
   return const Align(
@@ -166,7 +230,7 @@ Widget _gamesLostValue() {
     ),
   );
 }
-
+*/
 // vyn/positionering till bilden av kortet för mest dragna kortet, saknar det verkliga värdet
 
 Widget _mostCommonCard() {
@@ -183,8 +247,21 @@ Widget _mostCommonCard() {
   );
 }
 
+// widget för vilket kort som är vanligast att dra/bild
 Widget _mostCommonCardValue() {
-  return const Align(
+  return Align(
+    alignment: const Alignment(0.0, -0.4),
+    child: SizedBox(
+      width: 80,
+      child: PlayingCardView(
+        card: PlayingCard(Suit.hearts, CardValue.ace),
+        elevation: 3.0,
+      ),
+    ),
+  );
+}
+
+/* return const Align(
     alignment: Alignment(0.0, -0.4),
     child: FractionallySizedBox(
       widthFactor: 0.1,
@@ -194,8 +271,7 @@ Widget _mostCommonCardValue() {
         style: TextStyle(fontSize: 15),
       ),
     ),
-  );
-}
+  );*/
 
 // vyn/positionering till barcharten, saknar det verkliga värdet
 
@@ -206,7 +282,7 @@ Widget _statisticsMostCommonCard() {
       widthFactor: 0.35,
       heightFactor: 0.1,
       child: Text(
-        'Chart of yor most common cards',
+        'Chart of your most common cards',
         style: TextStyle(fontSize: 15),
       ),
     ),
