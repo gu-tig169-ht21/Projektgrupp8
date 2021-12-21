@@ -94,13 +94,13 @@ class _CustomizationPageState extends State<CustomizationPage> {
         child: const Text('Choose this deck'),
         onPressed: () {
           if (value == 0) {
-            Provider.of<PLayingCardsProvider>(context, listen: false)
+            Provider.of<PlayingCardsProvider>(context, listen: false)
                 .changePlayingCardsThemes('Standard');
           } else if (value == 1) {
-            Provider.of<PLayingCardsProvider>(context, listen: false)
+            Provider.of<PlayingCardsProvider>(context, listen: false)
                 .changePlayingCardsThemes('StarWars');
-          } else if (value == 3) {
-            Provider.of<PLayingCardsProvider>(context, listen: false)
+          } else if (value == 2) {
+            Provider.of<PlayingCardsProvider>(context, listen: false)
                 .changePlayingCardsThemes('Golden');
           }
         },

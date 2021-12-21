@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'blackjack.dart';
@@ -221,6 +222,8 @@ class _GamePageState extends State<GamePage> {
           height: 153,
           width: 116,
           child: PlayingCardView(
+              style: Provider.of<PlayingCardsProvider>(context, listen: true)
+                  .getPlayingcardThemeMode,
               card: hand[i],
               elevation: 3.0,
               showBack: dealer

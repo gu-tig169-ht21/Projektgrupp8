@@ -10,8 +10,8 @@ class Settings extends StatefulWidget {
   State<Settings> createState() => _SettingsState();
 }
 
+//lägg till en setting för hur många kortlekar spelaren vill använda, ta in en int så hanterar vi det sen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class _SettingsState extends State<Settings> {
-  bool darkThemeValue = false;
   bool soundValue = false;
 
   @override
@@ -19,7 +19,6 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Settings"),
-          centerTitle: true,
         ),
         body: Stack(
           children: [
@@ -58,20 +57,20 @@ class _SettingsState extends State<Settings> {
     return Align(
       alignment: const Alignment(0.3, -0.4),
       child: FractionallySizedBox(
-        widthFactor: 0.35,
+        widthFactor: 0.85,
         heightFactor: 0.1,
         child: SwitchListTile(
-            title: const Text('Dark Theme'),
+            title: const Text(
+              'Dark Theme',
+            ),
+            subtitle: const Text('Sets the theme to dark'),
             secondary: const Icon(Icons.dark_mode),
-            controlAffinity: ListTileControlAffinity.leading,
-            activeColor: Colors.black,
-            activeTrackColor: Colors.grey,
-            inactiveThumbColor: Colors.white,
-            inactiveTrackColor: Colors.white10,
-            value: darkThemeValue,
+            controlAffinity: ListTileControlAffinity.trailing,
+            value: Provider.of<ChangeTheme>(context, listen: true)
+                .getThemeModeSwitch,
             onChanged: (bool? value) {
               Provider.of<ChangeTheme>(context, listen: false)
-                  .changeDarkTheme(value);
+                  .changeDarkTheme(value!);
             }
 
             // provider istället för setState
@@ -86,12 +85,13 @@ class _SettingsState extends State<Settings> {
     return Align(
         alignment: const Alignment(0.2, -0.1),
         child: FractionallySizedBox(
-            widthFactor: 0.3,
+            widthFactor: 0.85,
             heightFactor: 0.1,
             child: SwitchListTile(
                 title: const Text('Sound'),
+                subtitle: const Text('Turns sound off'),
                 secondary: const Icon(Icons.volume_off_sharp),
-                controlAffinity: ListTileControlAffinity.leading,
+                controlAffinity: ListTileControlAffinity.trailing,
                 activeColor: Colors.green,
                 activeTrackColor: Colors.teal[50],
                 value: soundValue,
@@ -129,16 +129,23 @@ class _SettingsState extends State<Settings> {
 
 class ChangeTheme extends ChangeNotifier {
   var _thememode = ThemeMode.light;
+  bool themeModeSwitch = false;
   get getThemeMode {
     return _thememode;
   }
 
-  void changeDarkTheme(value) {
+  get getThemeModeSwitch {
+    return themeModeSwitch;
+  }
+
+  void changeDarkTheme(bool value) {
     if (value == true) {
       _thememode = ThemeMode.dark;
+      themeModeSwitch = true;
       notifyListeners();
     } else {
       _thememode = ThemeMode.light;
+      themeModeSwitch = false;
       notifyListeners();
     }
   }

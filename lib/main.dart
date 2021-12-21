@@ -19,16 +19,25 @@ void main() {
         create: (context) => BlackJack(),
       ),
       ChangeNotifierProvider(
-        create: (context) => PLayingCardsProvider(),
-      )
+        create: (context) => PlayingCardsProvider(),
+      ),
     ],
-    child: MaterialApp(
+    child: const MainApp(),
+  ));
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'blackjack:)',
       home: const StartPage(),
       theme: ThemeCustom.StandardTheme,
       darkTheme: ThemeCustom.DarkTheme,
-      // themeMode: Provider.of<ChangeTheme>(context, listen: false).getThemeMode, skapa en statefulwidget med en materialapp inom sig
-    ),
-  ));
+      themeMode: Provider.of<ChangeTheme>(context, listen: true).getThemeMode,
+    );
+  }
 }

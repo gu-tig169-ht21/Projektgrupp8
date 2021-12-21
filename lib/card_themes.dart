@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 
-class PLayingCardsProvider extends ChangeNotifier {
-  var themeMode = PlayingCardsThemes.standardStyle;
+class PlayingCardsProvider extends ChangeNotifier {
+  var playingcardThemeMode = PlayingCardsThemes.standardStyle;
+
+  get getPlayingcardThemeMode {
+    return playingcardThemeMode;
+  }
 
   //if-sats som bestämmer kort-temat utifrån scrollvyn
   void changePlayingCardsThemes(String style) {
     if (style == 'Standard') {
-      themeMode = PlayingCardsThemes.standardStyle;
+      playingcardThemeMode = PlayingCardsThemes.standardStyle;
       notifyListeners();
     } else if (style == 'StarWars') {
-      themeMode = PlayingCardsThemes.starWarsStyle;
+      playingcardThemeMode = PlayingCardsThemes.starWarsStyle;
       notifyListeners();
     } else if (style == 'Golden') {
-      themeMode = PlayingCardsThemes.goldenStyle;
+      playingcardThemeMode = PlayingCardsThemes.goldenStyle;
       notifyListeners();
     }
   }
