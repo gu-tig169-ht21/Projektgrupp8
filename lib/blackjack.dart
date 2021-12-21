@@ -282,9 +282,7 @@ class BlackJack extends ChangeNotifier {
   void doSplit() {
     //gör en split om det väljs och kraven uppfylls
     PlayingCard card = DeckOfCards().pickACard(deck);
-    if (DeckOfCards().valueOfCard(playerHand[0]) ==
-            DeckOfCards().valueOfCard(playerHand[1]) &&
-        balance >= playerBet) {
+    if (playerHand[0].value == playerHand[1].value && balance >= playerBet) {
       splitHand.add(playerHand[1]);
       playerHand.removeAt(1);
 
