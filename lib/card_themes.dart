@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:playing_cards/playing_cards.dart';
-import 'package:provider/provider.dart';
 
 class PlayingCardsProvider extends ChangeNotifier {
   var playingcardThemeMode = PlayingCardsThemes.standardStyle;
@@ -75,7 +74,7 @@ class PlayingCardsThemes {
           ),
           style: const TextStyle(color: Colors.brown),
           cardContentBuilders: {
-            CardValue.jack: (context) => Image.asset('assets/chewbacca.jpg '),
+            CardValue.jack: (context) => Image.asset('assets/chewbacca.jpg'),
             CardValue.queen: (context) =>
                 Image.asset('assets/QueenAmidala1.jpg'),
             CardValue.king: (context) => Image.asset('assets/quiGonJinn.jpg'),

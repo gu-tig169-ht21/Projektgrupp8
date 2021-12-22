@@ -66,6 +66,8 @@ class _SettingsState extends State<Settings> {
             subtitle: const Text('Sets the theme to dark'),
             secondary: const Icon(Icons.dark_mode),
             controlAffinity: ListTileControlAffinity.trailing,
+            activeColor: Colors.green,
+            activeTrackColor: Colors.green[200],
             value: Provider.of<ChangeTheme>(context, listen: true)
                 .getThemeModeSwitch,
             onChanged: (bool? value) {
@@ -93,7 +95,7 @@ class _SettingsState extends State<Settings> {
                 secondary: const Icon(Icons.volume_off_sharp),
                 controlAffinity: ListTileControlAffinity.trailing,
                 activeColor: Colors.green,
-                activeTrackColor: Colors.teal[50],
+                activeTrackColor: Colors.green[200],
                 value: soundValue,
                 onChanged: (bool value) {
                   setState(() {
