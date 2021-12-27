@@ -43,6 +43,10 @@ class BlackJack extends ChangeNotifier {
     return split;
   }
 
+  int get getSplitBet {
+    return splitBet;
+  }
+
   bool get getCanDoubleOrSplit {
     return canDoubleOrSplit;
   }

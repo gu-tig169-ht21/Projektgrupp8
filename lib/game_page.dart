@@ -86,10 +86,10 @@ class _GamePageState extends State<GamePage> {
                       .getWinCondition,
                   Provider.of<BlackJack>(context, listen: false)
                       .getSplitWinCondition)),
-          Consumer<BlackJack>(
-              builder: (context, state, child) => splitOrDouble(
-                  Provider.of<BlackJack>(context, listen: false)
-                      .getCanDoubleOrSplit)),
+          // Consumer<BlackJack>(
+          //     builder: (context, state, child) => splitOrDouble(
+          //         Provider.of<BlackJack>(context, listen: false)
+          //             .getCanDoubleOrSplit)),
           Consumer<BlackJack>(
               builder: (context, state, child) => popUpBet(
                   Provider.of<BlackJack>(context, listen: false)
@@ -113,98 +113,155 @@ class _GamePageState extends State<GamePage> {
                         Provider.of<BlackJack>(context, listen: false)
                             .getDealerHand,
                         dealer: true))),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              onPressed: () {
-                try {
-                  if (Provider.of<BlackJack>(context, listen: false).getSplit &&
-                      splitTurn == false) {
-                    Provider.of<BlackJack>(context, listen: false)
-                        .getNewCard(playerOrSplit: 'Player');
-                    Provider.of<BlackJack>(context, listen: false)
-                        .blackJackOrBustCheck(playerOrSplit: 'Player');
-                  } else if (Provider.of<BlackJack>(context, listen: false)
-                          .getSplit &&
-                      splitTurn == true) {
-                    Provider.of<BlackJack>(context, listen: false)
-                        .getNewCard(playerOrSplit: 'Split');
-                    Provider.of<BlackJack>(context, listen: false)
-                        .blackJackOrBustCheck(playerOrSplit: 'Split');
-                  } else {
-                    Provider.of<BlackJack>(context, listen: false)
-                        .getNewCard(playerOrSplit: 'Player');
-                    Provider.of<BlackJack>(context, listen: false)
-                        .blackJackOrBustCheck(playerOrSplit: 'Player');
+        Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  try {
+                    if (Provider.of<BlackJack>(context, listen: false)
+                            .getSplit &&
+                        splitTurn == false) {
+                      Provider.of<BlackJack>(context, listen: false)
+                          .getNewCard(playerOrSplit: 'Player');
+                      Provider.of<BlackJack>(context, listen: false)
+                          .blackJackOrBustCheck(playerOrSplit: 'Player');
+                    } else if (Provider.of<BlackJack>(context, listen: false)
+                            .getSplit &&
+                        splitTurn == true) {
+                      Provider.of<BlackJack>(context, listen: false)
+                          .getNewCard(playerOrSplit: 'Split');
+                      Provider.of<BlackJack>(context, listen: false)
+                          .blackJackOrBustCheck(playerOrSplit: 'Split');
+                    } else {
+                      Provider.of<BlackJack>(context, listen: false)
+                          .getNewCard(playerOrSplit: 'Player');
+                      Provider.of<BlackJack>(context, listen: false)
+                          .blackJackOrBustCheck(playerOrSplit: 'Player');
+                    }
+                  } catch (e) {
+                    //gör en popup som säger att du inte kan dra kort FIXA
                   }
-                } catch (e) {
-                  //gör en popup som säger att du inte kan dra kort FIXA
-                }
-              },
-              icon: const Icon(
-                Icons.add,
-                size: 40,
+                },
+                child: const Text('  Hit  '),
               ),
-            ),
-            Column(
-              children: [
-                const Icon(Icons.money, size: 50),
-                Consumer(
+              Column(
+                children: [
+                  const Icon(Icons.money, size: 50),
+                  Consumer(
                     builder: (context, state, child) => Text(
-                        '${Provider.of<BlackJack>(context, listen: true).getPlayerBet}'))
-              ],
-            ),
-            Consumer<BlackJack>(
-                builder: (context, state, child) => IconButton(
-                    onPressed: () {
-                      if (Provider.of<BlackJack>(context, listen: false)
-                              .getSplit &&
-                          splitTurn == false) {
+                        '${Provider.of<BlackJack>(context, listen: true).getPlayerBet}'),
+                  ),
+                ],
+              ),
+              Consumer<BlackJack>(
+                  builder: (context, state, child) => ElevatedButton(
+                      onPressed: () {
+                        if (Provider.of<BlackJack>(context, listen: false)
+                                .getSplit &&
+                            splitTurn == false) {
+                          Provider.of<BlackJack>(context, listen: false)
+                              .stop(playerOrDealerOrSplit: 'Player');
+                          splitTurn = true;
+                        } else if (Provider.of<BlackJack>(context,
+                                    listen: false)
+                                .getSplit &&
+                            splitTurn == true) {
+                          Provider.of<BlackJack>(context, listen: false)
+                              .stop(playerOrDealerOrSplit: 'Split');
+                          Provider.of<BlackJack>(context, listen: false)
+                              .dealersTurn();
+                          Provider.of<BlackJack>(context, listen: false)
+                              .winOrLose(playerOrSplit: 'Player');
+                          Provider.of<BlackJack>(context, listen: false)
+                              .winOrLose(playerOrSplit: 'Split');
+                        } else {
+                          Provider.of<BlackJack>(context, listen: false)
+                              .stop(playerOrDealerOrSplit: 'Player');
+                          Provider.of<BlackJack>(context, listen: false)
+                              .dealersTurn();
+                          Provider.of<BlackJack>(context, listen: false)
+                              .winOrLose(playerOrSplit: 'Player');
+                        }
+                      },
+                      child: const Text('Stand'))),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
                         Provider.of<BlackJack>(context, listen: false)
-                            .stop(playerOrDealerOrSplit: 'Player');
-                        splitTurn = true;
-                      } else if (Provider.of<BlackJack>(context, listen: false)
-                              .getSplit &&
-                          splitTurn == true) {
+                                .getCanDoubleOrSplit
+                            ? null
+                            : MaterialStateProperty.all(Colors.grey),
+                  ),
+                  onPressed: () {
+                    if (Provider.of<BlackJack>(context, listen: false)
+                        .getCanDoubleOrSplit) {
+                      try {
                         Provider.of<BlackJack>(context, listen: false)
-                            .stop(playerOrDealerOrSplit: 'Split');
+                            .doSplit();
                         Provider.of<BlackJack>(context, listen: false)
-                            .dealersTurn();
-                        Provider.of<BlackJack>(context, listen: false)
-                            .winOrLose(playerOrSplit: 'Player');
-                        Provider.of<BlackJack>(context, listen: false)
-                            .winOrLose(playerOrSplit: 'Split');
-                      } else {
-                        Provider.of<BlackJack>(context, listen: false)
-                            .stop(playerOrDealerOrSplit: 'Player');
-                        Provider.of<BlackJack>(context, listen: false)
-                            .dealersTurn();
-                        Provider.of<BlackJack>(context, listen: false)
-                            .winOrLose(playerOrSplit: 'Player');
+                            .canDoubleOrSplit = false;
+                      } catch (e) {
+                        //FIXA POPUP OM DU INTE KAN SPLITTA!!!!!!!!!!!!!!!!!!!!!!!!!!
                       }
-                    },
-                    icon: const Icon(Icons.stop, size: 40))),
-          ],
-        ),
-        Provider.of<BlackJack>(context, listen: true).getSplit
-            ? SizedBox(
-                width: 200,
-                child: Consumer<BlackJack>(
-                    builder: (context, state, child) => getHand(
+                    } else {
+                      null;
+                    }
+                  },
+                  child: const Text('  Split  ')),
+              ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
                         Provider.of<BlackJack>(context, listen: false)
-                            .getSplitHand,
-                        dealer: false)))
-            : const SizedBox.shrink(),
-        Provider.of<BlackJack>(context, listen: false).getfirstRound
-            ? const SizedBox.shrink()
-            : SizedBox(
-                width: 200,
-                child: Consumer<BlackJack>(
-                    builder: (context, state, child) => getHand(
+                                .getCanDoubleOrSplit
+                            ? null
+                            : MaterialStateProperty.all(Colors.grey),
+                  ),
+                  onPressed: () {
+                    if (Provider.of<BlackJack>(context, listen: false)
+                        .getCanDoubleOrSplit) {
+                      try {
                         Provider.of<BlackJack>(context, listen: false)
-                            .getPlayerHand,
-                        dealer: false))),
+                            .doDouble();
+                        Provider.of<BlackJack>(context, listen: false)
+                            .setCanDoubleOrSplit = false;
+                      } catch (e) {
+                        //FIXA POPUP OM DU INTE KAN DUBBLA!!!!!!!!!!!!!!!!!!!!!!!!!!
+                      }
+                    } else {
+                      null;
+                    }
+                  },
+                  child: const Text('Double')),
+            ],
+          ),
+        ]),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Provider.of<BlackJack>(context, listen: true).getSplit
+              ? SizedBox(
+                  width: 200,
+                  child: Consumer<BlackJack>(
+                      builder: (context, state, child) => getHand(
+                          Provider.of<BlackJack>(context, listen: false)
+                              .getSplitHand,
+                          dealer: false)))
+              : const SizedBox.shrink(),
+          Provider.of<BlackJack>(context, listen: false).getfirstRound
+              ? const SizedBox.shrink()
+              : SizedBox(
+                  width: 200,
+                  child: Consumer<BlackJack>(
+                      builder: (context, state, child) => getHand(
+                          Provider.of<BlackJack>(context, listen: false)
+                              .getPlayerHand,
+                          dealer: false))),
+        ])
       ],
     );
   }
@@ -219,8 +276,8 @@ class _GamePageState extends State<GamePage> {
     List<Widget> viewHand = <Widget>[];
     for (int i = 0; i < hand.length; i++) {
       viewHand.add(SizedBox(
-          height: 153,
-          width: 116,
+          height: 163,
+          width: 126,
           child: PlayingCardView(
               style: Provider.of<PlayingCardsProvider>(context, listen: true)
                   .getPlayingcardThemeMode,

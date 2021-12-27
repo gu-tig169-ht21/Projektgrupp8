@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'card_themes.dart';
 
+List<Widget> cardList = <Widget>[_card1(), _card2(), _card3()];
+
 class CustomizationPage extends StatefulWidget {
   const CustomizationPage({Key? key}) : super(key: key);
 
@@ -63,23 +65,17 @@ class _CustomizationPageState extends State<CustomizationPage> {
 //widget för kortet
   Widget _card() {
     return Align(
-      alignment: Alignment.center,
-      child: SizedBox(
-        height: 350,
-        width: 310,
-
-        //Funktion som gör att man kan scrolla bland korten
-        child: PageView(
-          controller: pageController,
-          onPageChanged: (index) => {value = index},
-          children: [
-            _card1(),
-            _card2(),
-            _card3(),
-          ],
-        ),
-      ),
-    );
+        alignment: Alignment.center,
+        child: SizedBox(
+            height: 350,
+            width: 310,
+            child: PageView.builder(
+              onPageChanged: (index) => {value = index},
+              controller: pageController,
+              itemBuilder: (context, index) {
+                return cardList[index % cardList.length];
+              },
+            )));
   }
 
 // widget som returnerar en knapp som du trycker på
@@ -121,7 +117,7 @@ Widget _card1() {
               elevation: 10.0,
             ),
             PlayingCardView(
-              card: PlayingCard(Suit.hearts, CardValue.ace),
+              card: PlayingCard(Suit.hearts, CardValue.king),
               elevation: 3.0,
             ),
           ],
@@ -178,13 +174,13 @@ Widget _card3() {
       FlatCardFan(
         children: [
           PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.queen),
+            card: PlayingCard(Suit.spades, CardValue.king),
             showBack: true,
             elevation: 10.0,
             style: PlayingCardsThemes.goldenStyle,
           ),
           PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.queen),
+            card: PlayingCard(Suit.spades, CardValue.king),
             elevation: 3.0,
             style: PlayingCardsThemes.goldenStyle,
           ),
