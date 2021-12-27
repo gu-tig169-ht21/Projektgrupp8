@@ -61,8 +61,12 @@ class _HelpPageState extends State<HelpPage> {
     return Column(
       children: [
         Center(
-          child: Text(
-            RuleText.returnRules(chosenText),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(right: 20, left: 20, top: 40, bottom: 20),
+            child: Text(
+              RuleText.returnRules(chosenText),
+            ),
           ),
         ),
       ],

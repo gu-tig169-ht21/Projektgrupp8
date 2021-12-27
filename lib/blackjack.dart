@@ -23,8 +23,10 @@ class BlackJack extends ChangeNotifier {
   String winCondition = 'NoWinnerYet';
   String splitWinCondition = 'NoWinnerYet';
   bool dealerCardShown = false;
-  bool firstRound = true;
-  bool canDoubleOrSplit = true;
+  bool canBet = true;
+  bool canSplit = true;
+  bool canDouble = true;
+  int rounds = 1;
 
   BlackJack() {
     //funktioner som görs vid första instansiering
@@ -33,6 +35,17 @@ class BlackJack extends ChangeNotifier {
     clearHands();
 
     startingHands();
+  }
+  int get getRounds {
+    return rounds;
+  }
+
+  bool get getCanDouble {
+    return canDouble;
+  }
+
+  bool get getCanSplit {
+    return canSplit;
   }
 
   String get getSplitWinCondition {
@@ -47,12 +60,8 @@ class BlackJack extends ChangeNotifier {
     return splitBet;
   }
 
-  bool get getCanDoubleOrSplit {
-    return canDoubleOrSplit;
-  }
-
-  bool get getfirstRound {
-    return firstRound;
+  bool get getCanBet {
+    return canBet;
   }
 
   String get getWinCondition {
@@ -83,13 +92,18 @@ class BlackJack extends ChangeNotifier {
     return balance;
   }
 
-  set setFirstRound(bool value) {
-    firstRound = value;
+  set setCanBet(bool value) {
+    canBet = value;
     notifyListeners();
   }
 
-  set setCanDoubleOrSplit(bool value) {
-    canDoubleOrSplit = value;
+  set setCanSplit(bool value) {
+    canSplit = value;
+    notifyListeners();
+  }
+
+  set setCanDouble(bool value) {
+    canDouble = value;
     notifyListeners();
   }
 
@@ -106,10 +120,24 @@ class BlackJack extends ChangeNotifier {
     winCondition = 'NoWinnerYet';
     splitWinCondition = 'NoWinnerYet';
     dealerCardShown = false;
-    canDoubleOrSplit = true;
-    setFirstRound = true;
+    canDouble = true;
+    canSplit = true;
+    setCanBet = true;
+    rounds = 1;
     startingHands();
     notifyListeners();
+  }
+
+  bool checkRound() {
+    if (rounds == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void incrementRounds() {
+    rounds++;
   }
 
   void showDealercard() {
@@ -236,6 +264,7 @@ class BlackJack extends ChangeNotifier {
   }
 
   void getNewCard({required String playerOrSplit}) {
+    incrementRounds();
     //drar ett nytt kort för spelaren
     switch (playerOrSplit) {
       case 'Player':
@@ -269,9 +298,21 @@ class BlackJack extends ChangeNotifier {
     }
   }
 
+  void testingDouble() {
+    if (balance >= playerBet) {
+      canDouble = true;
+
+      notifyListeners();
+    } else {
+      canDouble = false;
+      notifyListeners();
+    }
+  }
+
   void doDouble() {
+    incrementRounds();
     //en dubblering av insatsen
-    print('$playerBet');
+
     if (balance >= playerBet) {
       balance -= playerBet;
       playerBet = playerBet * 2;
@@ -279,11 +320,23 @@ class BlackJack extends ChangeNotifier {
 
       notifyListeners();
     } else {
-      throw Exception('Not enough money');
+      canDouble = false;
+      notifyListeners();
+    }
+  }
+
+  void testingSplit() {
+    if (playerHand[0].value == playerHand[1].value && balance >= playerBet) {
+      canSplit = true;
+      notifyListeners();
+    } else {
+      canSplit = false;
+      notifyListeners();
     }
   }
 
   void doSplit() {
+    incrementRounds();
     //gör en split om det väljs och kraven uppfylls
     PlayingCard card = DeckOfCards().pickACard(deck);
     if (playerHand[0].value == playerHand[1].value && balance >= playerBet) {
@@ -300,7 +353,8 @@ class BlackJack extends ChangeNotifier {
       split = true;
       notifyListeners();
     } else {
-      throw Exception('Cant do split');
+      canSplit = false;
+      notifyListeners();
     }
   }
 
@@ -411,21 +465,26 @@ class BlackJack extends ChangeNotifier {
       if (dealerScore == 21 && playerScore == 21) {
         //båda har blackjack
         winCondition = 'Draw';
+        stop(playerOrDealerOrSplit: 'Player');
         notifyListeners();
       } else if (dealerScore == 21 && playerScore != 21) {
         //dealern har blackjack
+        stop(playerOrDealerOrSplit: 'Player');
         winCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore != 21 && playerScore == 21) {
         //spelaren har blackjack
+        stop(playerOrDealerOrSplit: 'Player');
         winCondition = 'Win';
         notifyListeners();
       } else if (playerScore > 21) {
         //spelaren blev tjock
+        stop(playerOrDealerOrSplit: 'Player');
         winCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore > 21) {
         //dealern blev tjock
+        stop(playerOrDealerOrSplit: 'Player');
         winCondition = 'Win';
         notifyListeners();
       } else {

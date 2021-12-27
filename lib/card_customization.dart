@@ -69,12 +69,10 @@ class _CustomizationPageState extends State<CustomizationPage> {
         child: SizedBox(
             height: 350,
             width: 310,
-            child: PageView.builder(
+            child: PageView(
               onPageChanged: (index) => {value = index},
               controller: pageController,
-              itemBuilder: (context, index) {
-                return cardList[index % cardList.length];
-              },
+              children: cardList,
             )));
   }
 

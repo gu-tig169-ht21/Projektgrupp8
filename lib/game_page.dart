@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:provider/provider.dart';
@@ -92,8 +93,7 @@ class _GamePageState extends State<GamePage> {
           //             .getCanDoubleOrSplit)),
           Consumer<BlackJack>(
               builder: (context, state, child) => popUpBet(
-                  Provider.of<BlackJack>(context, listen: false)
-                      .getfirstRound)),
+                  Provider.of<BlackJack>(context, listen: false).getCanBet)),
         ]));
   }
 
@@ -104,7 +104,7 @@ class _GamePageState extends State<GamePage> {
       //när spelaren tryckt på knapp så får dealrn sin tur FIXA
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Provider.of<BlackJack>(context, listen: false).getfirstRound
+        Provider.of<BlackJack>(context, listen: false).getCanBet
             ? const SizedBox.shrink()
             : SizedBox(
                 width: 200,
@@ -195,18 +195,18 @@ class _GamePageState extends State<GamePage> {
                   style: ButtonStyle(
                     backgroundColor:
                         Provider.of<BlackJack>(context, listen: false)
-                                .getCanDoubleOrSplit
+                                .getCanSplit
                             ? null
                             : MaterialStateProperty.all(Colors.grey),
                   ),
                   onPressed: () {
                     if (Provider.of<BlackJack>(context, listen: false)
-                        .getCanDoubleOrSplit) {
+                        .getCanSplit) {
                       try {
                         Provider.of<BlackJack>(context, listen: false)
                             .doSplit();
                         Provider.of<BlackJack>(context, listen: false)
-                            .canDoubleOrSplit = false;
+                            .setCanSplit = false;
                       } catch (e) {
                         //FIXA POPUP OM DU INTE KAN SPLITTA!!!!!!!!!!!!!!!!!!!!!!!!!!
                       }
@@ -219,18 +219,23 @@ class _GamePageState extends State<GamePage> {
                   style: ButtonStyle(
                     backgroundColor:
                         Provider.of<BlackJack>(context, listen: false)
-                                .getCanDoubleOrSplit
-                            ? null
+                                .getCanDouble
+                            ? Provider.of<BlackJack>(context, listen: false)
+                                    .checkRound()
+                                ? null
+                                : MaterialStateProperty.all(Colors.grey)
                             : MaterialStateProperty.all(Colors.grey),
                   ),
                   onPressed: () {
                     if (Provider.of<BlackJack>(context, listen: false)
-                        .getCanDoubleOrSplit) {
+                            .getCanDouble &&
+                        Provider.of<BlackJack>(context, listen: false)
+                            .getCanBet) {
                       try {
                         Provider.of<BlackJack>(context, listen: false)
                             .doDouble();
                         Provider.of<BlackJack>(context, listen: false)
-                            .setCanDoubleOrSplit = false;
+                            .setCanDouble = false;
                       } catch (e) {
                         //FIXA POPUP OM DU INTE KAN DUBBLA!!!!!!!!!!!!!!!!!!!!!!!!!!
                       }
@@ -246,21 +251,31 @@ class _GamePageState extends State<GamePage> {
           Provider.of<BlackJack>(context, listen: true).getSplit
               ? SizedBox(
                   width: 200,
-                  child: Consumer<BlackJack>(
-                      builder: (context, state, child) => getHand(
-                          Provider.of<BlackJack>(context, listen: false)
-                              .getSplitHand,
-                          dealer: false)))
+                  child: Column(children: [
+                    splitTurn
+                        ? const Icon(Icons.arrow_downward_sharp)
+                        : const SizedBox.shrink(),
+                    Consumer<BlackJack>(
+                        builder: (context, state, child) => getHand(
+                            Provider.of<BlackJack>(context, listen: false)
+                                .getSplitHand,
+                            dealer: false))
+                  ]))
               : const SizedBox.shrink(),
-          Provider.of<BlackJack>(context, listen: false).getfirstRound
+          Provider.of<BlackJack>(context, listen: false).getCanBet
               ? const SizedBox.shrink()
               : SizedBox(
                   width: 200,
-                  child: Consumer<BlackJack>(
-                      builder: (context, state, child) => getHand(
-                          Provider.of<BlackJack>(context, listen: false)
-                              .getPlayerHand,
-                          dealer: false))),
+                  child: Column(children: [
+                    splitTurn
+                        ? const SizedBox.shrink()
+                        : const Icon(Icons.arrow_downward_sharp),
+                    (Consumer<BlackJack>(
+                        builder: (context, state, child) => getHand(
+                            Provider.of<BlackJack>(context, listen: false)
+                                .getPlayerHand,
+                            dealer: false)))
+                  ])),
         ])
       ],
     );
@@ -520,24 +535,27 @@ class _GamePageState extends State<GamePage> {
           TextButton(
             onPressed: () {
               Provider.of<BlackJack>(context, listen: false).increaseBet(25);
-              Provider.of<BlackJack>(context, listen: false).setFirstRound =
-                  false;
+              Provider.of<BlackJack>(context, listen: false).testingSplit();
+              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('25'),
           ),
           TextButton(
             onPressed: () {
               Provider.of<BlackJack>(context, listen: false).increaseBet(50);
-              Provider.of<BlackJack>(context, listen: false).setFirstRound =
-                  false;
+              Provider.of<BlackJack>(context, listen: false).testingSplit();
+              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('50'),
           ),
           TextButton(
             onPressed: () {
               Provider.of<BlackJack>(context, listen: false).increaseBet(100);
-              Provider.of<BlackJack>(context, listen: false).setFirstRound =
-                  false;
+              Provider.of<BlackJack>(context, listen: false).testingSplit();
+              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('100'),
           ),
@@ -545,47 +563,14 @@ class _GamePageState extends State<GamePage> {
             onPressed: () {
               Provider.of<BlackJack>(context, listen: false).increaseBet(
                   Provider.of<BlackJack>(context, listen: false).getBalance);
-              Provider.of<BlackJack>(context, listen: false).setFirstRound =
-                  false;
+              Provider.of<BlackJack>(context, listen: false).testingSplit();
+              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('All in'),
           ),
         ],
       );
-    } else if (!firstRound) {
-      return const SizedBox.shrink();
-    } else {
-      return const SizedBox.shrink();
-    }
-  }
-
-  Widget splitOrDouble(bool firstRound) {
-    if (firstRound) {
-      return AlertDialog(
-          title: const Text('Double or Split'),
-          content: const Text('Choose what you want to do'),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).doSplit();
-                  Provider.of<BlackJack>(context, listen: false)
-                      .canDoubleOrSplit = false;
-                },
-                child: const Text('Split')),
-            TextButton(
-                onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).doDouble();
-                  Provider.of<BlackJack>(context, listen: false)
-                      .setCanDoubleOrSplit = false;
-                },
-                child: const Text('Double')),
-            TextButton(
-                onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false)
-                      .setCanDoubleOrSplit = false;
-                },
-                child: const Text('Cancel'))
-          ]);
     } else if (!firstRound) {
       return const SizedBox.shrink();
     } else {
