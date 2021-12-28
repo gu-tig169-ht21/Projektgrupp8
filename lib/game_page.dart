@@ -53,7 +53,7 @@ class _GamePageState extends State<GamePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Settings(),
+                          builder: (context) => Settings(),
                         ));
                     //ska ta dig till inställningssidan
                     break;
