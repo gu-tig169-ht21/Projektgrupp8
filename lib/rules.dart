@@ -17,7 +17,6 @@ class RuleText {
 }
 
 PageController controller = PageController();
-
 Widget valueCards() {
   return SingleChildScrollView(
       scrollDirection: Axis.vertical,
