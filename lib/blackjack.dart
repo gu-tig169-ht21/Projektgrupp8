@@ -5,7 +5,10 @@ import 'package:playing_cards/playing_cards.dart';
 import 'deck_of_cards.dart';
 
 //om du gör en split så kör du i turordning, först agerar du färdigt med första handen sedan med nästa
-//då behöver bara knapparna påverka olika varibaler beroende på om du agerar för splithanden eller bethanden
+//då behöver bara knapparna påverka olika variabler beroende på om du agerar för splithanden eller bethanden
+
+//TODO: lägg till så att man kan använda flera kortlekar(ändra i fabbes och mogges kod, lägg in i blackjack providern)
+//TODO: skapa koppling till databas
 
 class BlackJack extends ChangeNotifier {
   List<PlayingCard> deck = standardFiftyTwoCardDeck();

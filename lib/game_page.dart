@@ -55,17 +55,17 @@ class _GamePageState extends State<GamePage> {
                         MaterialPageRoute(
                           builder: (context) => const Settings(),
                         ));
-                    //ska ta dig till inställningssidan
+
                     break;
                   }
                 case 'Forfeit':
                   {
-                    //du ger upp, får tillbaka halva insatsen
+                    //TODO: du ger upp, får tillbaka halva insatsen
                     break;
                   }
                 case 'Quit to main menu':
                   {
-                    //forfeitar och quittar till main
+                    //TODO: ska forfeita och quit till main
                     Navigator.pop(context);
                     break;
                   }
