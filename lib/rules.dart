@@ -16,10 +16,11 @@ class RuleText {
   }
 }
 
-PageController controller = PageController();
+//TODO:FIXA TILL KORT LISTAN
 Widget valueCards() {
-  return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
+  return SizedBox(
+      height: 140,
+      width: 100,
       child: Column(children: [
         PlayingCardView(card: PlayingCard(Suit.hearts, CardValue.ace)),
         PlayingCardView(card: PlayingCard(Suit.hearts, CardValue.king)),
