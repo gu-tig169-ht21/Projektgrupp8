@@ -64,7 +64,7 @@ class _HelpPageState extends State<HelpPage> {
         child: Padding(
           padding:
               const EdgeInsets.only(right: 20, left: 20, top: 40, bottom: 20),
-          child: RuleText.returnRules(chosenText),
+          child: RuleText().returnRules(chosenText),
         ),
       ),
     );
