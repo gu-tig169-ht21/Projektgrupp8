@@ -60,7 +60,11 @@ class CustomizationPage extends StatelessWidget {
 
 //widget för kortet
   Widget _cardView(BuildContext context) {
-    List<Widget> cardList = <Widget>[_card1(context), _card2(), _card3()];
+    List<Widget> cardList = <Widget>[
+      _card1(context),
+      _card2(context),
+      _card3(context)
+    ];
     return Align(
         alignment: const Alignment(0, -0.4),
         child: SizedBox(
@@ -132,25 +136,18 @@ Widget _card1(BuildContext context) {
           // const Divider(
           //   height: 50,
           // ),
-          const Align(
-            //Ändrade från Padding till Align
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Standard Deck',
-              style: TextStyle(
-                fontSize: 25,
-              ),
-              //decoration: TextDecoration.underline),
-              textAlign: TextAlign.center,
+          const Text(
+            'Standard Deck',
+            style: TextStyle(
+              fontSize: 25,
             ),
+            //decoration: TextDecoration.underline),
           ),
-          const Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                'Upplåst',
-                style: TextStyle(fontSize: 15),
-                textAlign: TextAlign.center,
-              )),
+          const Text(
+            'Upplåst',
+            style: TextStyle(fontSize: 15),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
       Align(
@@ -172,81 +169,117 @@ Widget _card1(BuildContext context) {
   );
 }
 
-Widget _card2() {
-  return Column(
+Widget _card2(BuildContext context) {
+  return Stack(
     children: [
-      FlatCardFan(
+      Column(
         children: [
-          SizedBox(
-            width: 200,
-            height: 278,
-            child: PlayingCardView(
-              card: PlayingCard(Suit.clubs, CardValue.king),
-              showBack: true,
-              elevation: 10,
-            ),
+          FlatCardFan(
+            children: [
+              SizedBox(
+                width: 200,
+                height: 278,
+                child: PlayingCardView(
+                  card: PlayingCard(Suit.clubs, CardValue.king),
+                  showBack: true,
+                  elevation: 10,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                height: 278,
+                child: PlayingCardView(
+                  card: PlayingCard(Suit.clubs, CardValue.king),
+                  elevation: 10,
+                  style: PlayingCardsThemes.starWarsStyle,
+                ),
+              ),
+            ],
           ),
-          SizedBox(
-            width: 200,
-            height: 278,
-            child: PlayingCardView(
-              card: PlayingCard(Suit.clubs, CardValue.king),
-              elevation: 10,
-              style: PlayingCardsThemes.starWarsStyle,
-            ),
+          const Text(
+            'Star Wars Edition',
+            style: TextStyle(fontSize: 25),
+            textAlign: TextAlign.center,
+          ),
+          const Text(
+            '10kr',
+            style: TextStyle(fontSize: 15),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
-      const Text(
-        'Star Wars Edition',
-        style: TextStyle(fontSize: 25),
-        textAlign: TextAlign.center,
+      Align(
+        //Ändrade från Padding till Align
+        alignment: Alignment.topRight,
+        //ändra alignment , färg och storlek
+        //lägga in provider på alla olika kort
+        child: (Provider.of<PlayingCardsProvider>(context, listen: true)
+                    .getCardStyleString ==
+                'StarWars')
+            ? const Icon(
+                Icons.check_sharp,
+                size: 45,
+                color: Colors.green,
+              )
+            : const SizedBox.shrink(),
       ),
-      const Text(
-        '10kr',
-        style: TextStyle(fontSize: 15),
-        textAlign: TextAlign.center,
-      )
     ],
   );
 }
 
-Widget _card3() {
-  return Column(
+Widget _card3(BuildContext context) {
+  return Stack(
     children: [
-      FlatCardFan(
+      Column(
         children: [
-          SizedBox(
-            width: 200,
-            height: 278,
-            child: PlayingCardView(
-              card: PlayingCard(Suit.spades, CardValue.king),
-              showBack: true,
-              elevation: 10,
-              style: PlayingCardsThemes.goldenStyle,
-            ),
+          FlatCardFan(
+            children: [
+              SizedBox(
+                width: 200,
+                height: 278,
+                child: PlayingCardView(
+                  card: PlayingCard(Suit.spades, CardValue.king),
+                  showBack: true,
+                  elevation: 10,
+                  style: PlayingCardsThemes.goldenStyle,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                height: 278,
+                child: PlayingCardView(
+                  card: PlayingCard(Suit.spades, CardValue.king),
+                  elevation: 10,
+                  style: PlayingCardsThemes.goldenStyle,
+                ),
+              ),
+            ],
           ),
-          SizedBox(
-            width: 200,
-            height: 278,
-            child: PlayingCardView(
-              card: PlayingCard(Suit.spades, CardValue.king),
-              elevation: 10,
-              style: PlayingCardsThemes.goldenStyle,
-            ),
+          const Text(
+            'Golden Deck',
+            style: TextStyle(fontSize: 25),
+          ),
+          const Text(
+            '1 000 000kr',
+            style: TextStyle(fontSize: 15),
           ),
         ],
       ),
-      const Text(
-        'Golden Deck',
-        style: TextStyle(fontSize: 25),
-        textAlign: TextAlign.center,
+      Align(
+        //Ändrade från Padding till Align
+        alignment: Alignment.topRight,
+        //ändra alignment , färg och storlek
+        //lägga in provider på alla olika kort
+        child: (Provider.of<PlayingCardsProvider>(context, listen: true)
+                    .getCardStyleString ==
+                'Golden')
+            ? const Icon(
+                Icons.check_sharp,
+                size: 45,
+                color: Colors.green,
+              )
+            : const SizedBox.shrink(),
       ),
-      const Text(
-        '1 000 000kr',
-        style: TextStyle(fontSize: 15),
-        textAlign: TextAlign.center,
-      )
     ],
   );
 }
