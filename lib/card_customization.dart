@@ -1,5 +1,4 @@
 //fil där vi skall göra en sida för kort redigering
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
@@ -55,7 +54,7 @@ class CustomizationPage extends StatelessWidget {
     );
   }
 
-//pagecontroller för att kunna behålla koll på de olika sidorna
+//pagecontroller för att kunna ha koll på de olika sidorna
   PageController pageController = PageController(viewportFraction: 0.7);
   var value = 0;
 
@@ -129,11 +128,13 @@ Widget _card1(BuildContext context) {
               ),
             ],
           ),
+
           // const Divider(
           //   height: 50,
           // ),
-          const Padding(
-            padding: EdgeInsets.only(top: 5),
+          const Align(
+            //Ändrade från Padding till Align
+            alignment: Alignment.centerLeft,
             child: Text(
               'Standard Deck',
               style: TextStyle(
@@ -143,20 +144,30 @@ Widget _card1(BuildContext context) {
               textAlign: TextAlign.center,
             ),
           ),
-          const Text(
-            'Upplåst',
-            style: TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
-          )
+          const Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Upplåst',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              )),
         ],
       ),
-      //ändra alignment , färg och storlek
-      //lägga in provider på alla olika kort
-      (Provider.of<PlayingCardsProvider>(context, listen: true)
-                  .getCardStyleString ==
-              'Standard')
-          ? const Icon(Icons.check_sharp, size: 50)
-          : const SizedBox.shrink(),
+      Align(
+        //Ändrade från Padding till Align
+        alignment: Alignment.topRight,
+        //ändra alignment , färg och storlek
+        //lägga in provider på alla olika kort
+        child: (Provider.of<PlayingCardsProvider>(context, listen: true)
+                    .getCardStyleString ==
+                'Standard')
+            ? const Icon(
+                Icons.check_sharp,
+                size: 45,
+                color: Colors.green,
+              )
+            : const SizedBox.shrink(),
+      ),
     ],
   );
 }
