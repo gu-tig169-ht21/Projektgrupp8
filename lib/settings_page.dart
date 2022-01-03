@@ -95,10 +95,8 @@ class _SettingsState extends State<Settings> {
       subtitle: const Text('Change card theme'),
       trailing: IconButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const CustomizationPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CustomizationPage()));
         },
         icon: const Icon(
           Icons.east,

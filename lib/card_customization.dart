@@ -1,34 +1,31 @@
 //fil där vi skall göra en sida för kort redigering
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'card_themes.dart';
 import 'blackjack.dart';
 
+//TODO: finjustera balances storlek i theme
+//TODO: Lagt till Context i 2 paranteser för att få bort errors
+
 List<Widget> cardList = <Widget>[_card1(), _card2(), _card3()];
 
-class CustomizationPage extends StatefulWidget {
-  const CustomizationPage({Key? key}) : super(key: key);
+class CustomizationPage extends StatelessWidget {
+  CustomizationPage({Key? key}) : super(key: key);
 
-  @override
-  State<CustomizationPage> createState() => _CustomizationPageState();
-}
-
-class _CustomizationPageState extends State<CustomizationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: _title(),
         actions: [
-          _balance(),
+          _balance(context),
         ],
       ),
       body: Stack(
         children: [
           _card(),
-          _changeDeckButton(),
+          _changeDeckButton(context),
         ],
       ),
     );
@@ -46,9 +43,9 @@ class _CustomizationPageState extends State<CustomizationPage> {
     );
   }
 
-//TODO: finjustera balances storlek i theme
 //widget för den aktuella balansen/saldot du har i appen
-  Widget _balance() {
+  Widget _balance(context) {
+    //Lagt till Context i parantesen för att få bort error
     return Row(
       children: [
         Padding(
@@ -79,7 +76,8 @@ class _CustomizationPageState extends State<CustomizationPage> {
 
 // widget som returnerar en knapp som du trycker på
 //för att ändra din valda kortlek till en ny kortlek
-  Widget _changeDeckButton() {
+  Widget _changeDeckButton(context) {
+    //Lagt till Context i parantesen för att få bort error
     return Align(
       alignment: const Alignment(0, 0.85),
       child: FractionallySizedBox(
