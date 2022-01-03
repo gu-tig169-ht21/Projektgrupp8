@@ -58,18 +58,15 @@ class _HelpPageState extends State<HelpPage> {
   }
 
   Widget getText(String chosenText) {
-    return Column(
-      children: [
-        Center(
-          child: Padding(
-            padding:
-                const EdgeInsets.only(right: 20, left: 20, top: 40, bottom: 20),
-            child: Text(
-              RuleText.returnRules(chosenText),
-            ),
-          ),
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Center(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(right: 20, left: 20, top: 40, bottom: 20),
+          child: RuleText().returnRules(chosenText),
         ),
-      ],
+      ),
     );
   }
 }
