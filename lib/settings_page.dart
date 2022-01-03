@@ -25,7 +25,7 @@ class _SettingsState extends State<Settings> {
         children: [
           _numberOfDecks(),
           _darkTheme(),
-          _sound(),
+          // _sound(),
           _cardCustomizationButton()
           //_settingsDarkTheme(),TA BORT??
           //  _settingsLightTheme(),TA BORT????
@@ -62,7 +62,7 @@ class _SettingsState extends State<Settings> {
   }
 
 //widget för ljudet av/på
-  Widget _sound() {
+  /* Widget _sound() {
     return SwitchListTile(
       title: const Text('Sound'),
       subtitle: const Text('Turns sound off'),
@@ -76,7 +76,7 @@ class _SettingsState extends State<Settings> {
         soundValue = value;
       },
     );
-  }
+  }*/
 
 //widget för knapp till --> card customization
   // Widget _cardCustomizationButton() {
@@ -113,7 +113,7 @@ class _SettingsState extends State<Settings> {
 
 Widget _numberOfDecks() {
   return ListTile(
-      leading: const Icon(Icons.trending_neutral),
+      leading: const Icon(Icons.exposure_sharp),
       title: const Text(
         'Number of decks',
       ),
