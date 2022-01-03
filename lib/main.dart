@@ -13,6 +13,7 @@ import 'settings_page.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (context) => ChangeNumberOfDecks()),
       ChangeNotifierProvider(create: (context) => ChangeTheme()),
       ChangeNotifierProvider(create: (context) => HowToPlay()),
       ChangeNotifierProvider(

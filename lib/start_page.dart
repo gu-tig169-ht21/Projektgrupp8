@@ -140,7 +140,7 @@ class _StartPageState extends State<StartPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const Settings(),
+                  builder: (context) => Settings(),
                 ),
               );
             },
