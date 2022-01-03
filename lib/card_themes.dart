@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/blackjack.dart';
 import 'package:playing_cards/playing_cards.dart';
+import 'package:provider/provider.dart';
 
 class PlayingCardsProvider extends ChangeNotifier {
   var playingcardThemeMode = PlayingCardsThemes.standardStyle;
@@ -29,6 +31,19 @@ class PlayingCardsProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  //funktion för att kunna köpa olika kortlekar
+  void buyDeckOfCards(BuildContext context) {
+    int money = Provider.of<BlackJack>(context, listen: false).getBalance;
+    int starWarsValue = 1000;
+    int goldenValue = 10000;
+    //TODO: DENNA FUNKTIONEN SKALL INTEGRERAS I DEN ÖVRE FUNKTIONEN
+
+    if (money >= starWarsValue) {}
+  }
+  //lyssna på deras balance-variabel
+  //skapa 2 vaiablar för kortens kostnad
+  // jämföra dessa i en if sats
 }
 
 //funktion för starwars kortleken
