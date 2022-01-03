@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           actions: [
             ElevatedButton(
-              child: const Text('register'),
+              child: const Text('register & log In'),
               onPressed: () {
                 if (emailController.text.isNotEmpty &&
                     passwordController.text.isNotEmpty) {

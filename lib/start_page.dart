@@ -1,5 +1,6 @@
 import 'package:my_first_app/card_customization.dart';
 import 'package:my_first_app/game_page.dart';
+import 'package:my_first_app/profile_information_page.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:my_first_app/statistics.dart';
 import 'how_to_play.dart';
@@ -25,6 +26,7 @@ class _StartPageState extends State<StartPage> {
           _howToPlayButton(),
           _statisticsButton(),
           _settingsIcon(),
+          _userIcon(),
         ],
       ),
     );
@@ -146,5 +148,24 @@ class _StartPageState extends State<StartPage> {
             },
           ),
         ));
+  }
+  Widget _userIcon(){
+    return Align(
+      alignment: const Alignment(-1.5, 0.89),
+      child: FractionallySizedBox(
+        widthFactor: 0.5,
+        heightFactor: 0.1,
+        child: IconButton(
+          icon: const Icon(Icons.portrait_rounded),
+          iconSize: 50,
+          onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProfileInformation()));
+          },
+        ),
+      )
+    );
   }
 }
