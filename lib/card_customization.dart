@@ -1,4 +1,5 @@
 //fil där vi skall göra en sida för kort redigering
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
@@ -7,8 +8,6 @@ import 'blackjack.dart';
 
 //TODO: finjustera balances storlek i theme
 //TODO: Lagt till Context i 2 paranteser för att få bort errors
-
-List<Widget> cardList = <Widget>[_card1(), _card2(), _card3()];
 
 class CustomizationPage extends StatelessWidget {
   CustomizationPage({Key? key}) : super(key: key);
@@ -24,7 +23,7 @@ class CustomizationPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          _card(),
+          _cardView(context),
           _changeDeckButton(context),
         ],
       ),
@@ -61,7 +60,8 @@ class CustomizationPage extends StatelessWidget {
   var value = 0;
 
 //widget för kortet
-  Widget _card() {
+  Widget _cardView(BuildContext context) {
+    List<Widget> cardList = <Widget>[_card1(context), _card2(), _card3()];
     return Align(
         alignment: const Alignment(0, -0.4),
         child: SizedBox(
@@ -103,46 +103,60 @@ class CustomizationPage extends StatelessWidget {
   }
 }
 
-Widget _card1() {
-  return Column(
+Widget _card1(BuildContext context) {
+  return Stack(
     children: [
-      FlatCardFan(
+      Column(
         children: [
-          SizedBox(
-            width: 200,
-            height: 278,
-            child: PlayingCardView(
-              card: PlayingCard(Suit.hearts, CardValue.king),
-              elevation: 10,
-              showBack: true,
+          FlatCardFan(
+            children: [
+              SizedBox(
+                width: 200,
+                height: 278,
+                child: PlayingCardView(
+                  card: PlayingCard(Suit.hearts, CardValue.king),
+                  elevation: 10,
+                  showBack: true,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                height: 278,
+                child: PlayingCardView(
+                  card: PlayingCard(Suit.hearts, CardValue.king),
+                  elevation: 10,
+                ),
+              ),
+            ],
+          ),
+          // const Divider(
+          //   height: 50,
+          // ),
+          const Padding(
+            padding: EdgeInsets.only(top: 5),
+            child: Text(
+              'Standard Deck',
+              style: TextStyle(
+                fontSize: 25,
+              ),
+              //decoration: TextDecoration.underline),
+              textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(
-            width: 200,
-            height: 278,
-            child: PlayingCardView(
-              card: PlayingCard(Suit.hearts, CardValue.king),
-              elevation: 10,
-            ),
-          ),
+          const Text(
+            'Upplåst',
+            style: TextStyle(fontSize: 15),
+            textAlign: TextAlign.center,
+          )
         ],
       ),
-      // const Divider(
-      //   height: 50,
-      // ),
-      const Padding(
-        padding: EdgeInsets.only(top: 5),
-        child: Text(
-          'Standard Deck',
-          style: TextStyle(fontSize: 25),
-          textAlign: TextAlign.center,
-        ),
-      ),
-      const Text(
-        'Upplåst',
-        style: TextStyle(fontSize: 15),
-        textAlign: TextAlign.center,
-      )
+      //ändra alignment , färg och storlek
+      //lägga in provider på alla olika kort
+      (Provider.of<PlayingCardsProvider>(context, listen: true)
+                  .getCardStyleString ==
+              'Standard')
+          ? const Icon(Icons.check_sharp, size: 50)
+          : const SizedBox.shrink(),
     ],
   );
 }

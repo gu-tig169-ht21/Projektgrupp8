@@ -7,7 +7,7 @@ class ThemeCustom {
     return ThemeData(
       primaryColor: Colors.green.shade800,
       scaffoldBackgroundColor: Colors.white,
-      fontFamily: 'Times new roman',
+      // fontFamily: 'Times new roman',
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),

@@ -3,6 +3,11 @@ import 'package:playing_cards/playing_cards.dart';
 
 class PlayingCardsProvider extends ChangeNotifier {
   var playingcardThemeMode = PlayingCardsThemes.standardStyle;
+  String cardStyleString = 'Standard';
+
+  get getCardStyleString {
+    return cardStyleString;
+  }
 
   get getPlayingcardThemeMode {
     return playingcardThemeMode;
@@ -12,18 +17,19 @@ class PlayingCardsProvider extends ChangeNotifier {
   void changePlayingCardsThemes(String style) {
     if (style == 'Standard') {
       playingcardThemeMode = PlayingCardsThemes.standardStyle;
+      cardStyleString = style;
       notifyListeners();
     } else if (style == 'StarWars') {
       playingcardThemeMode = PlayingCardsThemes.starWarsStyle;
+      cardStyleString = style;
       notifyListeners();
     } else if (style == 'Golden') {
       playingcardThemeMode = PlayingCardsThemes.goldenStyle;
+      cardStyleString = style;
       notifyListeners();
     }
   }
 }
-
-// Andra bilden - assets/countDooku1.jpg
 
 //funktion för starwars kortleken
 class PlayingCardsThemes {
