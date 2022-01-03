@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'card_themes.dart';
+import 'blackjack.dart';
 
 List<Widget> cardList = <Widget>[_card1(), _card2(), _card3()];
 
@@ -45,15 +46,15 @@ class _CustomizationPageState extends State<CustomizationPage> {
     );
   }
 
+//TODO: finjustera balances storlek i theme
 //widget för den aktuella balansen/saldot du har i appen
   Widget _balance() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: const [
-        Text(
-          '100kr',
-          style: TextStyle(fontSize: 15),
-        )
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(right: 30),
+            child: Text(
+                '${Provider.of<BlackJack>(context, listen: true).getBalance}'))
       ],
     );
   }
@@ -65,10 +66,10 @@ class _CustomizationPageState extends State<CustomizationPage> {
 //widget för kortet
   Widget _card() {
     return Align(
-        alignment: Alignment.center,
+        alignment: const Alignment(0, -0.4),
         child: SizedBox(
             height: 350,
-            width: 310,
+            width: 350,
             child: PageView(
               onPageChanged: (index) => {value = index},
               controller: pageController,
@@ -79,59 +80,72 @@ class _CustomizationPageState extends State<CustomizationPage> {
 // widget som returnerar en knapp som du trycker på
 //för att ändra din valda kortlek till en ny kortlek
   Widget _changeDeckButton() {
-    return Positioned(
-      bottom: 40,
-      left: 70,
-      right: 70,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(minimumSize: const Size(70, 20)),
-        child: const Text('Choose this deck'),
-        onPressed: () {
-          if (value == 0) {
-            Provider.of<PlayingCardsProvider>(context, listen: false)
-                .changePlayingCardsThemes('Standard');
-          } else if (value == 1) {
-            Provider.of<PlayingCardsProvider>(context, listen: false)
-                .changePlayingCardsThemes('StarWars');
-          } else if (value == 2) {
-            Provider.of<PlayingCardsProvider>(context, listen: false)
-                .changePlayingCardsThemes('Golden');
-          }
-        },
+    return Align(
+      alignment: const Alignment(0, 0.85),
+      child: FractionallySizedBox(
+        widthFactor: 0.6,
+        heightFactor: 0.1,
+        child: ElevatedButton(
+          child: const Text('Choose this deck'),
+          onPressed: () {
+            if (value == 0) {
+              Provider.of<PlayingCardsProvider>(context, listen: false)
+                  .changePlayingCardsThemes('Standard');
+            } else if (value == 1) {
+              Provider.of<PlayingCardsProvider>(context, listen: false)
+                  .changePlayingCardsThemes('StarWars');
+            } else if (value == 2) {
+              Provider.of<PlayingCardsProvider>(context, listen: false)
+                  .changePlayingCardsThemes('Golden');
+            }
+          },
+        ),
       ),
     );
   }
 }
 
 Widget _card1() {
-  return SizedBox(
-    width: 1000,
-    child: Column(
-      children: [
-        FlatCardFan(
-          children: [
-            PlayingCardView(
+  return Column(
+    children: [
+      FlatCardFan(
+        children: [
+          SizedBox(
+            width: 200,
+            height: 278,
+            child: PlayingCardView(
               card: PlayingCard(Suit.hearts, CardValue.king),
-              elevation: 10.0,
+              elevation: 10,
+              showBack: true,
             ),
-            PlayingCardView(
+          ),
+          SizedBox(
+            width: 200,
+            height: 278,
+            child: PlayingCardView(
               card: PlayingCard(Suit.hearts, CardValue.king),
-              elevation: 3.0,
+              elevation: 10,
             ),
-          ],
-        ),
-        const Text(
+          ),
+        ],
+      ),
+      // const Divider(
+      //   height: 50,
+      // ),
+      const Padding(
+        padding: EdgeInsets.only(top: 5),
+        child: Text(
           'Standard Deck',
           style: TextStyle(fontSize: 25),
           textAlign: TextAlign.center,
         ),
-        const Text(
-          'Upplåst',
-          style: TextStyle(fontSize: 15),
-          textAlign: TextAlign.center,
-        )
-      ],
-    ),
+      ),
+      const Text(
+        'Upplåst',
+        style: TextStyle(fontSize: 15),
+        textAlign: TextAlign.center,
+      )
+    ],
   );
 }
 
@@ -140,15 +154,23 @@ Widget _card2() {
     children: [
       FlatCardFan(
         children: [
-          PlayingCardView(
-            card: PlayingCard(Suit.clubs, CardValue.king),
-            // showBack: true,
-            elevation: 10.0,
+          SizedBox(
+            width: 200,
+            height: 278,
+            child: PlayingCardView(
+              card: PlayingCard(Suit.clubs, CardValue.king),
+              showBack: true,
+              elevation: 10,
+            ),
           ),
-          PlayingCardView(
-            card: PlayingCard(Suit.clubs, CardValue.king),
-            elevation: 3.0,
-            style: PlayingCardsThemes.starWarsStyle,
+          SizedBox(
+            width: 200,
+            height: 278,
+            child: PlayingCardView(
+              card: PlayingCard(Suit.clubs, CardValue.king),
+              elevation: 10,
+              style: PlayingCardsThemes.starWarsStyle,
+            ),
           ),
         ],
       ),
@@ -171,16 +193,24 @@ Widget _card3() {
     children: [
       FlatCardFan(
         children: [
-          PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.king),
-            showBack: true,
-            elevation: 10.0,
-            style: PlayingCardsThemes.goldenStyle,
+          SizedBox(
+            width: 200,
+            height: 278,
+            child: PlayingCardView(
+              card: PlayingCard(Suit.spades, CardValue.king),
+              showBack: true,
+              elevation: 10,
+              style: PlayingCardsThemes.goldenStyle,
+            ),
           ),
-          PlayingCardView(
-            card: PlayingCard(Suit.spades, CardValue.king),
-            elevation: 3.0,
-            style: PlayingCardsThemes.goldenStyle,
+          SizedBox(
+            width: 200,
+            height: 278,
+            child: PlayingCardView(
+              card: PlayingCard(Suit.spades, CardValue.king),
+              elevation: 10,
+              style: PlayingCardsThemes.goldenStyle,
+            ),
           ),
         ],
       ),
