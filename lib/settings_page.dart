@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 //TODO: tog bort const från filer game_page(rad 56) och start_page (rad 143)
 
 class Settings extends StatefulWidget {
-  Settings({Key? key}) : super(key: key);
+  const Settings({Key? key}) : super(key: key);
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -41,7 +41,10 @@ class _SettingsState extends State<Settings> {
           'Dark Theme',
         ),
         subtitle: const Text('Sets the theme to dark'),
-        secondary: const Icon(Icons.dark_mode),
+        secondary: Icon(
+            Provider.of<ChangeTheme>(context, listen: true).getThemeModeSwitch
+                ? Icons.dark_mode
+                : Icons.light_mode_outlined),
         controlAffinity: ListTileControlAffinity.trailing,
         activeColor: Colors.green,
         activeTrackColor: Colors.green[200],
@@ -110,7 +113,7 @@ class _SettingsState extends State<Settings> {
 
 Widget _numberOfDecks() {
   return ListTile(
-      leading: const Icon(Icons.add),
+      leading: const Icon(Icons.trending_neutral),
       title: const Text(
         'Number of decks',
       ),
