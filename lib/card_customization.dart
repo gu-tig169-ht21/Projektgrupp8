@@ -23,6 +23,7 @@ class CustomizationPage extends StatelessWidget {
       body: Stack(
         children: [
           _cardView(context),
+          _buyDeckButton(context),
           _changeDeckButton(context),
         ],
       ),
@@ -75,6 +76,25 @@ class CustomizationPage extends StatelessWidget {
               controller: pageController,
               children: cardList,
             )));
+  }
+
+//widget för köp knapp
+  Widget _buyDeckButton(context) {
+    return Align(
+        alignment: const Alignment(0, 0.6),
+        child: FractionallySizedBox(
+            widthFactor: 0.4,
+            heightFactor: 0.1,
+            child: ElevatedButton(
+                onPressed: () {},
+                child: const Text('Purchase'),
+                style: ButtonStyle(
+                  backgroundColor:
+                      Provider.of<PlayingCardsProvider>(context, listen: false)
+                              .buyDeckOfCards('')
+                          ? null
+                          : MaterialStateProperty.all(Colors.grey),
+                ))));
   }
 
 // widget som returnerar en knapp som du trycker på
