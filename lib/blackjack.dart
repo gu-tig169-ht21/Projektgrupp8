@@ -131,6 +131,12 @@ class BlackJack extends ChangeNotifier {
     notifyListeners();
   }
 
+  void forfeit() {
+    balance = balance + playerBet ~/ 2;
+    setUpNewGame();
+    notifyListeners();
+  }
+
   bool checkRound() {
     if (rounds == 1) {
       return true;

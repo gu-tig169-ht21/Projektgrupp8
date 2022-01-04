@@ -60,12 +60,13 @@ class _GamePageState extends State<GamePage> {
                   }
                 case 'Forfeit':
                   {
-                    //TODO: du ger upp, får tillbaka halva insatsen
+                    Provider.of<BlackJack>(context, listen: false).forfeit();
+
                     break;
                   }
                 case 'Quit to main menu':
                   {
-                    //TODO: ska forfeita och quit till main
+                    Provider.of<BlackJack>(context, listen: false).forfeit();
                     Navigator.pop(context);
                     break;
                   }
