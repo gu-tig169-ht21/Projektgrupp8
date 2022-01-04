@@ -33,18 +33,32 @@ class PlayingCardsProvider extends ChangeNotifier {
   }
 
   //funktion för att kunna köpa olika kortlekar
-  void buyDeckOfCards(BuildContext context) {
+  buyDeckOfCards(BuildContext context) {
     int money = Provider.of<BlackJack>(context, listen: false).getBalance;
     int starWarsValue = 1000;
     int goldenValue = 10000;
+    bool canBuy = true;
     //TODO: DENNA FUNKTIONEN SKALL INTEGRERAS I DEN ÖVRE FUNKTIONEN
 
-    if (money >= starWarsValue) {}
+    if (money >= starWarsValue) {
+      canBuy = true;
+      notifyListeners();
+    } else if (money < starWarsValue) {
+      return canBuy = false;
+    }
+
+    if (money >= goldenValue) {
+      canBuy = true;
+      notifyListeners();
+    } else if (money < goldenValue) {
+      return canBuy = false;
+    }
   }
-  //lyssna på deras balance-variabel
-  //skapa 2 vaiablar för kortens kostnad
-  // jämföra dessa i en if sats
 }
+//-En if sats som kollar om man har köpt den eller inte innan
+//lyssna på deras balance-variabel
+//skapa 2 vaiablar för kortens kostnad
+// jämföra dessa i en if sats
 
 //funktion för starwars kortleken
 class PlayingCardsThemes {
