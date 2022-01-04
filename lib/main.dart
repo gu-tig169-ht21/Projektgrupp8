@@ -30,7 +30,7 @@ void main() async {
         create: (context) => PlayingCardsProvider(),
       ),
       ChangeNotifierProvider(
-        create: (context) => FirebaseImplementation(),
+        create: (context) => FirebaseAuthImplementation(),
       ),
     ],
     child: const MainApp(),
@@ -52,7 +52,7 @@ class MainApp extends StatelessWidget {
     );
   }
   Widget startUp(BuildContext context) {
-    if (Provider.of<FirebaseImplementation>(context, listen: true)
+    if (Provider.of<FirebaseAuthImplementation>(context, listen: true)
         .isUserLoggedIn()) {
       return const StartPage();
     }

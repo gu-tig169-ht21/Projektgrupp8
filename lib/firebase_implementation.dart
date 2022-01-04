@@ -1,61 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
-class FirebaseImplementation extends ChangeNotifier {
-  FirebaseImplementation() {
+class FirebaseAuthImplementation extends ChangeNotifier {
+  FirebaseAuthImplementation() {
     init();
   }
-
-  bool usrLoggedIn = false;
-  FirebaseAuth auth = FirebaseAuth.instance;
-
   Future<void> init() async {
-    auth = FirebaseAuth.instance;
-     //TODO: implementation av firebase auth och firestore
+    _auth = FirebaseAuth.instance;
   }
 
+  bool _usrLoggedIn = false;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+
   String? getUserEmail(){
-    return auth.currentUser?.email;
+    return _auth.currentUser?.email;
   }
 
   bool isUserLoggedIn() {
-    auth.authStateChanges().listen((User? user) {
+    _auth.authStateChanges().listen((User? user) {
       if (user == null) {
-        usrLoggedIn = false;
+        _usrLoggedIn = false;
         notifyListeners();
       } else {
-        usrLoggedIn = true;
+        _usrLoggedIn = true;
         notifyListeners();
       }
     });
-    return usrLoggedIn;
-  }
-
-  void tokenChanges() {
-    auth.idTokenChanges().listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-      }
-    });
-  }
-
-  void userChanges() {
-    auth.userChanges().listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-      }
-    });
+    return _usrLoggedIn;
   }
 
   void createNewUser({required String email, required String password}) async {
     try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -71,7 +51,7 @@ class FirebaseImplementation extends ChangeNotifier {
 
   void logIn({required String email, required String password}) async {
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -85,12 +65,20 @@ class FirebaseImplementation extends ChangeNotifier {
   }
 
   void signOut() async {
-    await auth.signOut();
+    await _auth.signOut();
   }
 
-  void deleteUser() async {
+  void deleteUser(String password) async {
+    String? email = _auth.currentUser?.email;
+
     try {
-      await auth.currentUser!.delete();
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email!, password: password);
+
+      _auth.currentUser!.delete().then((_){
+        print('user deleted');//TODO: felutskrift
+      }).catchError((error){
+        print('Deletion not completed: ' + error.toString());
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
         throw Exception(
@@ -100,12 +88,12 @@ class FirebaseImplementation extends ChangeNotifier {
   }
 
   void changeUserPassword(String password, String newPassword) async{
-    String? email = auth.currentUser?.email;
+    String? email = _auth.currentUser?.email;
 
     try{
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email!, password: password);
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email!, password: password);
 
-      auth.currentUser?.updatePassword(newPassword).then((_){
+      _auth.currentUser?.updatePassword(newPassword).then((_){
         print('succesully changes password');
       }).catchError((error){
         print('password cant be changed: ' + error.toString());
@@ -125,6 +113,20 @@ class FirebaseImplementation extends ChangeNotifier {
     //TODO: lägg till try här med
     AuthCredential credential =
         EmailAuthProvider.credential(email: email, password: password);
-    await auth.currentUser!.reauthenticateWithCredential(credential);
+    await _auth.currentUser!.reauthenticateWithCredential(credential);
   }
 }
+class FirestoreImplementation extends ChangeNotifier{
+  FirestoreImplementation(){
+    init();
+  }
+
+  Future<void> init() async {
+    database = FirebaseFirestore.instance;
+    //TODO: implementation av firestore
+  }
+
+  FirebaseFirestore database = FirebaseFirestore.instance;
+  CollectionReference statistics = database.collection('Statistics');
+}
+
