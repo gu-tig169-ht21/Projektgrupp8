@@ -107,6 +107,11 @@ class BlackJack extends ChangeNotifier {
     notifyListeners();
   }
 
+  void subtractFromBalance(int i) {
+    balance -= i;
+    notifyListeners();
+  }
+
   void setUpNewGame() {
     //resettar alla variabler till defaultvärdet och drar nya kort
     resetDeck();

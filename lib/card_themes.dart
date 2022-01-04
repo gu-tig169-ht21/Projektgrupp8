@@ -6,6 +6,36 @@ import 'package:provider/provider.dart';
 class PlayingCardsProvider extends ChangeNotifier {
   var playingcardThemeMode = PlayingCardsThemes.standardStyle;
   String cardStyleString = 'Standard';
+  int chosenPageViewCard = 0;
+  int starWarsDeckPrice = 100;
+  int goldenDeckPrice = 1000;
+  bool starWarsDeckUnlocked = false;
+  bool goldenDeckUnlocked = false;
+
+  get getStarWarsDeckUnlocked {
+    return starWarsDeckUnlocked;
+  }
+
+  get getGoldenDeckUnlocked {
+    return goldenDeckUnlocked;
+  }
+
+  get getStarWarsDeckPrice {
+    return starWarsDeckPrice;
+  }
+
+  get getGoldenDeckPrice {
+    return goldenDeckPrice;
+  }
+
+  get getChosenPageViewCard {
+    return chosenPageViewCard;
+  }
+
+  set setChosenPageViewCard(int i) {
+    chosenPageViewCard = i;
+    notifyListeners();
+  }
 
   get getCardStyleString {
     return cardStyleString;
@@ -13,6 +43,26 @@ class PlayingCardsProvider extends ChangeNotifier {
 
   get getPlayingcardThemeMode {
     return playingcardThemeMode;
+  }
+
+  void setDeckUnlocked(String starWarsOrGolden) {
+    if (starWarsOrGolden == 'StarWars') {
+      starWarsDeckUnlocked = true;
+      notifyListeners();
+    } else if (starWarsOrGolden == 'Golden') {
+      goldenDeckUnlocked = true;
+      notifyListeners();
+    }
+  }
+
+  bool getDeckUnlocked(String starWarsOrGolden) {
+    if (starWarsOrGolden == 'StarWars') {
+      return starWarsDeckUnlocked;
+    } else if (starWarsOrGolden == 'Golden') {
+      return goldenDeckUnlocked;
+    } else {
+      return true;
+    }
   }
 
   //if-sats som bestämmer kort-temat utifrån scrollvyn
@@ -38,9 +88,9 @@ class PlayingCardsProvider extends ChangeNotifier {
     int value = 0;
 
     if (style == 'StarWars') {
-      value = 5;
+      value = starWarsDeckPrice;
     } else {
-      value = 10000;
+      value = goldenDeckPrice;
     }
 
     if (money >= value) {
@@ -50,14 +100,6 @@ class PlayingCardsProvider extends ChangeNotifier {
     }
   }
 }
-
-//TODO:
-//-En if sats som kollar om man har köpt den eller inte innan
-//lyssna på deras balance-variabel
-//skapa 2 vaiablar för kortens kostnad
-// jämföra dessa i en if sats
-
-//Funktion som gör att man kan köpa och att den sedan står som upplåst
 
 //funktion för starwars kortleken
 class PlayingCardsThemes {
