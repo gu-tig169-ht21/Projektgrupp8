@@ -80,6 +80,13 @@ class CustomizationPage extends StatelessWidget {
 
 //widget för köp knapp
   Widget _buyDeckButton(context) {
+    String deck = 'Standard';
+    if (value == 1) {
+      deck = 'StarWars';
+    } else if (value == 2) {
+      deck = 'Golden';
+    }
+
     return Align(
         alignment: const Alignment(0, 0.6),
         child: FractionallySizedBox(
@@ -91,7 +98,7 @@ class CustomizationPage extends StatelessWidget {
                 style: ButtonStyle(
                   backgroundColor:
                       Provider.of<PlayingCardsProvider>(context, listen: false)
-                              .buyDeckOfCards('')
+                              .affordDeck(deck, context)
                           ? null
                           : MaterialStateProperty.all(Colors.grey),
                 ))));

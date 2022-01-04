@@ -33,38 +33,31 @@ class PlayingCardsProvider extends ChangeNotifier {
   }
 
   //funktion som testar om man kan köpa kortlekarna
-  buyDeckOfCards(String style, BuildContext context) {
+  bool affordDeck(String style, BuildContext context) {
     int money = Provider.of<BlackJack>(context, listen: false).getBalance;
-    int starWarsValue = 1000;
-    int goldenValue = 10000;
+    int value = 0;
 
-    if (style == 'StarWars' && money >= starWarsValue) {
-      return true;
-    } else if (style == 'StarWars' && money < starWarsValue) {
-      return false;
+    if (style == 'StarWars') {
+      value = 5;
+    } else {
+      value = 10000;
     }
-    if (style == 'Golden' && money >= goldenValue) {
+
+    if (money >= value) {
       return true;
-    } else if (style == 'Golden' && money < goldenValue) {
+    } else {
       return false;
     }
   }
 }
+
 //TODO:
-//Ta en sträng som argument Star wars som argument och golden deck
-//Då har vi en variabel för de decks
-//Testar om värdet balance större eller lika med värdet för Starwars eller golden
-//Returnera bool som är true eller false
-//Funktion som testar om man kan köpa de
-
-// En If-sats hur mycket pengar man har och den kortleken man trycker på
-//Variabel för kostnaden för guld och starwarsdeck
-//Om sträng argument
-
 //-En if sats som kollar om man har köpt den eller inte innan
 //lyssna på deras balance-variabel
 //skapa 2 vaiablar för kortens kostnad
 // jämföra dessa i en if sats
+
+//Funktion som gör att man kan köpa och att den sedan står som upplåst
 
 //funktion för starwars kortleken
 class PlayingCardsThemes {
