@@ -106,7 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                 if (emailController.text.isNotEmpty &&
                     passwordController.text.isNotEmpty) {
                   try {
-                    Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                    Provider.of<FirebaseAuthImplementation>(context,
+                            listen: false)
                         .createNewUser(
                             email: emailController.text,
                             password: passwordController.text);
@@ -133,7 +134,6 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.pop(context);
               },
             )
-
           ],
         );
       },

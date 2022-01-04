@@ -31,7 +31,8 @@ class ProfileInformation extends StatelessWidget {
       title: const Text('Log out'),
       subtitle: const Text('Logs you out of your account'),
       onTap: () {
-        Provider.of<FirebaseAuthImplementation>(context, listen: false).signOut();
+        Provider.of<FirebaseAuthImplementation>(context, listen: false)
+            .signOut();
         Navigator.pop(context);
       },
     );
@@ -81,7 +82,8 @@ class ProfileInformation extends StatelessWidget {
                             onPressed: () {
                               if (newPassword.text == verifyNewPassword.text) {
                                 try {
-                                  Provider.of<FirebaseAuthImplementation>(context,
+                                  Provider.of<FirebaseAuthImplementation>(
+                                          context,
                                           listen: false)
                                       .changeUserPassword(
                                           oldPassword.text, newPassword.text);

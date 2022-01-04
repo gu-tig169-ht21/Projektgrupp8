@@ -149,23 +149,23 @@ class _StartPageState extends State<StartPage> {
           ),
         ));
   }
-  Widget _userIcon(){
+
+  Widget _userIcon() {
     return Align(
-      alignment: const Alignment(-1.5, 0.89),
-      child: FractionallySizedBox(
-        widthFactor: 0.5,
-        heightFactor: 0.1,
-        child: IconButton(
-          icon: const Icon(Icons.portrait_rounded),
-          iconSize: 50,
-          onPressed: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ProfileInformation()));
-          },
-        ),
-      )
-    );
+        alignment: const Alignment(-1.5, 0.89),
+        child: FractionallySizedBox(
+          widthFactor: 0.5,
+          heightFactor: 0.1,
+          child: IconButton(
+            icon: const Icon(Icons.portrait_rounded),
+            iconSize: 50,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileInformation()));
+            },
+          ),
+        ));
   }
 }

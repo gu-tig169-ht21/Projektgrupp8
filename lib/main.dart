@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -51,12 +50,12 @@ class MainApp extends StatelessWidget {
       themeMode: Provider.of<ChangeTheme>(context, listen: true).getThemeMode,
     );
   }
+
   Widget startUp(BuildContext context) {
     if (Provider.of<FirebaseAuthImplementation>(context, listen: true)
         .isUserLoggedIn()) {
       return const StartPage();
-    }
-    else {
+    } else {
       return const LoginPage();
     }
   }
