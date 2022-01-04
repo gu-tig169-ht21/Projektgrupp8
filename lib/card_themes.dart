@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/blackjack.dart';
 import 'package:playing_cards/playing_cards.dart';
+import 'package:provider/provider.dart';
 
 class PlayingCardsProvider extends ChangeNotifier {
   var playingcardThemeMode = PlayingCardsThemes.standardStyle;
+  String cardStyleString = 'Standard';
+
+  get getCardStyleString {
+    return cardStyleString;
+  }
 
   get getPlayingcardThemeMode {
     return playingcardThemeMode;
@@ -12,18 +19,32 @@ class PlayingCardsProvider extends ChangeNotifier {
   void changePlayingCardsThemes(String style) {
     if (style == 'Standard') {
       playingcardThemeMode = PlayingCardsThemes.standardStyle;
+      cardStyleString = style;
       notifyListeners();
     } else if (style == 'StarWars') {
       playingcardThemeMode = PlayingCardsThemes.starWarsStyle;
+      cardStyleString = style;
       notifyListeners();
     } else if (style == 'Golden') {
       playingcardThemeMode = PlayingCardsThemes.goldenStyle;
+      cardStyleString = style;
       notifyListeners();
     }
   }
-}
 
-// Andra bilden - assets/countDooku1.jpg
+  //funktion för att kunna köpa olika kortlekar
+  void buyDeckOfCards(BuildContext context) {
+    int money = Provider.of<BlackJack>(context, listen: false).getBalance;
+    int starWarsValue = 1000;
+    int goldenValue = 10000;
+    //TODO: DENNA FUNKTIONEN SKALL INTEGRERAS I DEN ÖVRE FUNKTIONEN
+
+    if (money >= starWarsValue) {}
+  }
+  //lyssna på deras balance-variabel
+  //skapa 2 vaiablar för kortens kostnad
+  // jämföra dessa i en if sats
+}
 
 //funktion för starwars kortleken
 class PlayingCardsThemes {
