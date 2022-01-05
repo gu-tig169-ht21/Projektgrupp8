@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_first_app/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
-
+import 'package:provider/provider.dart';
 import 'deck_of_cards.dart';
 
 //om du gör en split så kör du i turordning, först agerar du färdigt med första handen sedan med nästa
@@ -272,7 +273,29 @@ class BlackJack extends ChangeNotifier {
     }
   }
 
-  void getNewCard({required String playerOrSplit}) {
+  void addCardsToDB({required BuildContext context}) {
+    for (PlayingCard card in playerHand) {
+      Provider.of<FirestoreImplementation>(context, listen: false)
+          .incrementCardInDB(
+              card: card,
+              userId: Provider.of<FirebaseAuthImplementation>(context,
+                      listen: false)
+                  .getUserId()!);
+    }
+    if(split){
+      for (PlayingCard card in splitHand) {
+        Provider.of<FirestoreImplementation>(context, listen: false)
+            .incrementCardInDB(
+            card: card,
+            userId: Provider.of<FirebaseAuthImplementation>(context,
+                listen: false)
+                .getUserId()!);
+      }
+    }
+  }
+
+  void getNewCard(
+      {required String playerOrSplit}) {
     incrementRounds();
     //drar ett nytt kort för spelaren
     switch (playerOrSplit) {

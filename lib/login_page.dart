@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:provider/provider.dart';
@@ -111,17 +113,21 @@ class _LoginPageState extends State<LoginPage> {
                         .createNewUser(
                             email: emailController.text,
                             password: passwordController.text);
+
                     emailController.clear();
                     passwordController.clear();
                     Navigator.pop(context);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       //TODO: gör något vid fel
+                      print('weak');
                     } else if (e.code == 'email-already-in-use') {
                       //TODO:gör något
+                      print('already in use');
                     }
                   } catch (e) {
                     //TODO:kasta generellt felmeddelande
+                    print(e);
                   }
                 } else {
                   //TODO: gör så att textfälten som ej är ifyllda blir markerade

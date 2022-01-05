@@ -17,6 +17,251 @@ class DeckOfCards {
   //   //resettar kortleken
   //   return standardFiftyTwoCardDeck();
   // }
+  String cardToString(PlayingCard card){
+    switch (card.suit){
+      case Suit.spades:{
+        switch (card.value) {
+          case CardValue.ace:
+            {
+              return 'aceSpades';
+            }
+          case CardValue.two:
+            {
+              return 'twoSpades';
+            }
+          case CardValue.three:
+            {
+              return 'threeSpades';
+            }
+          case CardValue.four:
+            {
+              return 'fourSpades';
+            }
+          case CardValue.five:
+            {
+              return 'fiveSpades';
+            }
+          case CardValue.six:
+            {
+              return 'sixSpades';
+            }
+          case CardValue.seven:
+            {
+              return 'sevenSpades';
+            }
+          case CardValue.eight:
+            {
+              return 'eightSpades';
+            }
+          case CardValue.nine:
+            {
+              return 'nineSpades';
+            }
+          case CardValue.ten:
+            {
+              return 'tenSpades';
+            }
+          case CardValue.jack:
+            {
+              return 'jackSpades';
+            }
+          case CardValue.queen:
+            {
+              return 'queenSpades';
+            }
+          case CardValue.king:
+            {
+              return 'kingSpades';
+            }
+        }
+      }
+      case Suit.clubs:{
+        switch (card.value) {
+          case CardValue.ace:
+            {
+              return 'aceClubs';
+            }
+          case CardValue.two:
+            {
+              return 'twoClubs';
+            }
+          case CardValue.three:
+            {
+              return 'threeClubs';
+            }
+          case CardValue.four:
+            {
+              return 'fourClubs';
+            }
+          case CardValue.five:
+            {
+              return 'fiveClubs';
+            }
+          case CardValue.six:
+            {
+              return 'sixClubs';
+            }
+          case CardValue.seven:
+            {
+              return 'sevenClubs';
+            }
+          case CardValue.eight:
+            {
+              return 'eightClubs';
+            }
+          case CardValue.nine:
+            {
+              return 'nineClubs';
+            }
+          case CardValue.ten:
+            {
+              return 'tenClubs';
+            }
+          case CardValue.jack:
+            {
+              return 'jackClubs';
+            }
+          case CardValue.queen:
+            {
+              return 'queenClubs';
+            }
+          case CardValue.king:
+            {
+              return 'kingClubs';
+            }
+        }
+      }
+      case Suit.hearts:{
+        switch (card.value) {
+          case CardValue.ace:
+            {
+              return 'aceHearts';
+            }
+          case CardValue.two:
+            {
+              return 'twoHearts';
+            }
+          case CardValue.three:
+            {
+              return 'threeHearts';
+            }
+          case CardValue.four:
+            {
+              return 'fourHearts';
+            }
+          case CardValue.five:
+            {
+              return 'fiveHearts';
+            }
+          case CardValue.six:
+            {
+              return 'sixHearts';
+            }
+          case CardValue.seven:
+            {
+              return 'sevenHearts';
+            }
+          case CardValue.eight:
+            {
+              return 'eightHearts';
+            }
+          case CardValue.nine:
+            {
+              return 'nineHearts';
+            }
+          case CardValue.ten:
+            {
+              return 'tenHearts';
+            }
+          case CardValue.jack:
+            {
+              return 'jackHearts';
+            }
+          case CardValue.queen:
+            {
+              return 'queenHearts';
+            }
+          case CardValue.king:
+            {
+              return 'kingHearts';
+            }
+        }
+      }
+      case Suit.diamonds:{
+        switch (card.value) {
+          case CardValue.ace:
+            {
+              return 'aceDiamonds';
+            }
+          case CardValue.two:
+            {
+              return 'twoDiamonds';
+            }
+          case CardValue.three:
+            {
+              return 'threeDiamonds';
+            }
+          case CardValue.four:
+            {
+              return 'fourDiamonds';
+            }
+          case CardValue.five:
+            {
+              return 'fiveDiamonds';
+            }
+          case CardValue.six:
+            {
+              return 'sixDiamonds';
+            }
+          case CardValue.seven:
+            {
+              return 'sevenDiamonds';
+            }
+          case CardValue.eight:
+            {
+              return 'eightDiamonds';
+            }
+          case CardValue.nine:
+            {
+              return 'nineDiamonds';
+            }
+          case CardValue.ten:
+            {
+              return 'tenDiamonds';
+            }
+          case CardValue.jack:
+            {
+              return 'jackDiamonds';
+            }
+          case CardValue.queen:
+            {
+              return 'queenDiamonds';
+            }
+          case CardValue.king:
+            {
+              return 'kingDiamonds';
+            }
+        }
+      }
+    }
+  }
+
+  String suitToString(PlayingCard card){
+    switch (card.suit){
+      case Suit.spades:{
+        return 'spades';
+      }
+      case Suit.clubs:{
+        return 'clubs';
+      }
+      case Suit.hearts:{
+        return 'hearts';
+      }
+      case Suit.diamonds:{
+        return 'diamonds';
+      }
+    }
+  }
 
   int valueOfCard(PlayingCard card) {
     //returnerar värdet av ett specifikt kort

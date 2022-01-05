@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_first_app/card_themes.dart';
+import 'package:my_first_app/firebase_implementation.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:provider/provider.dart';
 import 'blackjack.dart';
@@ -329,6 +330,17 @@ class _GamePageState extends State<GamePage> {
                       .winnings(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Split');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -345,6 +357,17 @@ class _GamePageState extends State<GamePage> {
                   splitTurn = false;
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Player');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -363,6 +386,17 @@ class _GamePageState extends State<GamePage> {
                       .winnings(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Split');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -377,6 +411,17 @@ class _GamePageState extends State<GamePage> {
             TextButton(
                 onPressed: () {
                   splitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -393,6 +438,17 @@ class _GamePageState extends State<GamePage> {
                   splitTurn = false;
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Split');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -409,6 +465,17 @@ class _GamePageState extends State<GamePage> {
                   splitTurn = false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Split');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -425,6 +492,17 @@ class _GamePageState extends State<GamePage> {
                   splitTurn = false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Player');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -443,6 +521,17 @@ class _GamePageState extends State<GamePage> {
                       .drawBet(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Split');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -459,6 +548,17 @@ class _GamePageState extends State<GamePage> {
                   splitTurn = false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Player');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -483,6 +583,17 @@ class _GamePageState extends State<GamePage> {
                       .winnings(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Split');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -497,6 +608,17 @@ class _GamePageState extends State<GamePage> {
             TextButton(
                 onPressed: () {
                   splitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -513,6 +635,17 @@ class _GamePageState extends State<GamePage> {
                   splitTurn = false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Player');
+                  Provider.of<BlackJack>(context, listen: false)
+                      .addCardsToDB(context: context);
+                  Provider.of<FirestoreImplementation>(context, listen: false)
+                      .incrementGameCountAndWinOrLose(
+                      split: split,
+                      splitWinOrLose: winOrLoseSplit,
+                      winOrLose: winOrLosePlayer,
+                      userId: Provider.of<FirebaseAuthImplementation>(
+                          context,
+                          listen: false)
+                          .getUserId()!);
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },

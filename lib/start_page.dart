@@ -1,8 +1,10 @@
 import 'package:my_first_app/card_customization.dart';
+import 'package:my_first_app/firebase_implementation.dart';
 import 'package:my_first_app/game_page.dart';
 import 'package:my_first_app/profile_information_page.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:my_first_app/statistics.dart';
+import 'package:provider/provider.dart';
 import 'how_to_play.dart';
 import 'package:flutter/material.dart';
 
@@ -75,6 +77,11 @@ class _StartPageState extends State<StartPage> {
           child: ElevatedButton(
             child: const Text('PLAY NOW'),
             onPressed: () {
+              Provider.of<FirestoreImplementation>(context, listen: false)
+                  .createNewUsrStat(
+                      userId: Provider.of<FirebaseAuthImplementation>(context,
+                              listen: false)
+                          .getUserId()!);
               Navigator.push(
                 context,
                 MaterialPageRoute(

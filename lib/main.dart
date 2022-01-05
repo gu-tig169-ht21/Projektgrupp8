@@ -31,6 +31,9 @@ void main() async {
       ChangeNotifierProvider(
         create: (context) => FirebaseAuthImplementation(),
       ),
+      ChangeNotifierProvider(
+        create: (context) => FirestoreImplementation(),
+      ),
     ],
     child: const MainApp(),
   ));
