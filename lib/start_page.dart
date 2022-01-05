@@ -1,9 +1,9 @@
-import 'package:my_first_app/card_customization.dart';
 import 'package:my_first_app/game_page.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:my_first_app/statistics.dart';
 import 'how_to_play.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -47,20 +47,20 @@ class _StartPageState extends State<StartPage> {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 1,
-      color: Colors.white30, //Flytta/ändra till respektive tema
+      color: Colors.white30,
     );
   }
 
   //widget för huvudtitel
   Widget _title() {
-    return const Align(
-        alignment: Alignment(0, -0.7),
-        child: Text(
-          'Blackjack',
-          style: TextStyle(
-            fontSize: 70, //Tema filen?
-          ),
-        ));
+    return Align(
+      alignment: const Alignment(0, -0.7),
+      child: Text(
+        'Blackjack',
+        style: GoogleFonts.lato(),
+        //Tema filen?
+      ),
+    );
   }
 
 //Widget för play knapp
@@ -129,22 +129,23 @@ class _StartPageState extends State<StartPage> {
   //widget för inställningsikon
   Widget _settingsIcon() {
     return Align(
-        alignment: const Alignment(1.5, 0.89),
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.1,
-          child: IconButton(
-            icon: const Icon(Icons.settings),
-            iconSize: 50,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Settings(),
-                ),
-              );
-            },
-          ),
-        ));
+      alignment: const Alignment(1.5, 0.89),
+      child: FractionallySizedBox(
+        widthFactor: 0.5,
+        heightFactor: 0.1,
+        child: IconButton(
+          icon: const Icon(Icons.settings),
+          iconSize: 50,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Settings(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
