@@ -273,6 +273,16 @@ class BlackJack extends ChangeNotifier {
     }
   }
 
+  int allIn() {
+    if (balance > 0) {
+      return balance;
+    } else if (balance <= 0) {
+      throw Exception('Not enough money to go all in');
+    } else {
+      throw Exception('Something went wrong going all in');
+    }
+  }
+
   void addCardsToDB({required BuildContext context}) {
     for (PlayingCard card in playerHand) {
       Provider.of<FirestoreImplementation>(context, listen: false)
@@ -282,20 +292,19 @@ class BlackJack extends ChangeNotifier {
                       listen: false)
                   .getUserId()!);
     }
-    if(split){
+    if (split) {
       for (PlayingCard card in splitHand) {
         Provider.of<FirestoreImplementation>(context, listen: false)
             .incrementCardInDB(
-            card: card,
-            userId: Provider.of<FirebaseAuthImplementation>(context,
-                listen: false)
-                .getUserId()!);
+                card: card,
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!);
       }
     }
   }
 
-  void getNewCard(
-      {required String playerOrSplit}) {
+  void getNewCard({required String playerOrSplit}) {
     incrementRounds();
     //drar ett nytt kort för spelaren
     switch (playerOrSplit) {
