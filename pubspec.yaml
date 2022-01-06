@@ -39,7 +39,7 @@ dependencies:
 
   charts_flutter: ^0.12.0
   flutter_switch: ^0.3.2
-  google_fonts: ^2.2.0
+ 
 
   
 
@@ -90,10 +90,7 @@ flutter:
       - assets/quiGonJinn.jpg
       - assets/yoda.jpg 
     
-  fonts: 
-      - family: RobotoMono
-        fonts:
-          - asset: assets/fonts/RobotoMono-VariableFont_wght.ttf
+ 
 
   # To add assets to your application, add an assets section, like this:
   # assets:

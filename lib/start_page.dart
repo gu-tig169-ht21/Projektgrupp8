@@ -3,7 +3,6 @@ import 'package:my_first_app/settings_page.dart';
 import 'package:my_first_app/statistics.dart';
 import 'how_to_play.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -138,7 +137,7 @@ class _StartPageState extends State<StartPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Settings(),
+                builder: (context) => const Settings(),
               ),
             );
           },
