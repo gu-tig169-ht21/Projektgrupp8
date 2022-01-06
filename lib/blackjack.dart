@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/firebase_implementation.dart';
+import 'package:my_first_app/settings_page.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 import 'deck_of_cards.dart';
@@ -114,6 +115,38 @@ class BlackJack extends ChangeNotifier {
   void subtractFromBalance(int i) {
     balance -= i;
     notifyListeners();
+  }
+
+  void addDecks(String a) {
+    int decks = int.parse(a);
+    if (decks == 1) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else if (decks == 2) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else if (decks == 3) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else if (decks == 4) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else if (decks == 5) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else {
+      deck = standardFiftyTwoCardDeck();
+    }
   }
 
   void setUpNewGame() {

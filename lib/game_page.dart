@@ -54,7 +54,7 @@ class _GamePageState extends State<GamePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Settings(),
+                          builder: (context) => const Settings(),
                         ));
 
                     break;
@@ -345,6 +345,12 @@ class _GamePageState extends State<GamePage> {
                 child: const Text('Ok'))
           ],
         );
+      } else if (winOrLosePlayer != 'NoWinnerYet' &&
+          winOrLoseSplit == 'NoWinnerYet') {
+        Provider.of<BlackJack>(context, listen: false)
+            .stop(playerOrDealerOrSplit: 'Player');
+        splitTurn = true;
+        return const SizedBox.shrink();
       } else if (winOrLosePlayer == 'Win' && winOrLoseSplit == 'Lose') {
         return AlertDialog(
           title: const Text('Congratulations'),
@@ -659,7 +665,8 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget popUpBet(bool firstRound) {
-    if (firstRound) {
+    if (firstRound &&
+        Provider.of<BlackJack>(context, listen: false).getBalance != 0) {
       return AlertDialog(
         title: const Text('Time to place your bet'),
         content: const Text('Choose your amount'),
@@ -700,6 +707,29 @@ class _GamePageState extends State<GamePage> {
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('All in'),
+          ),
+        ],
+      );
+    } else if (firstRound &&
+        Provider.of<BlackJack>(context, listen: false).getBalance == 0) {
+      return AlertDialog(
+        title: const Text('Out of cash'),
+        content: const Text('You can play without betting'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Provider.of<BlackJack>(context, listen: false).testingSplit();
+              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).setCanBet = false;
+            },
+            child: const Text('Play without bet'),
+          ),
+          TextButton(
+            onPressed: () {
+              Provider.of<BlackJack>(context, listen: false).forfeit();
+              Navigator.pop(context);
+            },
+            child: const Text('Quit'),
           ),
         ],
       );
