@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_first_app/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
-
+import 'package:provider/provider.dart';
 import 'deck_of_cards.dart';
 
 //om du gör en split så kör du i turordning, först agerar du färdigt med första handen sedan med nästa
-//då behöver bara knapparna påverka olika varibaler beroende på om du agerar för splithanden eller bethanden
+//då behöver bara knapparna påverka olika variabler beroende på om du agerar för splithanden eller bethanden
+
+//TODO: lägg till så att man kan använda flera kortlekar(ändra i fabbes och mogges kod, lägg in i blackjack providern)
+//TODO: skapa koppling till databas
 
 class BlackJack extends ChangeNotifier {
   List<PlayingCard> deck = standardFiftyTwoCardDeck();
@@ -125,6 +129,12 @@ class BlackJack extends ChangeNotifier {
     setCanBet = true;
     rounds = 1;
     startingHands();
+    notifyListeners();
+  }
+
+  void forfeit() {
+    balance = balance + playerBet ~/ 2;
+    setUpNewGame();
     notifyListeners();
   }
 
@@ -260,6 +270,37 @@ class BlackJack extends ChangeNotifier {
       throw Exception('Not enough money');
     } else {
       throw Exception('Something went wrong setting bet');
+    }
+  }
+
+  int allIn() {
+    if (balance > 0) {
+      return balance;
+    } else if (balance <= 0) {
+      throw Exception('Not enough money to go all in');
+    } else {
+      throw Exception('Something went wrong going all in');
+    }
+  }
+
+  void addCardsToDB({required BuildContext context}) {
+    for (PlayingCard card in playerHand) {
+      Provider.of<FirestoreImplementation>(context, listen: false)
+          .incrementCardInDB(
+              card: card,
+              userId: Provider.of<FirebaseAuthImplementation>(context,
+                      listen: false)
+                  .getUserId()!);
+    }
+    if (split) {
+      for (PlayingCard card in splitHand) {
+        Provider.of<FirestoreImplementation>(context, listen: false)
+            .incrementCardInDB(
+                card: card,
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!);
+      }
     }
   }
 
