@@ -6,6 +6,36 @@ import 'package:provider/provider.dart';
 class PlayingCardsProvider extends ChangeNotifier {
   var playingcardThemeMode = PlayingCardsThemes.standardStyle;
   String cardStyleString = 'Standard';
+  int chosenPageViewCard = 0;
+  int starWarsDeckPrice = 100;
+  int goldenDeckPrice = 1000;
+  bool starWarsDeckUnlocked = false;
+  bool goldenDeckUnlocked = false;
+
+  get getStarWarsDeckUnlocked {
+    return starWarsDeckUnlocked;
+  }
+
+  get getGoldenDeckUnlocked {
+    return goldenDeckUnlocked;
+  }
+
+  get getStarWarsDeckPrice {
+    return starWarsDeckPrice;
+  }
+
+  get getGoldenDeckPrice {
+    return goldenDeckPrice;
+  }
+
+  get getChosenPageViewCard {
+    return chosenPageViewCard;
+  }
+
+  set setChosenPageViewCard(int i) {
+    chosenPageViewCard = i;
+    notifyListeners();
+  }
 
   get getCardStyleString {
     return cardStyleString;
@@ -13,6 +43,26 @@ class PlayingCardsProvider extends ChangeNotifier {
 
   get getPlayingcardThemeMode {
     return playingcardThemeMode;
+  }
+
+  void setDeckUnlocked(String starWarsOrGolden) {
+    if (starWarsOrGolden == 'StarWars') {
+      starWarsDeckUnlocked = true;
+      notifyListeners();
+    } else if (starWarsOrGolden == 'Golden') {
+      goldenDeckUnlocked = true;
+      notifyListeners();
+    }
+  }
+
+  bool getDeckUnlocked(String starWarsOrGolden) {
+    if (starWarsOrGolden == 'StarWars') {
+      return starWarsDeckUnlocked;
+    } else if (starWarsOrGolden == 'Golden') {
+      return goldenDeckUnlocked;
+    } else {
+      return true;
+    }
   }
 
   //if-sats som bestämmer kort-temat utifrån scrollvyn
@@ -32,18 +82,23 @@ class PlayingCardsProvider extends ChangeNotifier {
     }
   }
 
-  //funktion för att kunna köpa olika kortlekar
-  void buyDeckOfCards(BuildContext context) {
+  //funktion som testar om man kan köpa kortlekarna
+  bool affordDeck(String style, BuildContext context) {
     int money = Provider.of<BlackJack>(context, listen: false).getBalance;
-    int starWarsValue = 1000;
-    int goldenValue = 10000;
-    //TODO: DENNA FUNKTIONEN SKALL INTEGRERAS I DEN ÖVRE FUNKTIONEN
+    int value = 0;
 
-    if (money >= starWarsValue) {}
+    if (style == 'StarWars') {
+      value = starWarsDeckPrice;
+    } else {
+      value = goldenDeckPrice;
+    }
+
+    if (money >= value) {
+      return true;
+    } else {
+      return false;
+    }
   }
-  //lyssna på deras balance-variabel
-  //skapa 2 vaiablar för kortens kostnad
-  // jämföra dessa i en if sats
 }
 
 //funktion för starwars kortleken
