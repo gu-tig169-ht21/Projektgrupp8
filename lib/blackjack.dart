@@ -347,7 +347,6 @@ class BlackJack extends ChangeNotifier {
   void testingDouble() {
     if (balance >= playerBet) {
       canDouble = true;
-
       notifyListeners();
     } else {
       canDouble = false;

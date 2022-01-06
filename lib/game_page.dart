@@ -230,17 +230,15 @@ class _GamePageState extends State<GamePage> {
                   ),
                   onPressed: () {
                     if (Provider.of<BlackJack>(context, listen: false)
-                            .getCanDouble &&
-                        Provider.of<BlackJack>(context, listen: false)
-                            .getCanBet) {
+                        .getCanDouble) {
                       try {
                         Provider.of<BlackJack>(context, listen: false)
                             .doDouble();
                         Provider.of<BlackJack>(context, listen: false)
                             .setCanDouble = false;
-                      } catch (e) {
+
                         //FIXA POPUP OM DU INTE KAN DUBBLA!!!!!!!!!!!!!!!!!!!!!!!!!!
-                      }
+                      } catch (e) {}
                     } else {
                       null;
                     }
