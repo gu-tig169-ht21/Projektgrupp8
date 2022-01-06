@@ -1,1 +1,3 @@
-Grupp 8 lets gooooo!!
+En blackjack app med databaskoppling och användarinloggning.
+
+

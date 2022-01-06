@@ -40,6 +40,11 @@ dependencies:
   charts_flutter: ^0.12.0
   flutter_switch: ^0.3.2
 
+  firebase_core: ^1.10.6
+  firebase_auth: ^3.3.4
+  cloud_firestore: ^3.1.5
+
+
   
 
 
@@ -88,6 +93,8 @@ flutter:
       - assets/QueenAmidala1.jpg
       - assets/quiGonJinn.jpg
       - assets/yoda.jpg 
+    
+ 
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,4 +1,3 @@
-//fil där vi skall göra en sida för kort redigering
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
@@ -6,7 +5,6 @@ import 'card_themes.dart';
 import 'blackjack.dart';
 
 //TODO: finjustera balances storlek i theme
-//TODO: Lagt till Context i 2 paranteser för att få bort errors
 
 class CustomizationPage extends StatelessWidget {
   CustomizationPage({Key? key}) : super(key: key);
@@ -23,6 +21,7 @@ class CustomizationPage extends StatelessWidget {
       body: Stack(
         children: [
           _cardView(context),
+          _purchaseDeckButton(context),
           _changeDeckButton(context),
         ],
       ),
@@ -43,13 +42,12 @@ class CustomizationPage extends StatelessWidget {
 
 //widget för den aktuella balansen/saldot du har i appen
   Widget _balance(context) {
-    //Lagt till Context i parantesen för att få bort error
     return Row(
       children: [
         Padding(
             padding: const EdgeInsets.only(right: 30),
             child: Text(
-                '${Provider.of<BlackJack>(context, listen: true).getBalance}'))
+                '\$ ${Provider.of<BlackJack>(context, listen: true).getBalance}'))
       ],
     );
   }
@@ -58,7 +56,7 @@ class CustomizationPage extends StatelessWidget {
   PageController pageController = PageController(viewportFraction: 0.7);
   var value = 0;
 
-//widget för kortet
+//widget lista med de olika korten
   Widget _cardView(BuildContext context) {
     List<Widget> cardList = <Widget>[
       _card1(context),
@@ -66,21 +64,105 @@ class CustomizationPage extends StatelessWidget {
       _card3(context)
     ];
     return Align(
-        alignment: const Alignment(0, -0.4),
-        child: SizedBox(
-            height: 350,
-            width: 350,
-            child: PageView(
-              onPageChanged: (index) => {value = index},
-              controller: pageController,
-              children: cardList,
-            )));
+      alignment: const Alignment(0, -0.4),
+      child: SizedBox(
+        height: 350,
+        width: 350,
+        child: PageView(
+          onPageChanged: (index) => {
+            Provider.of<PlayingCardsProvider>(context, listen: false)
+                .setChosenPageViewCard = index
+          },
+          controller: pageController,
+          children: cardList,
+        ),
+      ),
+    );
+  }
+
+//widget för köp knapp
+  Widget _purchaseDeckButton(context) {
+    String _deck = 'Standard';
+    int _price = 0;
+    if (Provider.of<PlayingCardsProvider>(context, listen: false)
+            .getChosenPageViewCard ==
+        1) {
+      _deck = 'StarWars';
+      _price = Provider.of<PlayingCardsProvider>(context, listen: false)
+          .getStarWarsDeckPrice;
+    } else if (Provider.of<PlayingCardsProvider>(context, listen: false)
+            .getChosenPageViewCard ==
+        2) {
+      _deck = 'Golden';
+      _price = Provider.of<PlayingCardsProvider>(context, listen: false)
+          .getGoldenDeckPrice;
+    }
+
+    return Align(
+      alignment: const Alignment(0, 0.6),
+      child: FractionallySizedBox(
+        widthFactor: 0.4,
+        heightFactor: 0.1,
+        child: Consumer<PlayingCardsProvider>(
+          builder: (context, state, child) {
+            return ElevatedButton(
+              //kollar om vi har råd och köpa deck
+              //kollar om vi äger decket
+              //om köp gjordes, saldot justeras
+              //decket ändras till att vara upplåst
+              onPressed: () {
+                if (Provider.of<PlayingCardsProvider>(context, listen: false)
+                        .affordDeck(_deck, context) &&
+                    !Provider.of<PlayingCardsProvider>(context, listen: false)
+                        .getDeckUnlocked(_deck)) {
+                  Provider.of<BlackJack>(context, listen: false)
+                      .subtractFromBalance(_price);
+                  Provider.of<PlayingCardsProvider>(context, listen: false)
+                      .setDeckUnlocked(_deck);
+                } else {
+                  null;
+                }
+              },
+              child: const Text('Purchase'),
+              style: ButtonStyle(
+                backgroundColor:
+                    //ändrar färg beroende på
+                    // om vi har råd
+                    // kollar om vi äger decket
+                    (Provider.of<PlayingCardsProvider>(context, listen: false)
+                                .affordDeck(_deck, context) &&
+                            !Provider.of<PlayingCardsProvider>(context,
+                                    listen: false)
+                                .getDeckUnlocked(_deck))
+                        ? null
+                        : MaterialStateProperty.all(Colors.grey),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
 // widget som returnerar en knapp som du trycker på
 //för att ändra din valda kortlek till en ny kortlek
   Widget _changeDeckButton(context) {
-    //Lagt till Context i parantesen för att få bort error
+    String _deck = 'Standard';
+
+    //hämtar vilket kort du står på i listan så vi kan
+    //skicka vidare det sen
+
+    if (Provider.of<PlayingCardsProvider>(context, listen: false)
+            .getChosenPageViewCard ==
+        0) {
+      _deck = 'Standard';
+    } else if (Provider.of<PlayingCardsProvider>(context, listen: false)
+            .getChosenPageViewCard ==
+        1) {
+      _deck = 'StarWars';
+    } else {
+      _deck = 'Golden';
+    }
     return Align(
       alignment: const Alignment(0, 0.85),
       child: FractionallySizedBox(
@@ -89,17 +171,37 @@ class CustomizationPage extends StatelessWidget {
         child: ElevatedButton(
           child: const Text('Choose this deck'),
           onPressed: () {
-            if (value == 0) {
+            //väljer de kort som skall komma till spelplanen
+            //välj det deck som är upplåst (går inte att välja oköpt deck)
+            if (Provider.of<PlayingCardsProvider>(context, listen: false)
+                    .getChosenPageViewCard ==
+                0) {
               Provider.of<PlayingCardsProvider>(context, listen: false)
                   .changePlayingCardsThemes('Standard');
-            } else if (value == 1) {
+            } else if (Provider.of<PlayingCardsProvider>(context, listen: false)
+                        .getChosenPageViewCard ==
+                    1 &&
+                Provider.of<PlayingCardsProvider>(context, listen: false)
+                    .getDeckUnlocked('StarWars')) {
               Provider.of<PlayingCardsProvider>(context, listen: false)
                   .changePlayingCardsThemes('StarWars');
-            } else if (value == 2) {
+            } else if (Provider.of<PlayingCardsProvider>(context, listen: false)
+                        .getChosenPageViewCard ==
+                    2 &&
+                Provider.of<PlayingCardsProvider>(context, listen: false)
+                    .getDeckUnlocked('Golden')) {
               Provider.of<PlayingCardsProvider>(context, listen: false)
                   .changePlayingCardsThemes('Golden');
             }
           },
+          style: ButtonStyle(
+            //om vi äger decket så ändrar de färg på knappen
+            backgroundColor:
+                (Provider.of<PlayingCardsProvider>(context, listen: false)
+                        .getDeckUnlocked(_deck))
+                    ? null
+                    : MaterialStateProperty.all(Colors.grey),
+          ),
         ),
       ),
     );
@@ -132,29 +234,22 @@ Widget _card1(BuildContext context) {
               ),
             ],
           ),
-
-          // const Divider(
-          //   height: 50,
-          // ),
           const Text(
             'Standard Deck',
             style: TextStyle(
               fontSize: 25,
             ),
-            //decoration: TextDecoration.underline),
           ),
           const Text(
-            'Upplåst',
+            //TODO: ändra denna texten sen
+            'Standard',
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           ),
         ],
       ),
       Align(
-        //Ändrade från Padding till Align
         alignment: Alignment.topRight,
-        //ändra alignment , färg och storlek
-        //lägga in provider på alla olika kort
         child: (Provider.of<PlayingCardsProvider>(context, listen: true)
                     .getCardStyleString ==
                 'Standard')
@@ -201,18 +296,15 @@ Widget _card2(BuildContext context) {
             style: TextStyle(fontSize: 25),
             textAlign: TextAlign.center,
           ),
-          const Text(
-            '10kr',
-            style: TextStyle(fontSize: 15),
+          Text(
+            '\$ ${Provider.of<PlayingCardsProvider>(context, listen: false).getStarWarsDeckPrice}',
+            style: const TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           ),
         ],
       ),
       Align(
-        //Ändrade från Padding till Align
         alignment: Alignment.topRight,
-        //ändra alignment , färg och storlek
-        //lägga in provider på alla olika kort
         child: (Provider.of<PlayingCardsProvider>(context, listen: true)
                     .getCardStyleString ==
                 'StarWars')
@@ -259,17 +351,14 @@ Widget _card3(BuildContext context) {
             'Golden Deck',
             style: TextStyle(fontSize: 25),
           ),
-          const Text(
-            '1 000 000kr',
-            style: TextStyle(fontSize: 15),
+          Text(
+            '\$ ${Provider.of<PlayingCardsProvider>(context, listen: false).getGoldenDeckPrice}',
+            style: const TextStyle(fontSize: 15),
           ),
         ],
       ),
       Align(
-        //Ändrade från Padding till Align
         alignment: Alignment.topRight,
-        //ändra alignment , färg och storlek
-        //lägga in provider på alla olika kort
         child: (Provider.of<PlayingCardsProvider>(context, listen: true)
                     .getCardStyleString ==
                 'Golden')
