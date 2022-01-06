@@ -89,6 +89,11 @@ flutter:
       - assets/QueenAmidala1.jpg
       - assets/quiGonJinn.jpg
       - assets/yoda.jpg 
+    
+  fonts: 
+      - family: RobotoMono
+        fonts:
+          - asset: assets/fonts/RobotoMono-VariableFont_wght.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

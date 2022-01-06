@@ -8,9 +8,23 @@ class ThemeCustom {
     return ThemeData(
       primaryColor: Colors.green.shade800,
       scaffoldBackgroundColor: Colors.white,
-      // fontFamily: 'Times new roman',
-      //textTheme: TextTheme(
-      //TextStyle
+      primaryTextTheme: const TextTheme(
+        headline1: TextStyle(fontFamily: 'RobotoMono'),
+        headline2: TextStyle(fontFamily: 'RobotoMono'),
+        headline3: TextStyle(fontFamily: 'RobotoMono'),
+        headline4: TextStyle(fontFamily: 'RobotoMono'),
+        headline5: TextStyle(fontFamily: 'RobotoMono'),
+        headline6: TextStyle(fontFamily: 'RobotoMono'),
+        subtitle1: TextStyle(fontFamily: 'RobotoMono'),
+        subtitle2: TextStyle(fontFamily: 'RobotoMono'),
+        bodyText1: TextStyle(fontFamily: 'RobotoMono'),
+        bodyText2: TextStyle(fontFamily: 'RobotoMono'),
+        button: TextStyle(fontFamily: 'RobotoMono'),
+        caption: TextStyle(fontFamily: 'RobotoMono'),
+        overline: TextStyle(fontFamily: 'RobotoMono'),
+      ),
+      // textTheme: TextTheme(
+      // TextStyle
       // title: GoogleFonts.oswald(),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -20,16 +34,13 @@ class ThemeCustom {
             borderRadius: BorderRadius.circular(20),
           ),
           primary: Colors.green[800],
-          textStyle: const TextStyle(fontSize: 25),
+          textStyle: const TextStyle(fontSize: 25, fontFamily: 'RobotoMono'),
         ),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.green,
         centerTitle: true,
-        titleTextStyle: TextStyle(
-          fontFamily: 'Times new roman',
-          fontSize: 20,
-        ),
+        titleTextStyle: TextStyle(fontSize: 20, fontFamily: 'RobotoMono'),
       ),
     );
   }

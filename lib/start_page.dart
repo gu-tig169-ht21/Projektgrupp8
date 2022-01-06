@@ -53,9 +53,9 @@ class _StartPageState extends State<StartPage> {
 
   //widget för huvudtitel
   Widget _title() {
-    return Align(
-      alignment: const Alignment(0, -0.8),
-      child: Text('Blackjack', style: GoogleFonts.oswald(fontSize: 70)
+    return const Align(
+      alignment: Alignment(0, -0.8),
+      child: Text('Blackjack', style: TextStyle(fontSize: 70)
           //Tema filen?
           ),
     );
