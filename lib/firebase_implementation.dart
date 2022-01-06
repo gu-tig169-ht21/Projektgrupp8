@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/deck_of_cards.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
@@ -383,6 +384,25 @@ class FirestoreImplementation extends ChangeNotifier {
 
   }
 
+Future<String> getChosenDeckTheme({required String userId})async{
+    CollectionReference statistics = database.collection('Statistics');
+    String returnString = 'Something went wrong';
+
+      await statistics.doc(userId).get().then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          try {
+            returnString = documentSnapshot['chosenDeck'];
+          }
+          on StateError catch (e){
+            print(e);
+          }
+        }
+      });
+
+      return returnString;
+
+  }
+
   void changeDeckTheme({required String deck, required String userId}){//ändrar standardval på kortlekstema
     CollectionReference statistics = database.collection('Statistics');
 
@@ -391,6 +411,32 @@ class FirestoreImplementation extends ChangeNotifier {
     }).then((value) => print('chosen deck changed'))
         .catchError((error) =>
         print(error.toString())); //TODO:riktig felhantering
+  }
+
+  Future<bool> getUnlockedDeck({required String deck, required String userId}) async {
+    CollectionReference statistics = database.collection('Statistics');
+    bool returnBool = false;
+    String deckFieldValue = 'starWarsDeckUnlocked';
+    if(deck == 'StarWars'){
+      deckFieldValue = 'starWarsDeckUnlocked';
+    }
+    else if(deck == 'Golden'){
+      deckFieldValue = 'goldenDeckUnlocked';
+    }
+
+
+   await statistics.doc(userId).get().then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        try {
+          returnBool = documentSnapshot[deckFieldValue];
+        }
+        on StateError catch (e){
+          print(e);
+        }
+      }
+    });
+
+    return returnBool;
   }
 
   void unlockDeck({required String deck, required String userId}){

@@ -1,5 +1,6 @@
 
 import 'package:my_first_app/card_customization.dart';
+import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:my_first_app/game_page.dart';
 import 'package:my_first_app/profile_information_page.dart';
@@ -17,6 +18,13 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+
+  @override
+  void initState() {
+     Provider.of<PlayingCardsProvider>(context, listen: false).setUpCardThemes(context: context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
