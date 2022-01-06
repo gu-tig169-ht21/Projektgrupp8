@@ -84,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
         return AlertDialog(
           title: const Text('Register new user'),
           content: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: emailController,
