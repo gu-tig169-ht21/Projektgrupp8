@@ -27,8 +27,9 @@ class _StartPageState extends State<StartPage> {
           _playButton(),
           _howToPlayButton(),
           _statisticsButton(),
-          _userIcon(),
-          _settingsIcon(),
+          //_userIcon(),
+          //_settingsIcon(),
+          _userAndSettingsButtons()
         ],
       ),
     );
@@ -137,36 +138,66 @@ class _StartPageState extends State<StartPage> {
   }
 
   //widget för inställningsikon
-  Widget _settingsIcon() {
-    return Align(
-      alignment: const Alignment(1.95, 0.89),
-      child: FractionallySizedBox(
-        widthFactor: 0.6,
-        heightFactor: 0.1,
-        child: IconButton(
-          icon: const Icon(Icons.settings),
-          iconSize: 50,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Settings(),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
+  //TODO: eventuellt ta bort denna widgeten???
+
+  // Widget _settingsIcon() {
+  //   return Align(
+  //     alignment: const Alignment(1.95, 0.89),
+  //     child: FractionallySizedBox(
+  //       widthFactor: 0.6,
+  //       heightFactor: 0.1,
+  //       child: IconButton(
+  //         icon: const Icon(Icons.settings),
+  //         iconSize: 50,
+  //         onPressed: () {
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => const Settings(),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
 //Widget för profilikonen
-  Widget _userIcon() {
+//TODO: EVENTUELLT TA BORT DENNA WIDGETEN??
+
+  // Widget _userIcon() {
+  //   return Align(
+  //     alignment: const Alignment(0.9, 0.89),
+  //     child: FractionallySizedBox(
+  //       widthFactor: 0.6,
+  //       heightFactor: 0.1,
+  //       child: IconButton(
+  //         icon: const Icon(Icons.portrait_rounded),
+  //         iconSize: 50,
+  //         onPressed: () {
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => const ProfileInformation(),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
+//Widget för UserIcon och Settingsicon
+  Widget _userAndSettingsButtons() {
     return Align(
-        alignment: const Alignment(0.9, 0.89),
-        child: FractionallySizedBox(
-          widthFactor: 0.6,
-          heightFactor: 0.1,
-          child: IconButton(
+      alignment: const Alignment(1.95, 0.89),
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 250,
+            height: 1,
+          ),
+          IconButton(
             icon: const Icon(Icons.portrait_rounded),
             iconSize: 50,
             onPressed: () {
@@ -178,6 +209,20 @@ class _StartPageState extends State<StartPage> {
               );
             },
           ),
-        ));
+          IconButton(
+            icon: const Icon(Icons.settings),
+            iconSize: 50,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Settings(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
