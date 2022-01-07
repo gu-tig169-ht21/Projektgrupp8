@@ -347,7 +347,8 @@ class _GamePageState extends State<GamePage> {
         );
       } else if (winOrLosePlayer != 'NoWinnerYet' &&
           winOrLoseSplit == 'NoWinnerYet') {
-        Provider.of<BlackJack>(context, listen: false)
+        Provider.of<BlackJack>(context,
+                listen: false) //TODO: lös split fan nu då
             .stop(playerOrDealerOrSplit: 'Player');
         splitTurn = true;
         return const SizedBox.shrink();

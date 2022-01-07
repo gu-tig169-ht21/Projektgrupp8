@@ -529,6 +529,7 @@ class BlackJack extends ChangeNotifier {
         notifyListeners();
       } else {
         splitWinCondition = 'NoWinnerYet';
+        notifyListeners();
       }
     } else {
       throw Exception('Didnt choose hand');
