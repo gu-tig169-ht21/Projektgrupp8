@@ -27,8 +27,8 @@ class _StartPageState extends State<StartPage> {
           _playButton(),
           _howToPlayButton(),
           _statisticsButton(),
-          _settingsIcon(),
           _userIcon(),
+          _settingsIcon(),
         ],
       ),
     );
@@ -139,7 +139,7 @@ class _StartPageState extends State<StartPage> {
   //widget för inställningsikon
   Widget _settingsIcon() {
     return Align(
-      alignment: const Alignment(1.5, 0.89),
+      alignment: const Alignment(1.95, 0.89),
       child: FractionallySizedBox(
         widthFactor: 0.6,
         heightFactor: 0.1,
@@ -162,7 +162,7 @@ class _StartPageState extends State<StartPage> {
 //Widget för profilikonen
   Widget _userIcon() {
     return Align(
-        alignment: const Alignment(-1.5, 0.89),
+        alignment: const Alignment(0.9, 0.89),
         child: FractionallySizedBox(
           widthFactor: 0.6,
           heightFactor: 0.1,
