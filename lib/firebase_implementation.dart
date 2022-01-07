@@ -148,91 +148,90 @@ class FirestoreImplementation extends ChangeNotifier {
 
     final snapShot = await statistics.doc(userId).get();
 
-    if(snapShot.exists) {
+    if (snapShot.exists) {
       print('document already exists');
-    }
-    else{
+    } else {
       await statistics
           .doc(userId)
           .set({
-        'wins': 0,
-        'losses': 0,
-        'gamesPlayed': 0,
-        'splits':{
-          'splitRounds':0,
-          'splitWins':0,
-          'splitLosses':0,
-        },
-        'balance': 0,
-        'starWarsDeckUnlocked': false,
-        'goldenDeckUnlocked': false,
-        'chosenDeck': 'Standard',
-        'drawnCards': {
-          'spades': {
-            'aceSpades': 0,
-            'kingSpades': 0,
-            'queenSpades': 0,
-            'jackSpades': 0,
-            'tenSpades': 0,
-            'nineSpades': 0,
-            'eightSpades': 0,
-            'sevenSpades': 0,
-            'sixSpades': 0,
-            'fiveSpades': 0,
-            'fourSpades': 0,
-            'threeSpades': 0,
-            'twoSpades': 0,
-          },
-          'clubs': {
-            'aceClubs': 0,
-            'kingClubs': 0,
-            'queenClubs': 0,
-            'jackClubs': 0,
-            'tenClubs': 0,
-            'nineClubs': 0,
-            'eightClubs': 0,
-            'sevenClubs': 0,
-            'sixClubs': 0,
-            'fiveClubs': 0,
-            'fourClubs': 0,
-            'threeClubs': 0,
-            'twoClubs': 0,
-          },
-          'hearts': {
-            'aceHearts': 0,
-            'kingHearts': 0,
-            'queenHearts': 0,
-            'jackHearts': 0,
-            'tenHearts': 0,
-            'nineHearts': 0,
-            'eightHearts': 0,
-            'sevenHearts': 0,
-            'sixHearts': 0,
-            'fiveHearts': 0,
-            'fourHearts': 0,
-            'threeHearts': 0,
-            'twoHearts': 0,
-          },
-          'diamonds': {
-            'aceDiamonds': 0,
-            'kingDiamonds': 0,
-            'queenDiamonds': 0,
-            'jackDiamonds': 0,
-            'tenDiamonds': 0,
-            'nineDiamonds': 0,
-            'eightDiamonds': 0,
-            'sevenDiamonds': 0,
-            'sixDiamonds': 0,
-            'fiveDiamonds': 0,
-            'fourDiamonds': 0,
-            'threeDiamonds': 0,
-            'twoDiamonds': 0,
-          },
-        },
-      })
+            'wins': 0,
+            'losses': 0,
+            'gamesPlayed': 0,
+            'splits': {
+              'splitRounds': 0,
+              'splitWins': 0,
+              'splitLosses': 0,
+            },
+            'balance': 0,
+            'starWarsDeckUnlocked': false,
+            'goldenDeckUnlocked': false,
+            'chosenDeck': 'Standard',
+            'drawnCards': {
+              'spades': {
+                'aceSpades': 0,
+                'kingSpades': 0,
+                'queenSpades': 0,
+                'jackSpades': 0,
+                'tenSpades': 0,
+                'nineSpades': 0,
+                'eightSpades': 0,
+                'sevenSpades': 0,
+                'sixSpades': 0,
+                'fiveSpades': 0,
+                'fourSpades': 0,
+                'threeSpades': 0,
+                'twoSpades': 0,
+              },
+              'clubs': {
+                'aceClubs': 0,
+                'kingClubs': 0,
+                'queenClubs': 0,
+                'jackClubs': 0,
+                'tenClubs': 0,
+                'nineClubs': 0,
+                'eightClubs': 0,
+                'sevenClubs': 0,
+                'sixClubs': 0,
+                'fiveClubs': 0,
+                'fourClubs': 0,
+                'threeClubs': 0,
+                'twoClubs': 0,
+              },
+              'hearts': {
+                'aceHearts': 0,
+                'kingHearts': 0,
+                'queenHearts': 0,
+                'jackHearts': 0,
+                'tenHearts': 0,
+                'nineHearts': 0,
+                'eightHearts': 0,
+                'sevenHearts': 0,
+                'sixHearts': 0,
+                'fiveHearts': 0,
+                'fourHearts': 0,
+                'threeHearts': 0,
+                'twoHearts': 0,
+              },
+              'diamonds': {
+                'aceDiamonds': 0,
+                'kingDiamonds': 0,
+                'queenDiamonds': 0,
+                'jackDiamonds': 0,
+                'tenDiamonds': 0,
+                'nineDiamonds': 0,
+                'eightDiamonds': 0,
+                'sevenDiamonds': 0,
+                'sixDiamonds': 0,
+                'fiveDiamonds': 0,
+                'fourDiamonds': 0,
+                'threeDiamonds': 0,
+                'twoDiamonds': 0,
+              },
+            },
+          })
           .then((value) => print('user stats generated'))
           .catchError((error) =>
-          print(error.toString())); //TODO: fixa riktig felhantering
+              print(error.toString())); //TODO: fixa riktig felhantering
     }
   }
 
@@ -246,191 +245,226 @@ class FirestoreImplementation extends ChangeNotifier {
               FieldValue.increment(1)
         })
         .then((value) => print('card updated'))
-        .catchError((error) => print(error.toString()));//TODO:riktig felhantering
+        .catchError(
+            (error) => print(error.toString())); //TODO:riktig felhantering
   }
 
-  void incrementGameCountAndWinOrLose({required bool split, required String splitWinOrLose, required String winOrLose, required String userId}){
+  void incrementGameCountAndWinOrLose(
+      {required bool split,
+      required String splitWinOrLose,
+      required String winOrLose,
+      required String userId}) {
     CollectionReference statistics = database.collection('Statistics');
-    if(!split) {
+    if (!split) {
       if (winOrLose == 'Win') {
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'wins': FieldValue.increment(1)
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'wins': FieldValue.increment(1)
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else if (winOrLose == 'Lose') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'losses': FieldValue.increment(1)
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
       }
-      else if (winOrLose == 'Lose') {
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'losses': FieldValue.increment(1)
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else {
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-    }
-    else{
-      if(winOrLose == 'Win' && splitWinOrLose == 'Win'){
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'wins': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-          'splits.splitWins':FieldValue.increment(1)
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else if(winOrLose == 'Win' && splitWinOrLose == 'Lose'){
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'wins': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-          'splits.splitLosses':FieldValue.increment(1)
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else if(winOrLose == 'Lose' && splitWinOrLose == 'Win'){
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'losses': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-          'splits.splitWins':FieldValue.increment(1)
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else if(winOrLose == 'Lose' && splitWinOrLose == 'Lose'){
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'losses': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-          'splits.splitLosses':FieldValue.increment(1)
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else if(winOrLose == 'Draw' && splitWinOrLose == 'Win'){
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-          'splits.splitWins':FieldValue.increment(1)
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else if(winOrLose == 'Draw' && splitWinOrLose == 'Lose'){
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-          'splits.splitLosses':FieldValue.increment(1)
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else if(winOrLose == 'Win' && splitWinOrLose == 'Draw'){
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'wins': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else if(winOrLose == 'Lose' && splitWinOrLose == 'Draw'){
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'losses': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
-      }
-      else{
-        statistics.doc(userId).update({
-          'gamesPlayed': FieldValue.increment(1),
-          'splits.splitRounds':FieldValue.increment(1),
-        }).then((value) => print('games played & wins updated'))
-            .catchError((error) =>
-            print(error.toString())); //TODO:riktig felhantering
+    } else {
+      if (winOrLose == 'Win' && splitWinOrLose == 'Win') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'wins': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+              'splits.splitWins': FieldValue.increment(1)
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else if (winOrLose == 'Win' && splitWinOrLose == 'Lose') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'wins': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+              'splits.splitLosses': FieldValue.increment(1)
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else if (winOrLose == 'Lose' && splitWinOrLose == 'Win') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'losses': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+              'splits.splitWins': FieldValue.increment(1)
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else if (winOrLose == 'Lose' && splitWinOrLose == 'Lose') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'losses': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+              'splits.splitLosses': FieldValue.increment(1)
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else if (winOrLose == 'Draw' && splitWinOrLose == 'Win') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+              'splits.splitWins': FieldValue.increment(1)
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else if (winOrLose == 'Draw' && splitWinOrLose == 'Lose') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+              'splits.splitLosses': FieldValue.increment(1)
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else if (winOrLose == 'Win' && splitWinOrLose == 'Draw') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'wins': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else if (winOrLose == 'Lose' && splitWinOrLose == 'Draw') {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'losses': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
+      } else {
+        statistics
+            .doc(userId)
+            .update({
+              'gamesPlayed': FieldValue.increment(1),
+              'splits.splitRounds': FieldValue.increment(1),
+            })
+            .then((value) => print('games played & wins updated'))
+            .catchError(
+                (error) => print(error.toString())); //TODO:riktig felhantering
       }
     }
   }
 
-  void changeBalance({required int change,required bool add ,required String userId}){
+  void changeBalance(
+      {required int change, required bool add, required String userId}) {
     CollectionReference statistics = database.collection('Statistics');
 
-    if(add) {
-      statistics.doc(userId).update({
-        'balance':FieldValue.increment(change)
-      }).then((value) => print('Balance updated'))
-          .catchError((error) =>
-          print(error.toString())); //TODO:riktig felhantering
+    if (add) {
+      statistics
+          .doc(userId)
+          .update({'balance': FieldValue.increment(change)})
+          .then((value) => print('Balance updated'))
+          .catchError(
+              (error) => print(error.toString())); //TODO:riktig felhantering
+    } else {
+      statistics
+          .doc(userId)
+          .update({'balance': FieldValue.increment(-change)})
+          .then((value) => print('balance decreased'))
+          .catchError(
+              (error) => print(error.toString())); //TODO:riktig felhantering
     }
-    else{
-      statistics.doc(userId).update({
-        'balance': FieldValue.increment(-change)
-      }).then((value) => print('balance decreased'))
-          .catchError((error) =>
-          print(error.toString())); //TODO:riktig felhantering
-    }
-
   }
 
-Future<String> getChosenDeckTheme({required String userId})async{
+  Future<String> getChosenDeckTheme({required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
     String returnString = 'Something went wrong';
 
-      await statistics.doc(userId).get().then((DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          try {
-            returnString = documentSnapshot['chosenDeck'];
-          }
-          on StateError catch (e){
-            print(e);
-          }
+    await statistics
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        try {
+          returnString = documentSnapshot['chosenDeck'];
+        } on StateError catch (e) {
+          print(e);
         }
-      });
+      }
+    });
 
-      return returnString;
-
+    return returnString;
   }
 
-  void changeDeckTheme({required String deck, required String userId}){//ändrar standardval på kortlekstema
+  void changeDeckTheme({required String deck, required String userId}) {
+    //ändrar standardval på kortlekstema
     CollectionReference statistics = database.collection('Statistics');
 
-    statistics.doc(userId).update({
-      'chosenDeck':deck
-    }).then((value) => print('chosen deck changed'))
-        .catchError((error) =>
-        print(error.toString())); //TODO:riktig felhantering
+    statistics
+        .doc(userId)
+        .update({'chosenDeck': deck})
+        .then((value) => print('chosen deck changed'))
+        .catchError(
+            (error) => print(error.toString())); //TODO:riktig felhantering
   }
 
-  Future<bool> getUnlockedDeck({required String deck, required String userId}) async {
+  Future<bool> getUnlockedDeck(
+      {required String deck, required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
     bool returnBool = false;
     String deckFieldValue = 'starWarsDeckUnlocked';
-    if(deck == 'StarWars'){
+    if (deck == 'StarWars') {
       deckFieldValue = 'starWarsDeckUnlocked';
-    }
-    else if(deck == 'Golden'){
+    } else if (deck == 'Golden') {
       deckFieldValue = 'goldenDeckUnlocked';
     }
 
-
-   await statistics.doc(userId).get().then((DocumentSnapshot documentSnapshot) {
+    await statistics
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         try {
           returnBool = documentSnapshot[deckFieldValue];
-        }
-        on StateError catch (e){
+        } on StateError catch (e) {
           print(e);
         }
       }
@@ -439,22 +473,108 @@ Future<String> getChosenDeckTheme({required String userId})async{
     return returnBool;
   }
 
-  void unlockDeck({required String deck, required String userId}){
+  void unlockDeck({required String deck, required String userId}) {
     CollectionReference statistics = database.collection('Statistics');
 
-    if(deck == 'StarWars'){
-      statistics.doc(userId).update({
-        'starWarsDeckUnlocked':true
-      }).then((value) => print('chosen deck changed'))
-          .catchError((error) =>
-          print(error.toString())); //TODO:riktig felhantering
-    }
-    else if(deck == 'Golden'){
-      statistics.doc(userId).update({
-        'goldenDeckUnlocked':true
-      }).then((value) => print('chosen deck changed'))
-          .catchError((error) =>
-          print(error.toString())); //TODO:riktig felhantering
+    if (deck == 'StarWars') {
+      statistics
+          .doc(userId)
+          .update({'starWarsDeckUnlocked': true})
+          .then((value) => print('chosen deck changed'))
+          .catchError(
+              (error) => print(error.toString())); //TODO:riktig felhantering
+    } else if (deck == 'Golden') {
+      statistics
+          .doc(userId)
+          .update({'goldenDeckUnlocked': true})
+          .then((value) => print('chosen deck changed'))
+          .catchError(
+              (error) => print(error.toString())); //TODO:riktig felhantering
     }
   }
+
+  Future<int> getGamesPlayed({required String userId}) async{
+    CollectionReference statistics = database.collection('Statistics');
+    int returnInt = 0;
+
+    await statistics
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        try {
+          returnInt = documentSnapshot['gamesPlayed'];
+        } on StateError catch (e) {
+          print(e);
+        }
+      }
+    });
+
+    return returnInt;
+
+  }
+
+  Future<int> getGamesWon({required String userId}) async{
+    CollectionReference statistics = database.collection('Statistics');
+    int returnInt = 0;
+
+    await statistics
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        try {
+          returnInt = documentSnapshot['wins'];
+        } on StateError catch (e) {
+          print(e);
+        }
+      }
+    });
+
+    return returnInt;
+
+  }
+
+  Future<int> getGamesLost({required String userId}) async{
+    CollectionReference statistics = database.collection('Statistics');
+    int returnInt = 0;
+
+    await statistics
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        try {
+          returnInt = documentSnapshot['losses'];
+        } on StateError catch (e) {
+          print(e);
+        }
+      }
+    });
+
+    return returnInt;
+
+  }
+
+  Future<dynamic> getDrawnCards({required String userId}) async {
+    CollectionReference statistics = database.collection('Statistics');
+    dynamic returnMap;
+
+    await statistics
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        try {
+          returnMap = documentSnapshot['spades']['clubs']['hearts']['diamonds'];
+        } on StateError catch (e) {
+          print(e);
+        }
+      }
+    });
+
+    return returnMap;
+  }
+
+
 }

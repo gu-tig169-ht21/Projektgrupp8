@@ -8,6 +8,7 @@ import 'package:my_first_app/firebase_options.dart';
 import 'package:my_first_app/how_to_play.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:my_first_app/start_page.dart';
+import 'package:my_first_app/statistics_provider.dart';
 import 'package:my_first_app/theme.dart';
 import 'package:provider/provider.dart';
 import 'settings_page.dart';
@@ -35,6 +36,7 @@ void main() async {
       ChangeNotifierProvider(
         create: (context) => FirestoreImplementation(),
       ),
+      ChangeNotifierProvider(create: (context) => StatisticsProvider()),
     ],
     child: const MainApp(),
   ));

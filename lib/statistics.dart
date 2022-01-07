@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:my_first_app/firebase_implementation.dart';
+import 'package:my_first_app/statistics_provider.dart';
 import 'dart:math';
 import 'card_themes.dart';
 import 'package:playing_cards/playing_cards.dart';
+import 'package:provider/provider.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({Key? key}) : super(key: key);
@@ -12,7 +15,16 @@ class Statistics extends StatefulWidget {
 }
 
 class _StatisticsState extends State<Statistics> {
-//lista där värdena som ska visas
+
+  @override
+  void initState() {
+    Provider.of<StatisticsProvider>(context, listen: false).setUpStatistics(context: context);
+    seriesList = _createRandomData();
+    super.initState();
+  }
+
+
+  //lista där värdena som ska visas
   late List<charts.Series> seriesList;
 
   static List<charts.Series<CommonCardChart, String>> _createRandomData() {
@@ -52,12 +64,6 @@ class _StatisticsState extends State<Statistics> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    seriesList = _createRandomData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +71,7 @@ class _StatisticsState extends State<Statistics> {
         centerTitle: true,
       ),
       body: Stack(children: [
-        titles(),
+        titles(context: context),
         //  _gamesWon(),
         //_gamesWonValue(),
         //  _playTime(),
@@ -83,15 +89,15 @@ class _StatisticsState extends State<Statistics> {
   }
 }
 
-Widget titles() {
-  return Row(children: const <Widget>[
+Widget titles({required BuildContext context}){
+  return Row(children: <Widget>[
     Expanded(
       child: SizedBox(
         width: 200,
         height: 50,
         child: Card(
           child: Text(
-            'Games won, \n 10',
+            'Games won, \n ${Provider.of<StatisticsProvider>(context, listen:true).getGamesWon}',
             textAlign: TextAlign.center,
           ),
         ),
@@ -103,7 +109,7 @@ Widget titles() {
         height: 50,
         child: Card(
           child: Text(
-            'Games played, \n 18',
+            'Games played, \n ${Provider.of<StatisticsProvider>(context, listen:true).getGamesPlayed}',
             textAlign: TextAlign.center,
           ),
         ),
@@ -115,7 +121,7 @@ Widget titles() {
         height: 50,
         child: Card(
           child: Text(
-            'Games lost, \n 8',
+            'Games lost, \n ${Provider.of<StatisticsProvider>(context, listen:true).getGamesLost}',
             textAlign: TextAlign.center,
           ),
         ),
@@ -123,6 +129,7 @@ Widget titles() {
     ),
   ]);
 }
+
 /*
 Widget values() {
   return Row(children: const <Widget>[
