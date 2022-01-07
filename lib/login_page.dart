@@ -66,8 +66,6 @@ class _LoginPageState extends State<LoginPage> {
         child: TextField(
           controller: passwordController,
           decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            icon: Icon(Icons.password),
             labelText: 'Password',
           ),
         ),
