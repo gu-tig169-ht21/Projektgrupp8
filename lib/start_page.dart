@@ -1,4 +1,3 @@
-
 import 'package:my_first_app/card_customization.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:my_first_app/game_page.dart';
@@ -35,7 +34,7 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-  //Widget för bakgrundsbilden
+  //widget för bakgrundsbilden
   Widget _image() {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 1,
@@ -47,7 +46,7 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-//Widget för att fadea bilden
+//widget för att fadea bilden
   Widget _container() {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
@@ -69,69 +68,72 @@ class _StartPageState extends State<StartPage> {
 //Widget för play knapp
   Widget _playButton() {
     return Align(
-        alignment: const Alignment(0, -0.3),
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.1,
-          child: ElevatedButton(
-            child: const Text('PLAY NOW'),
-            onPressed: () {
-              Provider.of<FirestoreImplementation>(context, listen: false)
-                  .createNewUsrStat(
-                      userId: Provider.of<FirebaseAuthImplementation>(context,
-                              listen: false)
-                          .getUserId()!);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const GamePage(),
-                ),
-              );
-            },
-          ),
-        ));
+      alignment: const Alignment(0, -0.3),
+      child: FractionallySizedBox(
+        widthFactor: 0.6,
+        heightFactor: 0.1,
+        child: ElevatedButton(
+          child: const Text('PLAY NOW'),
+          onPressed: () {
+            Provider.of<FirestoreImplementation>(context, listen: false)
+                .createNewUsrStat(
+                    userId: Provider.of<FirebaseAuthImplementation>(context,
+                            listen: false)
+                        .getUserId()!);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const GamePage(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   //Widget för hjälp/how to play knapp
   Widget _howToPlayButton() {
     return Align(
-        alignment: const Alignment(0, 0.10),
-        child: FractionallySizedBox(
-          widthFactor: 0.6,
-          heightFactor: 0.1,
-          child: ElevatedButton(
-            child: const Text('HOW TO PLAY'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HelpPage(),
-                ),
-              );
-            },
-          ),
-        ));
+      alignment: const Alignment(0, 0.10),
+      child: FractionallySizedBox(
+        widthFactor: 0.6,
+        heightFactor: 0.1,
+        child: ElevatedButton(
+          child: const Text('HOW TO PLAY'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HelpPage(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   //Widget för statistik knapp
   Widget _statisticsButton() {
     return Align(
-        alignment: const Alignment(0, 0.5),
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.1,
-          child: ElevatedButton(
-            child: const Text('STATISTICS'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Statistics(),
-                ),
-              );
-            },
-          ),
-        ));
+      alignment: const Alignment(0, 0.5),
+      child: FractionallySizedBox(
+        widthFactor: 0.6,
+        heightFactor: 0.1,
+        child: ElevatedButton(
+          child: const Text('STATISTICS'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Statistics(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   //widget för inställningsikon
@@ -139,7 +141,7 @@ class _StartPageState extends State<StartPage> {
     return Align(
       alignment: const Alignment(1.5, 0.89),
       child: FractionallySizedBox(
-        widthFactor: 0.5,
+        widthFactor: 0.6,
         heightFactor: 0.1,
         child: IconButton(
           icon: const Icon(Icons.settings),
@@ -157,20 +159,23 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
+//Widget för profilikonen
   Widget _userIcon() {
     return Align(
         alignment: const Alignment(-1.5, 0.89),
         child: FractionallySizedBox(
-          widthFactor: 0.5,
+          widthFactor: 0.6,
           heightFactor: 0.1,
           child: IconButton(
             icon: const Icon(Icons.portrait_rounded),
             iconSize: 50,
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileInformation()));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileInformation(),
+                ),
+              );
             },
           ),
         ));
