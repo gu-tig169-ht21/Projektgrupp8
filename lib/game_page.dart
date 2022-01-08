@@ -194,6 +194,7 @@ class _GamePageState extends State<GamePage> {
                               .stop(playerOrDealerOrSplit: 'Player');
                           Provider.of<BlackJack>(context, listen: false).setSplitTurn = true;
                           if(Provider.of<BlackJack>(context, listen: false).getSplitStop){
+                            print('dealers turn splitstop');
                             Provider.of<BlackJack>(context, listen: false).dealersTurn();
                           }
                         } else if (Provider.of<BlackJack>(context,
@@ -285,6 +286,7 @@ class _GamePageState extends State<GamePage> {
                     Provider.of<BlackJack>(context, listen: false).getSplitTurn
                         ? const Icon(Icons.arrow_downward_sharp)
                         : const SizedBox.shrink(),
+                    Text(Provider.of<BlackJack>(context, listen: false).handCheckToString(playerOrSplit: 'Split')),
                     Consumer<BlackJack>(
                         builder: (context, state, child) => getHand(
                             Provider.of<BlackJack>(context, listen: false)
@@ -300,6 +302,7 @@ class _GamePageState extends State<GamePage> {
                     Provider.of<BlackJack>(context, listen: false).getSplitTurn
                         ? const SizedBox.shrink()
                         : const Icon(Icons.arrow_downward_sharp),
+                    Text(Provider.of<BlackJack>(context, listen: false).handCheckToString(playerOrSplit: 'Player')),
                     (Consumer<BlackJack>(
                         builder: (context, state, child) => getHand(
                             Provider.of<BlackJack>(context, listen: false)
@@ -459,7 +462,7 @@ class _GamePageState extends State<GamePage> {
                 child: const Text('Ok'))
           ],
         );
-      } else if (winOrLosePlayer == 'Lose' && winOrLoseSplit == 'win') {
+      } else if (winOrLosePlayer == 'Lose' && winOrLoseSplit == 'Win') {
         return AlertDialog(
           title: const Text('Congratulations!'),
           content: const Text('You Lost on the playerhand but won the split!'),
