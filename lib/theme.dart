@@ -5,6 +5,13 @@ import 'package:flutter/material.dart';
 class ThemeCustom {
   static ThemeData get StandardTheme {
     return ThemeData(
+      textTheme: const TextTheme(
+        bodyText1: TextStyle(),
+        bodyText2: TextStyle(),
+        headline6: TextStyle(),
+      ).apply(
+        bodyColor: Colors.black,
+      ),
       primaryColor: Colors.green.shade800,
       scaffoldBackgroundColor: Colors.white,
       elevatedButtonTheme: ElevatedButtonThemeData(
