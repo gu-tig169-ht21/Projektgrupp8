@@ -32,8 +32,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _logInTitle() {
-    return const Align(
-      alignment: Alignment(0, -0.8),
+    return const Padding(
+      padding: EdgeInsets.only(left: 75, right: 0, top: 30, bottom: 0),
       child: Text(
         'Blackjack',
         style: TextStyle(fontSize: 60),
@@ -42,43 +42,40 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _textEmail() {
-    return Align(
-      alignment: const Alignment(0, -0.4),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: TextField(
-          controller: emailController,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            icon: Icon(Icons.email),
-            labelText: 'Email',
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 175, bottom: 0),
+      child: TextField(
+        controller: emailController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          icon: Icon(Icons.email),
+          labelText: 'Email',
         ),
       ),
     );
   }
 
   Widget _textPassword() {
-    return Align(
-      alignment: const Alignment(0, -0.15),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: TextField(
-          controller: passwordController,
-          decoration: const InputDecoration(
-            labelText: 'Password',
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 250, bottom: 0),
+      child: TextField(
+        obscureText: true,
+        controller: passwordController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          icon: Icon(Icons.password),
+          labelText: 'Password',
         ),
       ),
     );
   }
 
   Widget _loginButton() {
-    return Align(
-      alignment: const Alignment(0, 0.17),
+    return Padding(
+      padding: const EdgeInsets.only(left: 130, right: 0, top: 350, bottom: 0),
       child: FractionallySizedBox(
-        widthFactor: 0.4,
-        heightFactor: 0.07,
+        widthFactor: 0.5,
+        heightFactor: 0.15,
         child: ElevatedButton(
           child: const Text('Log in'),
           onPressed: () {
@@ -110,12 +107,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _registerText() {
-    return Align(
-      alignment: const Alignment(0, 0.9),
+    return Padding(
+      padding: const EdgeInsets.only(left: 130, right: 0, top: 600),
       child: RichText(
         text: TextSpan(
           children: [
-            const TextSpan(text: 'New user? '),
+            const TextSpan(
+                text: 'New user? ', style: TextStyle(color: Colors.black)),
             TextSpan(
                 text: 'Create account',
                 style: const TextStyle(color: Colors.blue),
