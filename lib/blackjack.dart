@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/firebase_implementation.dart';
+import 'package:my_first_app/settings_page.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 import 'deck_of_cards.dart';
@@ -24,6 +25,7 @@ class BlackJack extends ChangeNotifier {
   int splitBet = 0;
   bool doubled = false;
   bool split = false;
+  bool splitTurn = false;
   String winCondition = 'NoWinnerYet';
   String splitWinCondition = 'NoWinnerYet';
   bool dealerCardShown = false;
@@ -40,6 +42,19 @@ class BlackJack extends ChangeNotifier {
 
     startingHands();
   }
+
+  bool get getPlayerStop {
+    return playerStop;
+  }
+
+  bool get getSplitStop {
+    return splitStop;
+  }
+
+  bool get getDealerStop {
+    return dealerStop;
+  }
+
   int get getRounds {
     return rounds;
   }
@@ -96,6 +111,15 @@ class BlackJack extends ChangeNotifier {
     return balance;
   }
 
+  bool get getSplitTurn {
+    return splitTurn;
+  }
+
+  set setSplitTurn(bool value) {
+    splitTurn = value;
+    notifyListeners();
+  }
+
   set setCanBet(bool value) {
     canBet = value;
     notifyListeners();
@@ -116,6 +140,38 @@ class BlackJack extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addDecks(String a) {
+    int decks = int.parse(a);
+    if (decks == 1) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else if (decks == 2) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else if (decks == 3) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else if (decks == 4) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else if (decks == 5) {
+      deck.clear();
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+      deck.addAll(standardFiftyTwoCardDeck());
+    } else {
+      deck = standardFiftyTwoCardDeck();
+    }
+  }
+
   void setUpNewGame() {
     //resettar alla variabler till defaultvärdet och drar nya kort
     resetDeck();
@@ -123,6 +179,7 @@ class BlackJack extends ChangeNotifier {
     playerBet = 0;
     splitBet = 0;
     dealerStop = false;
+    splitStop = false;
     playerStop = false;
     doubled = false;
     split = false;
@@ -155,7 +212,7 @@ class BlackJack extends ChangeNotifier {
     rounds++;
   }
 
-  void showDealercard() {
+  void showDealerCard() {
     //ändrar dealerCardsShown till true
     dealerCardShown = true;
     notifyListeners();
@@ -172,19 +229,28 @@ class BlackJack extends ChangeNotifier {
   void startingHands() {
     //drar de första korten för dealrn och spelaren
     PlayingCard card = DeckOfCards().pickACard(deck);
+    PlayingCard dummyCard = card;
     playerHand.add(card);
     deck.removeWhere((element) => element == card);
-    card = DeckOfCards().pickACard(deck);
-    dealerHand.add(card);
-    deck.removeWhere((element) => element == card);
-    card = DeckOfCards().pickACard(deck);
-    playerHand.add(card);
-    deck.removeWhere((element) => element == card);
+
     card = DeckOfCards().pickACard(deck);
     dealerHand.add(card);
     deck.removeWhere((element) => element == card);
 
-    blackJackOrBustCheck(playerOrSplit: 'Player');
+    //card = DeckOfCards().pickACard(deck);
+    card = dummyCard;
+    playerHand.add(card);
+    deck.removeWhere((element) => element == card);
+
+    card = DeckOfCards().pickACard(deck);
+    dealerHand.add(card);
+    deck.removeWhere((element) => element == card);
+
+    if (handCheck(playerOrSplit: 'Player')) {
+      stop(playerOrDealerOrSplit: 'Player');
+      dealersTurn();
+      winOrLose(playerOrSplit: 'Player');
+    }
 
     notifyListeners();
   }
@@ -198,7 +264,7 @@ class BlackJack extends ChangeNotifier {
   void dealersTurn() {
     //funktionen för dealerns tur
     PlayingCard card;
-    showDealercard();
+    showDealerCard();
     while (DeckOfCards().handValue(dealerHand) < 17) {
       //dealern drar kort till summan är över 17
       card = DeckOfCards().pickACard(deck);
@@ -347,7 +413,6 @@ class BlackJack extends ChangeNotifier {
   void testingDouble() {
     if (balance >= playerBet) {
       canDouble = true;
-
       notifyListeners();
     } else {
       canDouble = false;
@@ -397,6 +462,23 @@ class BlackJack extends ChangeNotifier {
       splitHand.add(card);
       deck.removeWhere((element) => element == card);
       split = true;
+
+      if (handCheck(playerOrSplit: 'Player') &&
+          handCheck(playerOrSplit: 'Split')) {
+        stop(playerOrDealerOrSplit: 'Player');
+        stop(playerOrDealerOrSplit: 'Split');
+        dealersTurn();
+        winOrLose(playerOrSplit: 'Player');
+        winOrLose(playerOrSplit: 'Split');
+      } else if (handCheck(playerOrSplit: 'Player')) {
+        stop(playerOrDealerOrSplit: 'Player');
+        winOrLose(playerOrSplit: 'Player');
+        setSplitTurn = true;
+      } else if (handCheck(playerOrSplit: 'Split')) {
+        stop(playerOrDealerOrSplit: 'Split');
+        winOrLose(playerOrSplit: 'Split');
+      }
+
       notifyListeners();
     } else {
       canSplit = false;
@@ -411,42 +493,42 @@ class BlackJack extends ChangeNotifier {
     if (playerOrSplit == 'Player') {
       playerScore = DeckOfCards().handValue(playerHand);
       if (dealerScore == 21 && playerScore == 21) {
-        showDealercard();
+        split ? null : showDealerCard();
         //båda har blackjack
         winCondition = 'Draw';
         notifyListeners();
       } else if (dealerScore == 21 && playerScore != 21) {
-        showDealercard();
+        split ? null : showDealerCard();
         //dealern har blackjack
         winCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore != 21 && playerScore == 21) {
-        showDealercard();
+        split ? null : showDealerCard();
         //spelaren har blackjack
         winCondition = 'Win';
         notifyListeners();
       } else if (playerScore > 21) {
-        showDealercard();
+        split ? null : showDealerCard();
         //spelaren blev tjock
         winCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore > 21) {
-        showDealercard();
+        split ? null : showDealerCard();
         //dealern blev tjock
         winCondition = 'Win';
         notifyListeners();
       } else if (dealerScore == playerScore) {
-        showDealercard();
+        split ? null : showDealerCard();
         //båda fick samma poäng
         winCondition = 'Draw';
         notifyListeners();
       } else if (playerScore > dealerScore) {
-        showDealercard();
+        split ? null : showDealerCard();
         //spelaren fick mer poäng
         winCondition = 'Win';
         notifyListeners();
       } else if (playerScore < dealerScore) {
-        showDealercard();
+        split ? null : showDealerCard();
         //dealern fick mer poäng
         winCondition = 'Lose';
         notifyListeners();
@@ -456,50 +538,90 @@ class BlackJack extends ChangeNotifier {
     } else if (playerOrSplit == 'Split') {
       playerScore = DeckOfCards().handValue(splitHand);
       if (dealerScore == 21 && playerScore == 21) {
-        showDealercard();
+        showDealerCard();
         //båda har blackjack
         splitWinCondition = 'Draw';
         notifyListeners();
       } else if (dealerScore == 21 && playerScore != 21) {
-        showDealercard();
+        showDealerCard();
         //dealern har blackjack
         splitWinCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore != 21 && playerScore == 21) {
-        showDealercard();
+        showDealerCard();
         //spelaren har blackjack
         splitWinCondition = 'Win';
         notifyListeners();
       } else if (playerScore > 21) {
-        showDealercard();
+        showDealerCard();
         //spelaren blev tjock
         splitWinCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore > 21) {
-        showDealercard();
+        showDealerCard();
         //dealern blev tjock
         splitWinCondition = 'Win';
         notifyListeners();
       } else if (dealerScore == playerScore) {
-        showDealercard();
+        showDealerCard();
         //båda fick samma poäng
         splitWinCondition = 'Draw';
         notifyListeners();
       } else if (playerScore > dealerScore) {
-        showDealercard();
+        showDealerCard();
         //spelaren fick mer poäng
         splitWinCondition = 'Win';
         notifyListeners();
       } else if (playerScore < dealerScore) {
-        showDealercard();
+        showDealerCard();
         //dealern fick mer poäng
         splitWinCondition = 'Lose';
         notifyListeners();
       } else {
         splitWinCondition = 'NoWinnerYet';
+        notifyListeners();
       }
     } else {
       throw Exception('Didnt choose hand');
+    }
+  }
+
+String handCheckToString({required String playerOrSplit}){
+    int playerScore;
+    if (playerOrSplit == 'Player') {
+      playerScore = DeckOfCards().handValue(playerHand);
+    } else if (playerOrSplit == 'Split') {
+      playerScore = DeckOfCards().handValue(splitHand);
+    } else {
+      playerScore = DeckOfCards().handValue(playerHand);
+    }
+
+    if (playerScore == 21) {
+      return 'BlackJack!';
+    } else if (playerScore > 21) {
+      return 'Bust!';
+    } else {
+      return '';
+    }
+
+}
+
+  bool handCheck({required String playerOrSplit}) {
+    int playerScore;
+    if (playerOrSplit == 'Player') {
+      playerScore = DeckOfCards().handValue(playerHand);
+    } else if (playerOrSplit == 'Split') {
+      playerScore = DeckOfCards().handValue(splitHand);
+    } else {
+      playerScore = DeckOfCards().handValue(playerHand);
+    }
+
+    if (playerScore == 21) {
+      return true;
+    } else if (playerScore > 21) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -540,27 +662,27 @@ class BlackJack extends ChangeNotifier {
     } else if (playerOrSplit == 'Player') {
       playerScore = DeckOfCards().handValue(playerHand);
       if (dealerScore == 21 && playerScore == 21) {
-        showDealercard();
+        showDealerCard();
         //båda har blackjack
         winCondition = 'Draw';
         notifyListeners();
       } else if (dealerScore == 21 && playerScore != 21) {
         //dealern har blackjack
-        showDealercard();
+        showDealerCard();
         winCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore != 21 && playerScore == 21) {
-        showDealercard();
+        showDealerCard();
         //spelaren har blackjack
         winCondition = 'Win';
         notifyListeners();
       } else if (playerScore > 21) {
-        showDealercard();
+        showDealerCard();
         //spelaren blev tjock
         winCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore > 21) {
-        showDealercard();
+        showDealerCard();
         //dealern blev tjock
         winCondition = 'Win';
         notifyListeners();
@@ -571,27 +693,27 @@ class BlackJack extends ChangeNotifier {
     } else if (playerOrSplit == 'Split') {
       playerScore = DeckOfCards().handValue(splitHand);
       if (dealerScore == 21 && playerScore == 21) {
-        showDealercard();
+        showDealerCard();
         //båda har blackjack
         splitWinCondition = 'Draw';
         notifyListeners();
       } else if (dealerScore == 21 && playerScore != 21) {
         //dealern har blackjack
-        showDealercard();
+        showDealerCard();
         splitWinCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore != 21 && playerScore == 21) {
-        showDealercard();
+        showDealerCard();
         //spelaren har blackjack
         splitWinCondition = 'Win';
         notifyListeners();
       } else if (playerScore > 21) {
-        showDealercard();
+        showDealerCard();
         //spelaren blev tjock
         splitWinCondition = 'Lose';
         notifyListeners();
       } else if (dealerScore > 21) {
-        showDealercard();
+        showDealerCard();
         //dealern blev tjock
         splitWinCondition = 'Win';
         notifyListeners();

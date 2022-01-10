@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/blackjack.dart';
 import 'package:provider/provider.dart';
 import 'rules.dart';
 
@@ -33,7 +34,7 @@ class _HelpPageState extends State<HelpPage> {
           //appbar med en dropdownbutton
           title: DropdownButton(
             iconSize: 40,
-            iconEnabledColor: Colors.white,
+            iconEnabledColor: Colors.black,
             style: const TextStyle(fontSize: 20),
             value:
                 Provider.of<HowToPlay>(context, listen: false).getChosenChapter,

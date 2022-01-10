@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_first_app/blackjack.dart';
+import 'package:my_first_app/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 
@@ -45,17 +46,55 @@ class PlayingCardsProvider extends ChangeNotifier {
     return playingcardThemeMode;
   }
 
-  void setDeckUnlocked(String starWarsOrGolden) {
+  Future<void> setUpCardThemes({required BuildContext context}) async {
+    //TODO: ersätt denna provider med firestore, skulle antagligen funka utan detta nu när firestore är async
+    changePlayingCardsThemes(
+        style:
+            await Provider.of<FirestoreImplementation>(context, listen: false)
+                .getChosenDeckTheme(
+                    userId: Provider.of<FirebaseAuthImplementation>(context,
+                            listen: false)
+                        .getUserId()!),
+        context: context);
+
+    starWarsDeckUnlocked = await Provider.of<FirestoreImplementation>(context,
+            listen: false)
+        .getUnlockedDeck(
+            deck: 'StarWars',
+            userId:
+                Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                    .getUserId()!);
+
+    goldenDeckUnlocked = await Provider.of<FirestoreImplementation>(context,
+            listen: false)
+        .getUnlockedDeck(
+            deck: 'Golden',
+            userId:
+                Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                    .getUserId()!);
+  }
+
+  void setDeckUnlocked(
+      {required String starWarsOrGolden, required BuildContext context}) {
     if (starWarsOrGolden == 'StarWars') {
+      Provider.of<FirestoreImplementation>(context, listen: false).unlockDeck(
+          deck: starWarsOrGolden,
+          userId:
+              Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                  .getUserId()!);
       starWarsDeckUnlocked = true;
-      notifyListeners();
     } else if (starWarsOrGolden == 'Golden') {
+      Provider.of<FirestoreImplementation>(context, listen: false).unlockDeck(
+          deck: starWarsOrGolden,
+          userId:
+              Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                  .getUserId()!);
       goldenDeckUnlocked = true;
-      notifyListeners();
     }
   }
 
-  bool getDeckUnlocked(String starWarsOrGolden) {
+  bool getDeckUnlocked(
+      {required String starWarsOrGolden, required BuildContext context}) {
     if (starWarsOrGolden == 'StarWars') {
       return starWarsDeckUnlocked;
     } else if (starWarsOrGolden == 'Golden') {
@@ -66,16 +105,35 @@ class PlayingCardsProvider extends ChangeNotifier {
   }
 
   //if-sats som bestämmer kort-temat utifrån scrollvyn
-  void changePlayingCardsThemes(String style) {
+  void changePlayingCardsThemes(
+      {required String style, required BuildContext context}) {
     if (style == 'Standard') {
+      Provider.of<FirestoreImplementation>(context, listen: false)
+          .changeDeckTheme(
+              deck: style,
+              userId: Provider.of<FirebaseAuthImplementation>(context,
+                      listen: false)
+                  .getUserId()!);
       playingcardThemeMode = PlayingCardsThemes.standardStyle;
       cardStyleString = style;
       notifyListeners();
     } else if (style == 'StarWars') {
+      Provider.of<FirestoreImplementation>(context, listen: false)
+          .changeDeckTheme(
+              deck: style,
+              userId: Provider.of<FirebaseAuthImplementation>(context,
+                      listen: false)
+                  .getUserId()!);
       playingcardThemeMode = PlayingCardsThemes.starWarsStyle;
       cardStyleString = style;
       notifyListeners();
     } else if (style == 'Golden') {
+      Provider.of<FirestoreImplementation>(context, listen: false)
+          .changeDeckTheme(
+              deck: style,
+              userId: Provider.of<FirebaseAuthImplementation>(context,
+                      listen: false)
+                  .getUserId()!);
       playingcardThemeMode = PlayingCardsThemes.goldenStyle;
       cardStyleString = style;
       notifyListeners();
