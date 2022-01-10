@@ -7,6 +7,7 @@ import 'package:my_first_app/deck_of_cards.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'blackjack.dart';
 
 class FirebaseAuthImplementation extends ChangeNotifier {
   FirebaseAuthImplementation() {
@@ -55,7 +56,6 @@ class FirebaseAuthImplementation extends ChangeNotifier {
       throw Exception(e);
     }
   }
-//TODO: skicka verifikationsmejl till nya användare
 
   void logIn({required String email, required String password}) async {
     //funktion för att logga in en användare
@@ -82,13 +82,10 @@ class FirebaseAuthImplementation extends ChangeNotifier {
     String? email = _auth.currentUser?.email;
 
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email!, password: password);
+      await _auth.signInWithEmailAndPassword(email: email!, password: password);
 
-      _auth.currentUser!.delete().then((_) {
-        print('user deleted'); //TODO: felutskrift
-      }).catchError((error) {
-        print('Deletion not completed: ' + error.toString());
+      _auth.currentUser!.delete().then((_) {}).catchError((e) {
+        throw Exception(e);
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
@@ -103,13 +100,13 @@ class FirebaseAuthImplementation extends ChangeNotifier {
     String? email = _auth.currentUser?.email;
 
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email!, password: password);
+      await _auth.signInWithEmailAndPassword(email: email!, password: password);
 
-      _auth.currentUser?.updatePassword(newPassword).then((_) {
-        print('succesully changes password');
-      }).catchError((error) {
-        print('password cant be changed: ' + error.toString());
+      _auth.currentUser
+          ?.updatePassword(newPassword)
+          .then((_) {})
+          .catchError((e) {
+        throw Exception(e);
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -122,10 +119,13 @@ class FirebaseAuthImplementation extends ChangeNotifier {
 
   void reauthenticateUser(
       {required String email, required String password}) async {
-    //TODO: lägg till try här med
-    AuthCredential credential =
-        EmailAuthProvider.credential(email: email, password: password);
-    await _auth.currentUser!.reauthenticateWithCredential(credential);
+    try {
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e);
+    }
   }
 }
 
@@ -137,7 +137,6 @@ class FirestoreImplementation extends ChangeNotifier {
 
   Future<void> init() async {
     database = FirebaseFirestore.instance;
-    //TODO: implementation av firestore
   }
 
   FirebaseFirestore database = FirebaseFirestore.instance;
@@ -149,104 +148,93 @@ class FirestoreImplementation extends ChangeNotifier {
     final snapShot = await statistics.doc(userId).get();
 
     if (snapShot.exists) {
-      print('document already exists');
     } else {
-      await statistics
-          .doc(userId)
-          .set({
-            'wins': 0,
-            'losses': 0,
-            'gamesPlayed': 0,
-            'splits': {
-              'splitRounds': 0,
-              'splitWins': 0,
-              'splitLosses': 0,
-            },
-            'balance': 0,
-            'starWarsDeckUnlocked': false,
-            'goldenDeckUnlocked': false,
-            'chosenDeck': 'Standard',
-            'drawnCards': {
-              'spades': {
-                'aceSpades': 0,
-                'kingSpades': 0,
-                'queenSpades': 0,
-                'jackSpades': 0,
-                'tenSpades': 0,
-                'nineSpades': 0,
-                'eightSpades': 0,
-                'sevenSpades': 0,
-                'sixSpades': 0,
-                'fiveSpades': 0,
-                'fourSpades': 0,
-                'threeSpades': 0,
-                'twoSpades': 0,
-              },
-              'clubs': {
-                'aceClubs': 0,
-                'kingClubs': 0,
-                'queenClubs': 0,
-                'jackClubs': 0,
-                'tenClubs': 0,
-                'nineClubs': 0,
-                'eightClubs': 0,
-                'sevenClubs': 0,
-                'sixClubs': 0,
-                'fiveClubs': 0,
-                'fourClubs': 0,
-                'threeClubs': 0,
-                'twoClubs': 0,
-              },
-              'hearts': {
-                'aceHearts': 0,
-                'kingHearts': 0,
-                'queenHearts': 0,
-                'jackHearts': 0,
-                'tenHearts': 0,
-                'nineHearts': 0,
-                'eightHearts': 0,
-                'sevenHearts': 0,
-                'sixHearts': 0,
-                'fiveHearts': 0,
-                'fourHearts': 0,
-                'threeHearts': 0,
-                'twoHearts': 0,
-              },
-              'diamonds': {
-                'aceDiamonds': 0,
-                'kingDiamonds': 0,
-                'queenDiamonds': 0,
-                'jackDiamonds': 0,
-                'tenDiamonds': 0,
-                'nineDiamonds': 0,
-                'eightDiamonds': 0,
-                'sevenDiamonds': 0,
-                'sixDiamonds': 0,
-                'fiveDiamonds': 0,
-                'fourDiamonds': 0,
-                'threeDiamonds': 0,
-                'twoDiamonds': 0,
-              },
-            },
-          })
-          .then((value) => print('user stats generated'))
-          .catchError((error) =>
-              print(error.toString())); //TODO: fixa riktig felhantering
+      await statistics.doc(userId).set({
+        'wins': 0,
+        'losses': 0,
+        'gamesPlayed': 0,
+        'splits': {
+          'splitRounds': 0,
+          'splitWins': 0,
+          'splitLosses': 0,
+        },
+        'balance': 0,
+        'starWarsDeckUnlocked': false,
+        'goldenDeckUnlocked': false,
+        'chosenDeck': 'Standard',
+        'drawnCards': {
+          'spades': {
+            'aceSpades': 0,
+            'kingSpades': 0,
+            'queenSpades': 0,
+            'jackSpades': 0,
+            'tenSpades': 0,
+            'nineSpades': 0,
+            'eightSpades': 0,
+            'sevenSpades': 0,
+            'sixSpades': 0,
+            'fiveSpades': 0,
+            'fourSpades': 0,
+            'threeSpades': 0,
+            'twoSpades': 0,
+          },
+          'clubs': {
+            'aceClubs': 0,
+            'kingClubs': 0,
+            'queenClubs': 0,
+            'jackClubs': 0,
+            'tenClubs': 0,
+            'nineClubs': 0,
+            'eightClubs': 0,
+            'sevenClubs': 0,
+            'sixClubs': 0,
+            'fiveClubs': 0,
+            'fourClubs': 0,
+            'threeClubs': 0,
+            'twoClubs': 0,
+          },
+          'hearts': {
+            'aceHearts': 0,
+            'kingHearts': 0,
+            'queenHearts': 0,
+            'jackHearts': 0,
+            'tenHearts': 0,
+            'nineHearts': 0,
+            'eightHearts': 0,
+            'sevenHearts': 0,
+            'sixHearts': 0,
+            'fiveHearts': 0,
+            'fourHearts': 0,
+            'threeHearts': 0,
+            'twoHearts': 0,
+          },
+          'diamonds': {
+            'aceDiamonds': 0,
+            'kingDiamonds': 0,
+            'queenDiamonds': 0,
+            'jackDiamonds': 0,
+            'tenDiamonds': 0,
+            'nineDiamonds': 0,
+            'eightDiamonds': 0,
+            'sevenDiamonds': 0,
+            'sixDiamonds': 0,
+            'fiveDiamonds': 0,
+            'fourDiamonds': 0,
+            'threeDiamonds': 0,
+            'twoDiamonds': 0,
+          },
+        },
+      }).catchError((e) => throw Exception(e));
     }
   }
 
   void incrementCardInDB({required PlayingCard card, required String userId}) {
     CollectionReference statistics = database.collection('Statistics');
 
-    statistics
-        .doc(userId)
-        .update({
-          'drawnCards.${DeckOfCards().suitToString(card)}.${DeckOfCards().cardToString(card)}':
-              FieldValue.increment(1)
-        })
-        .then((value) => print('card updated'))
-        .catchError(
-            (error) => print(error.toString())); //TODO:riktig felhantering
+    statistics.doc(userId).update({
+      'drawnCards.${DeckOfCards().suitToString(card)}.${DeckOfCards().cardToString(card)}':
+          FieldValue.increment(1)
+    }).catchError((e) => throw Exception(e));
   }
 
   void incrementGameCountAndWinOrLose(
@@ -257,138 +245,78 @@ class FirestoreImplementation extends ChangeNotifier {
     CollectionReference statistics = database.collection('Statistics');
     if (!split) {
       if (winOrLose == 'Win') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'wins': FieldValue.increment(1)
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'wins': FieldValue.increment(1)
+        }).catchError((e) => throw Exception(e));
       } else if (winOrLose == 'Lose') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'losses': FieldValue.increment(1)
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'losses': FieldValue.increment(1)
+        }).catchError((e) => throw Exception(e));
       } else {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+        }).catchError((e) => throw Exception(e));
       }
     } else {
       if (winOrLose == 'Win' && splitWinOrLose == 'Win') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'wins': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-              'splits.splitWins': FieldValue.increment(1)
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'wins': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+          'splits.splitWins': FieldValue.increment(1)
+        }).catchError((e) => throw Exception(e));
       } else if (winOrLose == 'Win' && splitWinOrLose == 'Lose') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'wins': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-              'splits.splitLosses': FieldValue.increment(1)
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'wins': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+          'splits.splitLosses': FieldValue.increment(1)
+        }).catchError((e) => throw Exception(e));
       } else if (winOrLose == 'Lose' && splitWinOrLose == 'Win') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'losses': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-              'splits.splitWins': FieldValue.increment(1)
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'losses': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+          'splits.splitWins': FieldValue.increment(1)
+        }).catchError((e) => throw Exception(e));
       } else if (winOrLose == 'Lose' && splitWinOrLose == 'Lose') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'losses': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-              'splits.splitLosses': FieldValue.increment(1)
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'losses': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+          'splits.splitLosses': FieldValue.increment(1)
+        }).catchError((e) => throw Exception(e));
       } else if (winOrLose == 'Draw' && splitWinOrLose == 'Win') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-              'splits.splitWins': FieldValue.increment(1)
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+          'splits.splitWins': FieldValue.increment(1)
+        }).catchError((e) => throw Exception(e));
       } else if (winOrLose == 'Draw' && splitWinOrLose == 'Lose') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-              'splits.splitLosses': FieldValue.increment(1)
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+          'splits.splitLosses': FieldValue.increment(1)
+        }).catchError((e) => throw Exception(e));
       } else if (winOrLose == 'Win' && splitWinOrLose == 'Draw') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'wins': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'wins': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+        }).catchError((e) => throw Exception(e));
       } else if (winOrLose == 'Lose' && splitWinOrLose == 'Draw') {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'losses': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'losses': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+        }).catchError((e) => throw Exception(e));
       } else {
-        statistics
-            .doc(userId)
-            .update({
-              'gamesPlayed': FieldValue.increment(1),
-              'splits.splitRounds': FieldValue.increment(1),
-            })
-            .then((value) => print('games played & wins updated'))
-            .catchError(
-                (error) => print(error.toString())); //TODO:riktig felhantering
+        statistics.doc(userId).update({
+          'gamesPlayed': FieldValue.increment(1),
+          'splits.splitRounds': FieldValue.increment(1),
+        }).catchError((e) => throw Exception(e));
       }
     }
   }
@@ -400,17 +328,13 @@ class FirestoreImplementation extends ChangeNotifier {
     if (add) {
       statistics
           .doc(userId)
-          .update({'balance': FieldValue.increment(change)})
-          .then((value) => print('Balance updated'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
+          .update({'balance': FieldValue.increment(change)}).catchError(
+              (e) => throw Exception(e));
     } else {
       statistics
           .doc(userId)
-          .update({'balance': FieldValue.increment(-change)})
-          .then((value) => print('balance decreased'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
+          .update({'balance': FieldValue.increment(-change)}).catchError(
+              (e) => throw Exception(e));
     }
   }
 
@@ -426,7 +350,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnString = documentSnapshot['chosenDeck'];
         } on StateError catch (e) {
-          print(e);
+          throw Exception(e);
         }
       }
     });
@@ -440,10 +364,7 @@ class FirestoreImplementation extends ChangeNotifier {
 
     statistics
         .doc(userId)
-        .update({'chosenDeck': deck})
-        .then((value) => print('chosen deck changed'))
-        .catchError(
-            (error) => print(error.toString())); //TODO:riktig felhantering
+        .update({'chosenDeck': deck}).catchError((e) => throw Exception(e));
   }
 
   Future<bool> getUnlockedDeck(
@@ -465,7 +386,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnBool = documentSnapshot[deckFieldValue];
         } on StateError catch (e) {
-          print(e);
+          throw Exception(e);
         }
       }
     });
@@ -477,23 +398,15 @@ class FirestoreImplementation extends ChangeNotifier {
     CollectionReference statistics = database.collection('Statistics');
 
     if (deck == 'StarWars') {
-      statistics
-          .doc(userId)
-          .update({'starWarsDeckUnlocked': true})
-          .then((value) => print('chosen deck changed'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
+      statistics.doc(userId).update({'starWarsDeckUnlocked': true}).catchError(
+          (e) => throw Exception(e));
     } else if (deck == 'Golden') {
-      statistics
-          .doc(userId)
-          .update({'goldenDeckUnlocked': true})
-          .then((value) => print('chosen deck changed'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
+      statistics.doc(userId).update({'goldenDeckUnlocked': true}).catchError(
+          (e) => throw Exception(e));
     }
   }
 
-  Future<int> getGamesPlayed({required String userId}) async{
+  Future<int> getGamesPlayed({required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
     int returnInt = 0;
 
@@ -505,16 +418,15 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['gamesPlayed'];
         } on StateError catch (e) {
-          print(e);
+          throw Exception(e);
         }
       }
     });
 
     return returnInt;
-
   }
 
-  Future<int> getGamesWon({required String userId}) async{
+  Future<int> getGamesWon({required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
     int returnInt = 0;
 
@@ -526,16 +438,15 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['wins'];
         } on StateError catch (e) {
-          print(e);
+          throw Exception(e);
         }
       }
     });
 
     return returnInt;
-
   }
 
-  Future<int> getGamesLost({required String userId}) async{
+  Future<int> getGamesLost({required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
     int returnInt = 0;
 
@@ -547,13 +458,12 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['losses'];
         } on StateError catch (e) {
-          print(e);
+          throw Exception(e);
         }
       }
     });
 
     return returnInt;
-
   }
 
   Future<dynamic> getDrawnCards({required String userId}) async {
@@ -566,18 +476,20 @@ class FirestoreImplementation extends ChangeNotifier {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         try {
-          returnMap = documentSnapshot['drawnCards.spades'] as Map<String, dynamic>;
-          returnMap.addAll(documentSnapshot['drawnCards.clubs'] as Map<String, dynamic>);
-          returnMap.addAll(documentSnapshot['drawnCards.diamonds'] as Map<String, dynamic>);
-          returnMap.addAll(documentSnapshot['drawnCards.hearts'] as Map<String, dynamic>);
+          returnMap =
+              documentSnapshot['drawnCards.spades'] as Map<String, dynamic>;
+          returnMap.addAll(
+              documentSnapshot['drawnCards.clubs'] as Map<String, dynamic>);
+          returnMap.addAll(
+              documentSnapshot['drawnCards.diamonds'] as Map<String, dynamic>);
+          returnMap.addAll(
+              documentSnapshot['drawnCards.hearts'] as Map<String, dynamic>);
         } on StateError catch (e) {
-          print(e);
+          throw Exception(e);
         }
       }
     });
 
     return returnMap;
   }
-
-
 }

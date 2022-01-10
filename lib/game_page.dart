@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/firebase_implementation.dart';
@@ -123,7 +122,9 @@ class _GamePageState extends State<GamePage> {
                   try {
                     if (Provider.of<BlackJack>(context, listen: false)
                             .getSplit &&
-                        Provider.of<BlackJack>(context, listen: false).getSplitTurn == false) {
+                        Provider.of<BlackJack>(context, listen: false)
+                                .getSplitTurn ==
+                            false) {
                       Provider.of<BlackJack>(context, listen: false)
                           .getNewCard(playerOrSplit: 'Player');
                       //Provider.of<BlackJack>(context, listen: false)
@@ -132,14 +133,19 @@ class _GamePageState extends State<GamePage> {
                           .handCheck(playerOrSplit: 'Player')) {
                         Provider.of<BlackJack>(context, listen: false)
                             .stop(playerOrDealerOrSplit: 'Player');
-                        if(Provider.of<BlackJack>(context, listen: false).getSplitStop){
-                          Provider.of<BlackJack>(context, listen: false).dealersTurn();
+                        if (Provider.of<BlackJack>(context, listen: false)
+                            .getSplitStop) {
+                          Provider.of<BlackJack>(context, listen: false)
+                              .dealersTurn();
                         }
-                        Provider.of<BlackJack>(context, listen: false).setSplitTurn = true;
+                        Provider.of<BlackJack>(context, listen: false)
+                            .setSplitTurn = true;
                       }
                     } else if (Provider.of<BlackJack>(context, listen: false)
                             .getSplit &&
-                        Provider.of<BlackJack>(context, listen: false).getSplitTurn == true) {
+                        Provider.of<BlackJack>(context, listen: false)
+                                .getSplitTurn ==
+                            true) {
                       Provider.of<BlackJack>(context, listen: false)
                           .getNewCard(playerOrSplit: 'Split');
                       //Provider.of<BlackJack>(context, listen: false)
@@ -159,15 +165,16 @@ class _GamePageState extends State<GamePage> {
                       Provider.of<BlackJack>(context, listen: false)
                           .getNewCard(playerOrSplit: 'Player');
 
-                      if(Provider.of<BlackJack>(context, listen: false)
-                          .handCheck(playerOrSplit: 'Player')){
+                      if (Provider.of<BlackJack>(context, listen: false)
+                          .handCheck(playerOrSplit: 'Player')) {
                         Provider.of<BlackJack>(context, listen: false)
                             .stop(playerOrDealerOrSplit: 'Player');
                         Provider.of<BlackJack>(context, listen: false)
                             .dealersTurn();
                         Provider.of<BlackJack>(context, listen: false)
                             .winOrLose(playerOrSplit: 'Player');
-                      };
+                      }
+                      ;
                     }
                   } catch (e) {
                     //gör en popup som säger att du inte kan dra kort FIXA
@@ -189,18 +196,25 @@ class _GamePageState extends State<GamePage> {
                       onPressed: () {
                         if (Provider.of<BlackJack>(context, listen: false)
                                 .getSplit &&
-                            Provider.of<BlackJack>(context, listen: false).getSplitTurn == false) {
+                            Provider.of<BlackJack>(context, listen: false)
+                                    .getSplitTurn ==
+                                false) {
                           Provider.of<BlackJack>(context, listen: false)
                               .stop(playerOrDealerOrSplit: 'Player');
-                          Provider.of<BlackJack>(context, listen: false).setSplitTurn = true;
-                          if(Provider.of<BlackJack>(context, listen: false).getSplitStop){
+                          Provider.of<BlackJack>(context, listen: false)
+                              .setSplitTurn = true;
+                          if (Provider.of<BlackJack>(context, listen: false)
+                              .getSplitStop) {
                             print('dealers turn splitstop');
-                            Provider.of<BlackJack>(context, listen: false).dealersTurn();
+                            Provider.of<BlackJack>(context, listen: false)
+                                .dealersTurn();
                           }
                         } else if (Provider.of<BlackJack>(context,
                                     listen: false)
                                 .getSplit &&
-                            Provider.of<BlackJack>(context, listen: false).getSplitTurn == true) {
+                            Provider.of<BlackJack>(context, listen: false)
+                                    .getSplitTurn ==
+                                true) {
                           Provider.of<BlackJack>(context, listen: false)
                               .stop(playerOrDealerOrSplit: 'Split');
                           Provider.of<BlackJack>(context, listen: false)
@@ -286,7 +300,8 @@ class _GamePageState extends State<GamePage> {
                     Provider.of<BlackJack>(context, listen: false).getSplitTurn
                         ? const Icon(Icons.arrow_downward_sharp)
                         : const SizedBox.shrink(),
-                    Text(Provider.of<BlackJack>(context, listen: false).handCheckToString(playerOrSplit: 'Split')),
+                    Text(Provider.of<BlackJack>(context, listen: false)
+                        .handCheckToString(playerOrSplit: 'Split')),
                     Consumer<BlackJack>(
                         builder: (context, state, child) => getHand(
                             Provider.of<BlackJack>(context, listen: false)
@@ -302,7 +317,8 @@ class _GamePageState extends State<GamePage> {
                     Provider.of<BlackJack>(context, listen: false).getSplitTurn
                         ? const SizedBox.shrink()
                         : const Icon(Icons.arrow_downward_sharp),
-                    Text(Provider.of<BlackJack>(context, listen: false).handCheckToString(playerOrSplit: 'Player')),
+                    Text(Provider.of<BlackJack>(context, listen: false)
+                        .handCheckToString(playerOrSplit: 'Player')),
                     (Consumer<BlackJack>(
                         builder: (context, state, child) => getHand(
                             Provider.of<BlackJack>(context, listen: false)
@@ -327,7 +343,8 @@ class _GamePageState extends State<GamePage> {
           height: 163,
           width: 126,
           child: PlayingCardView(
-              style: Provider.of<PlayingCardsProvider>(context, listen:false).getPlayingcardThemeMode,
+              style: Provider.of<PlayingCardsProvider>(context, listen: false)
+                  .getPlayingcardThemeMode,
               card: hand[i],
               elevation: 3.0,
               showBack: dealer
@@ -358,22 +375,27 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Split');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -387,20 +409,25 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -414,22 +441,27 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Split');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -443,18 +475,23 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -468,20 +505,25 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Split');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -495,20 +537,25 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Split');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -522,20 +569,25 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -549,22 +601,27 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Split');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -578,20 +635,25 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -613,22 +675,27 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .winnings(playerOrSplit: 'Split');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -642,18 +709,23 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -667,20 +739,25 @@ class _GamePageState extends State<GamePage> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  Provider.of<BlackJack>(context, listen: false).setSplitTurn = false;
+                  Provider.of<BlackJack>(context, listen: false).setSplitTurn =
+                      false;
                   Provider.of<BlackJack>(context, listen: false)
                       .drawBet(playerOrSplit: 'Player');
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },

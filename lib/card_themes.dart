@@ -47,49 +47,68 @@ class PlayingCardsProvider extends ChangeNotifier {
   }
 
   Future<void> setUpCardThemes({required BuildContext context}) async {
-    //TODO: ersätt denna provider med firestore, skulle antagligen funka utan detta nu när firestore är async
-    changePlayingCardsThemes(
-        style:
-            await Provider.of<FirestoreImplementation>(context, listen: false)
-                .getChosenDeckTheme(
-                    userId: Provider.of<FirebaseAuthImplementation>(context,
-                            listen: false)
-                        .getUserId()!),
-        context: context);
+    try {
+      changePlayingCardsThemes(
+          style:
+              await Provider.of<FirestoreImplementation>(context, listen: false)
+                  .getChosenDeckTheme(
+                      userId: Provider.of<FirebaseAuthImplementation>(context,
+                              listen: false)
+                          .getUserId()!),
+          context: context);
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
 
-    starWarsDeckUnlocked = await Provider.of<FirestoreImplementation>(context,
-            listen: false)
-        .getUnlockedDeck(
-            deck: 'StarWars',
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
+    try {
+      starWarsDeckUnlocked =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getUnlockedDeck(
+                  deck: 'StarWars',
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
 
-    goldenDeckUnlocked = await Provider.of<FirestoreImplementation>(context,
-            listen: false)
-        .getUnlockedDeck(
-            deck: 'Golden',
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
+    try {
+      goldenDeckUnlocked =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getUnlockedDeck(
+                  deck: 'Golden',
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
   }
 
   void setDeckUnlocked(
       {required String starWarsOrGolden, required BuildContext context}) {
     if (starWarsOrGolden == 'StarWars') {
-      Provider.of<FirestoreImplementation>(context, listen: false).unlockDeck(
-          deck: starWarsOrGolden,
-          userId:
-              Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                  .getUserId()!);
-      starWarsDeckUnlocked = true;
+      try {
+        Provider.of<FirestoreImplementation>(context, listen: false).unlockDeck(
+            deck: starWarsOrGolden,
+            userId:
+                Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                    .getUserId()!);
+        starWarsDeckUnlocked = true;
+      } on Exception catch (e) {
+        BlackJack.errorHandling(e, context);
+      }
     } else if (starWarsOrGolden == 'Golden') {
-      Provider.of<FirestoreImplementation>(context, listen: false).unlockDeck(
-          deck: starWarsOrGolden,
-          userId:
-              Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                  .getUserId()!);
-      goldenDeckUnlocked = true;
+      try {
+        Provider.of<FirestoreImplementation>(context, listen: false).unlockDeck(
+            deck: starWarsOrGolden,
+            userId:
+                Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                    .getUserId()!);
+        goldenDeckUnlocked = true;
+      } on Exception catch (e) {
+        BlackJack.errorHandling(e, context);
+      }
     }
   }
 
@@ -108,35 +127,47 @@ class PlayingCardsProvider extends ChangeNotifier {
   void changePlayingCardsThemes(
       {required String style, required BuildContext context}) {
     if (style == 'Standard') {
-      Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeDeckTheme(
-              deck: style,
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!);
-      playingcardThemeMode = PlayingCardsThemes.standardStyle;
-      cardStyleString = style;
-      notifyListeners();
+      try {
+        Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeDeckTheme(
+                deck: style,
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!);
+        playingcardThemeMode = PlayingCardsThemes.standardStyle;
+        cardStyleString = style;
+        notifyListeners();
+      } on Exception catch (e) {
+        BlackJack.errorHandling(e, context);
+      }
     } else if (style == 'StarWars') {
-      Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeDeckTheme(
-              deck: style,
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!);
-      playingcardThemeMode = PlayingCardsThemes.starWarsStyle;
-      cardStyleString = style;
-      notifyListeners();
+      try {
+        Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeDeckTheme(
+                deck: style,
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!);
+        playingcardThemeMode = PlayingCardsThemes.starWarsStyle;
+        cardStyleString = style;
+        notifyListeners();
+      } on Exception catch (e) {
+        BlackJack.errorHandling(e, context);
+      }
     } else if (style == 'Golden') {
-      Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeDeckTheme(
-              deck: style,
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!);
-      playingcardThemeMode = PlayingCardsThemes.goldenStyle;
-      cardStyleString = style;
-      notifyListeners();
+      try {
+        Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeDeckTheme(
+                deck: style,
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!);
+        playingcardThemeMode = PlayingCardsThemes.goldenStyle;
+        cardStyleString = style;
+        notifyListeners();
+      } on Exception catch (e) {
+        BlackJack.errorHandling(e, context);
+      }
     }
   }
 

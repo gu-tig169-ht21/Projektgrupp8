@@ -585,7 +585,7 @@ class BlackJack extends ChangeNotifier {
     }
   }
 
-String handCheckToString({required String playerOrSplit}){
+  String handCheckToString({required String playerOrSplit}) {
     int playerScore;
     if (playerOrSplit == 'Player') {
       playerScore = DeckOfCards().handValue(playerHand);
@@ -602,8 +602,7 @@ String handCheckToString({required String playerOrSplit}){
     } else {
       return '';
     }
-
-}
+  }
 
   bool handCheck({required String playerOrSplit}) {
     int playerScore;
@@ -723,5 +722,20 @@ String handCheckToString({required String playerOrSplit}){
     } else {
       throw Exception('Didnt choose hand');
     }
+  }
+
+//TODO: ev ta bort static
+  static Widget errorHandling(Exception e, BuildContext context) {
+    return AlertDialog(
+        title: const Text('Something went wrong'),
+        content: Text('$e'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Exit'),
+          ),
+        ]);
   }
 }
