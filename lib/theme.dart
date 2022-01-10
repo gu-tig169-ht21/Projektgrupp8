@@ -41,7 +41,7 @@ class ThemeCustom {
     return ThemeData(
       primaryColor: Colors.grey[600],
       scaffoldBackgroundColor: Colors.grey,
-
+      canvasColor: Colors.grey,
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
