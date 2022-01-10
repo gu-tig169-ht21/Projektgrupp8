@@ -1,5 +1,5 @@
-import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:provider/provider.dart';
@@ -19,62 +19,113 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Login')),
-        body: Column(
+      appBar: AppBar(title: const Text('Login')),
+      body: Stack(
+        children: [
+          _logInTitle(),
+          _textEmail(),
+          _textPassword(),
+          _loginButton(),
+          _registerText(),
+        ],
+      ),
+    );
+  }
+
+  Widget _logInTitle() {
+    return const Padding(
+      padding: EdgeInsets.only(left: 75, right: 0, top: 30, bottom: 0),
+      child: Text(
+        'Blackjack',
+        style: TextStyle(fontSize: 60),
+      ),
+    );
+  }
+
+  Widget _textEmail() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 175, bottom: 0),
+      child: TextField(
+        controller: emailController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          icon: Icon(Icons.email),
+          labelText: 'Email',
+        ),
+      ),
+    );
+  }
+
+  Widget _textPassword() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 250, bottom: 0),
+      child: TextField(
+        obscureText: true,
+        controller: passwordController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          icon: Icon(Icons.password),
+          labelText: 'Password',
+        ),
+      ),
+    );
+  }
+
+  Widget _loginButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 130, right: 0, top: 350, bottom: 0),
+      child: FractionallySizedBox(
+        widthFactor: 0.5,
+        heightFactor: 0.15,
+        child: ElevatedButton(
+          child: const Text('Log in'),
+          onPressed: () {
+            if (emailController.text.isNotEmpty &&
+                passwordController.text.isNotEmpty) {
+              try {
+                Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                    .logIn(
+                        email: emailController.text,
+                        password: passwordController.text);
+                emailController.clear();
+                passwordController.clear();
+              } on FirebaseAuthException catch (e) {
+                if (e.code == 'user-not-found') {
+                  //TODO: gör något vid fel
+                } else if (e.code == 'wrong-password') {
+                  //TODO:gör något
+                }
+              } catch (e) {
+                //TODO:kasta generellt felmeddelande
+              }
+            } else {
+              //TODO: gör så att textfälten som ej är ifyllda blir markerade
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _registerText() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 130, right: 0, top: 600),
+      child: RichText(
+        text: TextSpan(
           children: [
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.email),
-                labelText: 'Email',
-              ),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.password),
-                labelText: 'Password',
-              ),
-            ),
-            Row(
-              children: [
-                ElevatedButton(
-                  child: const Text('Log in'),
-                  onPressed: () {
-                    if (emailController.text.isNotEmpty &&
-                        passwordController.text.isNotEmpty) {
-                      try {
-                        Provider.of<FirebaseAuthImplementation>(context,
-                                listen: false)
-                            .logIn(
-                                email: emailController.text,
-                                password: passwordController.text);
-                        emailController.clear();
-                        passwordController.clear();
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          //TODO: gör något vid fel
-                        } else if (e.code == 'wrong-password') {
-                          //TODO:gör något
-                        }
-                      } catch (e) {
-                        //TODO:kasta generellt felmeddelande
-                      }
-                    } else {
-                      //TODO: gör så att textfälten som ej är ifyllda blir markerade
-                    }
-                  },
-                ),
-                ElevatedButton(
-                  child: const Text('Register'),
-                  onPressed: () {
+            const TextSpan(
+                text: 'New user? ', style: TextStyle(color: Colors.black)),
+            TextSpan(
+                text: 'Create account',
+                style: const TextStyle(color: Colors.blue),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
                     _registerNewUserDialog();
-                  },
-                ),
-              ],
-            )
+                  })
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   void _registerNewUserDialog() {
@@ -103,44 +154,43 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           actions: [
-            ElevatedButton(
-              child: const Text('register & log In'),
-              onPressed: () {
-                if (emailController.text.isNotEmpty &&
-                    passwordController.text.isNotEmpty) {
-                  try {
-                    Provider.of<FirebaseAuthImplementation>(context,
-                            listen: false)
-                        .createNewUser(
-                            email: emailController.text,
-                            password: passwordController.text);
+            Center(
+              child: ElevatedButton(
+                child: const Text(
+                  'Register & Log In',
+                  style: TextStyle(fontSize: 15),
+                ),
+                onPressed: () {
+                  if (emailController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty) {
+                    try {
+                      Provider.of<FirebaseAuthImplementation>(context,
+                              listen: false)
+                          .createNewUser(
+                              email: emailController.text,
+                              password: passwordController.text);
 
-                    emailController.clear();
-                    passwordController.clear();
-                    Navigator.pop(context);
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'weak-password') {
-                      //TODO: gör något vid fel
-                      print('weak');
-                    } else if (e.code == 'email-already-in-use') {
-                      //TODO:gör något
-                      print('already in use');
+                      emailController.clear();
+                      passwordController.clear();
+                      Navigator.pop(context);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        //TODO: gör något vid fel
+                        print('weak');
+                      } else if (e.code == 'email-already-in-use') {
+                        //TODO:gör något
+                        print('already in use');
+                      }
+                    } catch (e) {
+                      //TODO:kasta generellt felmeddelande
+                      print(e);
                     }
-                  } catch (e) {
-                    //TODO:kasta generellt felmeddelande
-                    print(e);
+                  } else {
+                    //TODO: gör så att textfälten som ej är ifyllda blir markerade
                   }
-                } else {
-                  //TODO: gör så att textfälten som ej är ifyllda blir markerade
-                }
-              },
+                },
+              ),
             ),
-            ElevatedButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
           ],
         );
       },

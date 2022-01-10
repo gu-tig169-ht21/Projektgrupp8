@@ -13,15 +13,35 @@ class ProfileInformation extends StatelessWidget {
         title: const Text('User profile'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.portrait, size: 100),
+          _profilePicture(),
           Text(
-              'Email: ${Provider.of<FirebaseAuthImplementation>(context, listen: true).getUserEmail()}'),
+            'Email: ${Provider.of<FirebaseAuthImplementation>(context, listen: true).getUserEmail()}',
+            style: const TextStyle(fontSize: 20),
+          ),
           logOut(context),
           changePassword(context),
           deleteUser(context),
         ],
+      ),
+    );
+  }
+
+  Widget _profilePicture() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        width: 150,
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 2),
+          shape: BoxShape.circle,
+          image: const DecorationImage(
+            fit: BoxFit.fill,
+            //TODO: BYta profilbild!!!!!!!!
+            image: AssetImage('assets/profilepicture.png'),
+          ),
+        ),
       ),
     );
   }
@@ -44,7 +64,7 @@ class ProfileInformation extends StatelessWidget {
         verifyNewPassword = TextEditingController();
     return ListTile(
         title: const Text('Change password'),
-        subtitle: const Text('changes your password'),
+        subtitle: const Text('Changes your password'),
         onTap: () {
           showDialog(
               context: context,
@@ -69,7 +89,7 @@ class ProfileInformation extends StatelessWidget {
                         TextField(
                           controller: verifyNewPassword,
                           decoration: const InputDecoration(
-                              labelText: 'verify new password'),
+                              labelText: 'Verify new password'),
                         ),
                       ],
                     ),
@@ -89,9 +109,9 @@ class ProfileInformation extends StatelessWidget {
                                           oldPassword.text, newPassword.text);
                                   Navigator.pop(context);
                                 } on FirebaseAuthException catch (e) {
-                                  if (e.code == 'user-not-found') {
+                                  if (e.code == 'User-not-found') {
                                     //TODO: gör nåt jävla skit, ändra i alertdialogen när du trycker på knappen?
-                                  } else if (e.code == 'wrong-password') {
+                                  } else if (e.code == 'Wrong-password') {
                                     //TODO: gör nåt annat jävla skit
                                   }
                                 } catch (e) {

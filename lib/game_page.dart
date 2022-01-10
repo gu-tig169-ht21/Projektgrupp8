@@ -327,8 +327,7 @@ class _GamePageState extends State<GamePage> {
           height: 163,
           width: 126,
           child: PlayingCardView(
-              style: Provider.of<PlayingCardsProvider>(context, listen: true)
-                  .getPlayingcardThemeMode,
+              style: Provider.of<PlayingCardsProvider>(context, listen:false).getPlayingcardThemeMode,
               card: hand[i],
               elevation: 3.0,
               showBack: dealer
