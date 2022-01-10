@@ -30,14 +30,7 @@ class CustomizationPage extends StatelessWidget {
 
 //widget för titlen
   Widget _title() {
-    return Row(
-      children: const [
-        Text(
-          'Card Customization',
-          style: TextStyle(fontSize: 15),
-        ),
-      ],
-    );
+    return const Text('Card Customization');
   }
 
 //widget för den aktuella balansen/saldot du har i appen
@@ -101,8 +94,8 @@ class CustomizationPage extends StatelessWidget {
     return Align(
       alignment: const Alignment(0, 0.6),
       child: FractionallySizedBox(
-        widthFactor: 0.4,
-        heightFactor: 0.1,
+        widthFactor: 0.45,
+        heightFactor: 0.09,
         child: Consumer<PlayingCardsProvider>(
           builder: (context, state, child) {
             return ElevatedButton(
@@ -166,8 +159,8 @@ class CustomizationPage extends StatelessWidget {
     return Align(
       alignment: const Alignment(0, 0.85),
       child: FractionallySizedBox(
-        widthFactor: 0.6,
-        heightFactor: 0.1,
+        widthFactor: 0.65,
+        heightFactor: 0.09,
         child: ElevatedButton(
           child: const Text('Choose this deck'),
           onPressed: () {
