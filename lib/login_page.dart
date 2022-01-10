@@ -14,6 +14,8 @@ class LoginPage extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+//TODO: byt ut stack
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +26,7 @@ class LoginPage extends StatelessWidget {
           _textEmail(),
           _textPassword(),
           _loginButton(context),
-          _registerText(),
+          _registerText(context),
         ],
       ),
     );
@@ -105,7 +107,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _registerText() {
+  Widget _registerText(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 130, right: 0, top: 600),
       child: RichText(
