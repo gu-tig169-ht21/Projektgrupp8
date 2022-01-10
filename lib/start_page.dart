@@ -1,4 +1,3 @@
-import 'package:my_first_app/card_customization.dart';
 import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:my_first_app/game_page.dart';

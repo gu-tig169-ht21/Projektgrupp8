@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/blackjack.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';

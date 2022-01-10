@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/firebase_implementation.dart';
-import 'package:my_first_app/settings_page.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 import 'deck_of_cards.dart';

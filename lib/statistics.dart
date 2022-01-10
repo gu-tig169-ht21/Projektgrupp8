@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:my_first_app/firebase_implementation.dart';
 import 'package:my_first_app/statistics_provider.dart';
-import 'dart:math';
-import 'card_themes.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 

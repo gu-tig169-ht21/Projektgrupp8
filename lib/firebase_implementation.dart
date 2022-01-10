@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/deck_of_cards.dart';
 import 'package:playing_cards/playing_cards.dart';
-import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 
 class FirebaseAuthImplementation extends ChangeNotifier {
   FirebaseAuthImplementation() {
