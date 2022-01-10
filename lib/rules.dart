@@ -33,11 +33,14 @@ class RuleText {
             SizedBox(
               width: 80,
               height: 100,
-              child: PlayingCardView(card: card),
+              child: PlayingCardView(
+                card: card,
+                elevation: 10,
+              ),
             ),
             aceTest
-                ? const Text('=1 or 11')
-                : Text('=${DeckOfCards().valueOfCard(card)}'),
+                ? const Text('= 1 \n or 11')
+                : Text('= ${DeckOfCards().valueOfCard(card)}'),
           ],
         ),
       );
