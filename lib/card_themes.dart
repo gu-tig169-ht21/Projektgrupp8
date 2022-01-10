@@ -12,6 +12,8 @@ class PlayingCardsProvider extends ChangeNotifier {
   int goldenDeckPrice = 1000;
   bool starWarsDeckUnlocked = false;
   bool goldenDeckUnlocked = false;
+  int balance = 0;
+
 
   get getStarWarsDeckUnlocked {
     return starWarsDeckUnlocked;
@@ -44,6 +46,16 @@ class PlayingCardsProvider extends ChangeNotifier {
 
   get getPlayingcardThemeMode {
     return playingcardThemeMode;
+  }
+
+  void fetchBalance({required BuildContext context}) async{
+    balance = await Provider.of<FirestoreImplementation>(context, listen: false).getBalance(userId: Provider.of<FirebaseAuthImplementation>(context, listen:false).getUserId()!);
+    notifyListeners();
+  }
+
+  int getBalance({required BuildContext context}){
+    fetchBalance(context: context);
+    return balance;
   }
 
   Future<void> setUpCardThemes({required BuildContext context}) async {
@@ -142,7 +154,7 @@ class PlayingCardsProvider extends ChangeNotifier {
 
   //funktion som testar om man kan köpa kortlekarna
   bool affordDeck(String style, BuildContext context) {
-    int money = Provider.of<BlackJack>(context, listen: false).getBalance;
+    fetchBalance(context: context);
     int value = 0;
 
     if (style == 'StarWars') {
@@ -151,7 +163,7 @@ class PlayingCardsProvider extends ChangeNotifier {
       value = goldenDeckPrice;
     }
 
-    if (money >= value) {
+    if (balance >= value) {
       return true;
     } else {
       return false;
