@@ -31,14 +31,15 @@ class ProfileInformation extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
-        width: 170,
-        height: 170,
-        decoration: const BoxDecoration(
+        width: 150,
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 2),
           shape: BoxShape.circle,
-          image: DecorationImage(
+          image: const DecorationImage(
             fit: BoxFit.fill,
             //TODO: BYta profilbild!!!!!!!!
-            image: AssetImage('assets/QueenAmidala1.jpg'),
+            image: AssetImage('assets/profilepicture.png'),
           ),
         ),
       ),
