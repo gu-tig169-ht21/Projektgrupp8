@@ -5,8 +5,6 @@ import 'package:playing_cards/playing_cards.dart';
 import 'card_themes.dart';
 import 'blackjack.dart';
 
-//TODO: finjustera balances storlek i theme
-
 class CustomizationPage extends StatelessWidget {
   CustomizationPage({Key? key}) : super(key: key);
 
