@@ -227,9 +227,9 @@ class BlackJack extends ChangeNotifier {
   }
 
   void startingHands() {
-    //drar de första korten för dealrn och spelaren
+    //drar de första korten för dealer och spelaren
     PlayingCard card = DeckOfCards().pickACard(deck);
-    PlayingCard dummyCard = card;
+
     playerHand.add(card);
     deck.removeWhere((element) => element == card);
 
@@ -237,8 +237,7 @@ class BlackJack extends ChangeNotifier {
     dealerHand.add(card);
     deck.removeWhere((element) => element == card);
 
-    //card = DeckOfCards().pickACard(deck);
-    card = dummyCard;
+    card = DeckOfCards().pickACard(deck);
     playerHand.add(card);
     deck.removeWhere((element) => element == card);
 

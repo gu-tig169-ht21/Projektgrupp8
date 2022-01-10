@@ -182,60 +182,62 @@ class DeckOfCards {
 
   String cardToString(PlayingCard card){
     switch (card.suit){
-      case Suit.spades:{
-        switch (card.value) {
-          case CardValue.ace:
-            {
-              return 'aceSpades';
-            }
-          case CardValue.two:
-            {
-              return 'twoSpades';
-            }
-          case CardValue.three:
-            {
-              return 'threeSpades';
-            }
-          case CardValue.four:
-            {
-              return 'fourSpades';
-            }
-          case CardValue.five:
-            {
-              return 'fiveSpades';
-            }
-          case CardValue.six:
-            {
-              return 'sixSpades';
-            }
-          case CardValue.seven:
-            {
-              return 'sevenSpades';
-            }
-          case CardValue.eight:
-            {
-              return 'eightSpades';
-            }
-          case CardValue.nine:
-            {
-              return 'nineSpades';
-            }
-          case CardValue.ten:
-            {
-              return 'tenSpades';
-            }
-          case CardValue.jack:
-            {
-              return 'jackSpades';
-            }
-          case CardValue.queen:
-            {
-              return 'queenSpades';
-            }
-          case CardValue.king:
-            {
-              return 'kingSpades';
-            }
+      case Suit.spades:
+        {
+          switch (card.value) {
+            case CardValue.ace:
+              {
+                return 'aceSpades';
+              }
+            case CardValue.two:
+              {
+                return 'twoSpades';
+              }
+            case CardValue.three:
+              {
+                return 'threeSpades';
+              }
+            case CardValue.four:
+              {
+                return 'fourSpades';
+              }
+            case CardValue.five:
+              {
+                return 'fiveSpades';
+              }
+            case CardValue.six:
+              {
+                return 'sixSpades';
+              }
+            case CardValue.seven:
+              {
+                return 'sevenSpades';
+              }
+            case CardValue.eight:
+              {
+                return 'eightSpades';
+              }
+            case CardValue.nine:
+              {
+                return 'nineSpades';
+              }
+            case CardValue.ten:
+              {
+                return 'tenSpades';
+              }
+            case CardValue.jack:
+              {
+                return 'jackSpades';
+              }
+            case CardValue.queen:
+              {
+                return 'queenSpades';
+              }
+            case CardValue.king:
+              {
+                return 'kingSpades';
+              }
+          }
         }
       case Suit.clubs:
         {
