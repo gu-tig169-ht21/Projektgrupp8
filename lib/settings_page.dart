@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/blackjack.dart';
 import 'card_customization.dart';
 import 'package:provider/provider.dart';
 
@@ -74,11 +75,12 @@ Widget _numberOfDecks() {
     trailing: Consumer<ChangeNumberOfDecks>(
       builder: (context, state, child) {
         return DropdownButton<String>(
-          value: Provider.of<ChangeNumberOfDecks>(context, listen: false)
-              .getSelectedNumberOfDecks,
+          value:
+              '${Provider.of<ChangeNumberOfDecks>(context, listen: false).getSelectedNumberOfDecks}',
           onChanged: (String? newValue) {
+            Provider.of<BlackJack>(context, listen: false).addDecks(newValue!);
             Provider.of<ChangeNumberOfDecks>(context, listen: false)
-                .setSelectedDecks(newValue!);
+                .setSelectedDecks(newValue);
           },
           items: Provider.of<ChangeNumberOfDecks>(context, listen: false)
               .getNumberDecks
@@ -99,13 +101,13 @@ Widget _numberOfDecks() {
 //provider för att ändra antal kortlekar
 class ChangeNumberOfDecks with ChangeNotifier {
   final List<String> _numberDecks = ['1', '2', '3', '4', '5'];
-  late String _selectedNumberOfDecks = '1';
+  late int _selectedNumberOfDecks = 1;
 
   List<String> get getNumberDecks => _numberDecks;
-  String get getSelectedNumberOfDecks => _selectedNumberOfDecks;
+  int get getSelectedNumberOfDecks => _selectedNumberOfDecks;
 
   void setSelectedDecks(String x) {
-    _selectedNumberOfDecks = x;
+    _selectedNumberOfDecks = int.parse(x);
     notifyListeners();
   }
 }
