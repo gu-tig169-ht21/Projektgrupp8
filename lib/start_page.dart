@@ -6,6 +6,7 @@ import 'package:my_first_app/game_page.dart';
 import 'package:my_first_app/profile_information_page.dart';
 import 'package:my_first_app/settings_page.dart';
 import 'package:my_first_app/statistics.dart';
+import 'package:my_first_app/statistics_provider.dart';
 import 'package:provider/provider.dart';
 import 'how_to_play.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,12 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
      Provider.of<PlayingCardsProvider>(context, listen: false).setUpCardThemes(context: context);
+     setUpStats();
     super.initState();
+  }
+  void setUpStats() async {
+    await Provider.of<StatisticsProvider>(context, listen: false)
+        .setUpStatistics(context: context);
   }
 
   @override

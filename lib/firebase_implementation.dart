@@ -558,7 +558,7 @@ class FirestoreImplementation extends ChangeNotifier {
 
   Future<dynamic> getDrawnCards({required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
-    dynamic returnMap;
+    Map<String, dynamic> returnMap = <String, dynamic>{};
 
     await statistics
         .doc(userId)
@@ -566,7 +566,10 @@ class FirestoreImplementation extends ChangeNotifier {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         try {
-          returnMap = documentSnapshot['spades']['clubs']['hearts']['diamonds'];
+          returnMap = documentSnapshot['drawnCards.spades'] as Map<String, dynamic>;
+          returnMap.addAll(documentSnapshot['drawnCards.clubs'] as Map<String, dynamic>);
+          returnMap.addAll(documentSnapshot['drawnCards.diamonds'] as Map<String, dynamic>);
+          returnMap.addAll(documentSnapshot['drawnCards.hearts'] as Map<String, dynamic>);
         } on StateError catch (e) {
           print(e);
         }

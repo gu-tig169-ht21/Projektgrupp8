@@ -15,52 +15,15 @@ class Statistics extends StatefulWidget {
 }
 
 class _StatisticsState extends State<Statistics> {
-
   @override
   void initState() {
-    Provider.of<StatisticsProvider>(context, listen: false).setUpStatistics(context: context);
-    seriesList = _createRandomData();
+    setUpStats();
     super.initState();
   }
 
-
-  //lista där värdena som ska visas
-  late List<charts.Series> seriesList;
-
-  static List<charts.Series<CommonCardChart, String>> _createRandomData() {
-    final random = Random();
-
-//värdena som presenteras i barchart
-
-    final statisticsCardData = [
-      CommonCardChart('A of spades', '${random.nextInt(100)}'),
-      CommonCardChart('K of hearts', '${random.nextInt(100)}'),
-      CommonCardChart('Q of diamonds', '${random.nextInt(100)}'),
-      CommonCardChart('J of clubs', '${random.nextInt(100)}'),
-    ];
-    return [
-      charts.Series<CommonCardChart, String>(
-        id: 'times',
-        domainFn: (CommonCardChart times, _) => times.card,
-        measureFn: (CommonCardChart times, _) => int.parse(times.times),
-        data: statisticsCardData,
-      )
-    ];
-  }
-
-//widget för barchart
-
-  barChart() {
-    return Align(
-        alignment: const Alignment(0, 1.0),
-        child: FractionallySizedBox(
-            widthFactor: 1.0,
-            heightFactor: 0.4,
-            child: charts.BarChart(
-              _createRandomData(),
-              animate: true,
-              vertical: true,
-            )));
+  void setUpStats() async {
+    await Provider.of<StatisticsProvider>(context, listen: false)
+        .setUpStatistics(context: context);
   }
 
   @override
@@ -72,33 +35,76 @@ class _StatisticsState extends State<Statistics> {
       ),
       body: Stack(children: [
         titles(context: context),
-        //  _gamesWon(),
-        //_gamesWonValue(),
-        //  _playTime(),
-        //_playTimeValue(),
-        //  _gamesLost(),
-        //_gamesLostValue(),
-
-        // values(),
         _mostCommonCard(),
-        _mostCommonCardValue(),
+        _mostCommonCardValue(context),
         _statisticsMostCommonCard(),
-        barChart(),
+        barChart(context),
       ]),
     );
   }
 }
 
-Widget titles({required BuildContext context}){
+List<charts.Series<DrawnCard, String>> _getChartData(
+    BuildContext context) {
+//värden som presenteras i barchart
+
+  List<DrawnCard> cards =
+      Provider.of<StatisticsProvider>(context, listen: false)
+          .drawnCardsToList();
+  cards.sort((a, b) => b.timesDrawn.compareTo(a
+      .timesDrawn)); //sorterar korten i ordning utefter hur många gånger man dragit dem
+
+  final statisticsCardData = [
+    cards[0],
+    cards[1],
+    cards[2],
+    cards[3],
+    cards[4],
+  ];
+  return [
+    charts.Series<DrawnCard, String>(
+      id: 'times',
+      domainFn: (DrawnCard card, _) => card.name,
+      measureFn: (DrawnCard card, _) => card.timesDrawn,
+      data: statisticsCardData,
+      labelAccessorFn: (DrawnCard card, _) => '${card.timesDrawn}',
+      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+    )
+  ];
+}
+
+//widget för barchart
+
+barChart(BuildContext context) {
+  return Align(
+      alignment: const Alignment(0, 1.0),
+      child: FractionallySizedBox(
+          widthFactor: 1.0,
+          heightFactor: 0.4,
+          child: charts.BarChart(
+            _getChartData(context),
+
+            animate: true,
+            vertical: true,
+            barRendererDecorator: charts.BarLabelDecorator<String>(),
+          )));
+}
+
+Widget titles({required BuildContext context}) {
   return Row(children: <Widget>[
     Expanded(
       child: SizedBox(
         width: 200,
-        height: 50,
+        height: 70,
         child: Card(
-          child: Text(
-            'Games won, \n ${Provider.of<StatisticsProvider>(context, listen:true).getGamesWon}',
-            textAlign: TextAlign.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Games won \n ${Provider.of<StatisticsProvider>(context, listen: true).getGamesWon}',
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
@@ -106,11 +112,16 @@ Widget titles({required BuildContext context}){
     Expanded(
       child: SizedBox(
         width: 200,
-        height: 50,
+        height: 70,
         child: Card(
-          child: Text(
-            'Games played, \n ${Provider.of<StatisticsProvider>(context, listen:true).getGamesPlayed}',
-            textAlign: TextAlign.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Games played \n ${Provider.of<StatisticsProvider>(context, listen: true).getGamesPlayed}',
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
@@ -118,11 +129,16 @@ Widget titles({required BuildContext context}){
     Expanded(
       child: SizedBox(
         width: 200,
-        height: 50,
+        height: 70,
         child: Card(
-          child: Text(
-            'Games lost, \n ${Provider.of<StatisticsProvider>(context, listen:true).getGamesLost}',
-            textAlign: TextAlign.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Games lost \n ${Provider.of<StatisticsProvider>(context, listen: true).getGamesLost}',
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
@@ -130,114 +146,6 @@ Widget titles({required BuildContext context}){
   ]);
 }
 
-/*
-Widget values() {
-  return Row(children: const <Widget>[
-    Expanded(
-      child: Text('10', textAlign: TextAlign.left),
-    ),
-    Expanded(
-      child: Text('18', textAlign: TextAlign.center),
-    ),
-    Expanded(
-      child: Text('8', textAlign: TextAlign.right),
-    )
-  ]);
-}
-*/
-
-// vyn/positionering till antalet vunna matcher, saknar det verkliga värdet
-/*
-Widget _gamesWon() {
-  return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: const [
-    /* FractionallySizedBox(
-      widthFactor: 0.20,
-      heightFactor: 0.1,
-      child:*/
-    Text(
-      'Games won',
-      style: TextStyle(fontSize: 15),
-    ),
-  ]);
-}
-*/
-/*
-Widget _gamesWonValue() {
-  return const Align(
-    alignment: Alignment(-0.75, -0.8),
-    child: FractionallySizedBox(
-      widthFactor: 0.1,
-      heightFactor: 0.1,
-      child: Text(
-        '10',
-        style: TextStyle(fontSize: 15),
-      ),
-    ),
-  );
-}
-
-// vyn/positionering till antalet spelade matcher, saknar det verkliga värdet
-/*
-Widget _playTime() {
-  return Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
-    /* FractionallySizedBox(
-      widthFactor: 0.20,
-      heightFactor: 0.1,
-      child:*/
-    Text(
-      'Time played',
-      style: TextStyle(fontSize: 15),
-    ),
-    //  ),
-  ]);
-}
-*/
-Widget _playTimeValue() {
-  return const Align(
-    alignment: Alignment(0.05, -0.8),
-    child: FractionallySizedBox(
-      widthFactor: 0.1,
-      heightFactor: 0.1,
-      child: Text(
-        '18',
-        style: TextStyle(fontSize: 15),
-      ),
-    ),
-  );
-}
-
-// vyn/positionering till antalet förlorade matcher, saknar det verkliga värdet
-/*
-Widget _gamesLost() {
-  return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: const [
-        /*FractionallySizedBox(
-          widthFactor: 0.20,
-          heightFactor: 0.1,
-          child:*/
-        Text(
-          'Games lost',
-          style: TextStyle(fontSize: 15),
-        ),
-        // ),
-      ]);
-}*/
-
-Widget _gamesLostValue() {
-  return const Align(
-    alignment: Alignment(0.9, -0.8),
-    child: FractionallySizedBox(
-      widthFactor: 0.1,
-      heightFactor: 0.1,
-      child: Text(
-        '8',
-        style: TextStyle(fontSize: 15),
-      ),
-    ),
-  );
-}
-*/
 // vyn/positionering till bilden av kortet för mest dragna kortet, saknar det verkliga värdet
 
 Widget _mostCommonCard() {
@@ -249,38 +157,28 @@ Widget _mostCommonCard() {
       child: Text(
         'Your most common card',
         style: TextStyle(fontSize: 15),
+        textAlign: TextAlign.center,
       ),
     ),
   );
 }
 
 // widget för vilket kort som är vanligast att dra/bild
-Widget _mostCommonCardValue() {
+Widget _mostCommonCardValue(BuildContext context) {
   return Align(
     alignment: const Alignment(0.0, -0.4),
     child: SizedBox(
-      width: 80,
+      width: 120,
       child: PlayingCardView(
-        card: PlayingCard(Suit.hearts, CardValue.ace),
+        card: Provider.of<StatisticsProvider>(context, listen: false)
+            .mostDrawnCard(),
         elevation: 3.0,
       ),
     ),
   );
 }
 
-/* return const Align(
-    alignment: Alignment(0.0, -0.4),
-    child: FractionallySizedBox(
-      widthFactor: 0.1,
-      heightFactor: 0.1,
-      child: Text(
-        '8',
-        style: TextStyle(fontSize: 15),
-      ),
-    ),
-  );*/
 
-// vyn/positionering till barcharten, saknar det verkliga värdet
 
 Widget _statisticsMostCommonCard() {
   return const Align(
@@ -291,15 +189,10 @@ Widget _statisticsMostCommonCard() {
       child: Text(
         'Chart of your most common cards',
         style: TextStyle(fontSize: 15),
+        textAlign: TextAlign.center,
       ),
     ),
   );
 }
 
 //klass för de olika attributen barchart
-
-class CommonCardChart {
-  final String card;
-  final String times;
-  CommonCardChart(this.card, this.times);
-}
