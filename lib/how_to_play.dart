@@ -33,7 +33,6 @@ class _HelpPageState extends State<HelpPage> {
         appBar: AppBar(
           //appbar med en dropdownbutton
           title: DropdownButton(
-            dropdownColor: Colors.black,
             iconSize: 40,
             iconEnabledColor: Colors.black,
             style: const TextStyle(fontSize: 20),
