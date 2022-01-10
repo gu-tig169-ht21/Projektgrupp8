@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/firebase_implementation.dart';
 import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'card_themes.dart';
@@ -114,11 +115,13 @@ class CustomizationPage extends StatelessWidget {
                 if (Provider.of<PlayingCardsProvider>(context, listen: false)
                         .affordDeck(_deck, context) &&
                     !Provider.of<PlayingCardsProvider>(context, listen: false)
-                        .getDeckUnlocked(_deck)) {
+                        .getDeckUnlocked(
+                            starWarsOrGolden: _deck, context: context)) {
                   Provider.of<BlackJack>(context, listen: false)
                       .subtractFromBalance(_price);
                   Provider.of<PlayingCardsProvider>(context, listen: false)
-                      .setDeckUnlocked(_deck);
+                      .setDeckUnlocked(
+                          starWarsOrGolden: _deck, context: context);
                 } else {
                   null;
                 }
@@ -133,7 +136,8 @@ class CustomizationPage extends StatelessWidget {
                                 .affordDeck(_deck, context) &&
                             !Provider.of<PlayingCardsProvider>(context,
                                     listen: false)
-                                .getDeckUnlocked(_deck))
+                                .getDeckUnlocked(
+                                    starWarsOrGolden: _deck, context: context))
                         ? null
                         : MaterialStateProperty.all(Colors.grey),
               ),
@@ -177,30 +181,32 @@ class CustomizationPage extends StatelessWidget {
                     .getChosenPageViewCard ==
                 0) {
               Provider.of<PlayingCardsProvider>(context, listen: false)
-                  .changePlayingCardsThemes('Standard');
+                  .changePlayingCardsThemes(
+                      style: 'Standard', context: context);
             } else if (Provider.of<PlayingCardsProvider>(context, listen: false)
                         .getChosenPageViewCard ==
                     1 &&
                 Provider.of<PlayingCardsProvider>(context, listen: false)
-                    .getDeckUnlocked('StarWars')) {
+                    .getStarWarsDeckUnlocked) {
               Provider.of<PlayingCardsProvider>(context, listen: false)
-                  .changePlayingCardsThemes('StarWars');
+                  .changePlayingCardsThemes(
+                      style: 'StarWars', context: context);
             } else if (Provider.of<PlayingCardsProvider>(context, listen: false)
                         .getChosenPageViewCard ==
                     2 &&
                 Provider.of<PlayingCardsProvider>(context, listen: false)
-                    .getDeckUnlocked('Golden')) {
+                    .getGoldenDeckUnlocked) {
               Provider.of<PlayingCardsProvider>(context, listen: false)
-                  .changePlayingCardsThemes('Golden');
+                  .changePlayingCardsThemes(style: 'Golden', context: context);
             }
           },
           style: ButtonStyle(
             //om vi äger decket så ändrar de färg på knappen
-            backgroundColor:
-                (Provider.of<PlayingCardsProvider>(context, listen: false)
-                        .getDeckUnlocked(_deck))
-                    ? null
-                    : MaterialStateProperty.all(Colors.grey),
+            backgroundColor: (Provider.of<PlayingCardsProvider>(context,
+                        listen: false)
+                    .getDeckUnlocked(starWarsOrGolden: _deck, context: context))
+                ? null
+                : MaterialStateProperty.all(Colors.grey),
           ),
         ),
       ),
