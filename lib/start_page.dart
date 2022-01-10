@@ -1,4 +1,3 @@
-
 import 'package:my_first_app/card_customization.dart';
 import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/firebase_implementation.dart';
@@ -42,14 +41,15 @@ class _StartPageState extends State<StartPage> {
           _playButton(),
           _howToPlayButton(),
           _statisticsButton(),
-          _settingsIcon(),
-          _userIcon(),
+          //_userIcon(),
+          //_settingsIcon(),
+          _userAndSettingsButtons()
         ],
       ),
     );
   }
 
-  //Widget för bakgrundsbilden
+  //widget för bakgrundsbilden
   Widget _image() {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 1,
@@ -61,7 +61,7 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-//Widget för att fadea bilden
+//widget för att fadea bilden
   Widget _container() {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
@@ -83,86 +83,22 @@ class _StartPageState extends State<StartPage> {
 //Widget för play knapp
   Widget _playButton() {
     return Align(
-        alignment: const Alignment(0, -0.3),
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.1,
-          child: ElevatedButton(
-            child: const Text('PLAY NOW'),
-            onPressed: () {
-              Provider.of<FirestoreImplementation>(context, listen: false)
-                  .createNewUsrStat(
-                      userId: Provider.of<FirebaseAuthImplementation>(context,
-                              listen: false)
-                          .getUserId()!);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const GamePage(),
-                ),
-              );
-            },
-          ),
-        ));
-  }
-
-  //Widget för hjälp/how to play knapp
-  Widget _howToPlayButton() {
-    return Align(
-        alignment: const Alignment(0, 0.10),
-        child: FractionallySizedBox(
-          widthFactor: 0.6,
-          heightFactor: 0.1,
-          child: ElevatedButton(
-            child: const Text('HOW TO PLAY'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HelpPage(),
-                ),
-              );
-            },
-          ),
-        ));
-  }
-
-  //Widget för statistik knapp
-  Widget _statisticsButton() {
-    return Align(
-        alignment: const Alignment(0, 0.5),
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.1,
-          child: ElevatedButton(
-            child: const Text('STATISTICS'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Statistics(),
-                ),
-              );
-            },
-          ),
-        ));
-  }
-
-  //widget för inställningsikon
-  Widget _settingsIcon() {
-    return Align(
-      alignment: const Alignment(1.5, 0.89),
+      alignment: const Alignment(0, -0.3),
       child: FractionallySizedBox(
-        widthFactor: 0.5,
+        widthFactor: 0.6,
         heightFactor: 0.1,
-        child: IconButton(
-          icon: const Icon(Icons.settings),
-          iconSize: 50,
+        child: ElevatedButton(
+          child: const Text('PLAY NOW'),
           onPressed: () {
+            Provider.of<FirestoreImplementation>(context, listen: false)
+                .createNewUsrStat(
+                    userId: Provider.of<FirebaseAuthImplementation>(context,
+                            listen: false)
+                        .getUserId()!);
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const Settings(),
+                builder: (context) => const GamePage(),
               ),
             );
           },
@@ -171,22 +107,136 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-  Widget _userIcon() {
+  //Widget för hjälp/how to play knapp
+  Widget _howToPlayButton() {
     return Align(
-        alignment: const Alignment(-1.5, 0.89),
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.1,
-          child: IconButton(
+      alignment: const Alignment(0, 0.10),
+      child: FractionallySizedBox(
+        widthFactor: 0.6,
+        heightFactor: 0.1,
+        child: ElevatedButton(
+          child: const Text('HOW TO PLAY'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HelpPage(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  //Widget för statistik knapp
+  Widget _statisticsButton() {
+    return Align(
+      alignment: const Alignment(0, 0.5),
+      child: FractionallySizedBox(
+        widthFactor: 0.6,
+        heightFactor: 0.1,
+        child: ElevatedButton(
+          child: const Text('STATISTICS'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Statistics(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  //widget för inställningsikon
+  //TODO: eventuellt ta bort denna widgeten???
+
+  // Widget _settingsIcon() {
+  //   return Align(
+  //     alignment: const Alignment(1.95, 0.89),
+  //     child: FractionallySizedBox(
+  //       widthFactor: 0.6,
+  //       heightFactor: 0.1,
+  //       child: IconButton(
+  //         icon: const Icon(Icons.settings),
+  //         iconSize: 50,
+  //         onPressed: () {
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => const Settings(),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
+//Widget för profilikonen
+//TODO: EVENTUELLT TA BORT DENNA WIDGETEN??
+
+  // Widget _userIcon() {
+  //   return Align(
+  //     alignment: const Alignment(0.9, 0.89),
+  //     child: FractionallySizedBox(
+  //       widthFactor: 0.6,
+  //       heightFactor: 0.1,
+  //       child: IconButton(
+  //         icon: const Icon(Icons.portrait_rounded),
+  //         iconSize: 50,
+  //         onPressed: () {
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => const ProfileInformation(),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
+//Widget för UserIcon och Settingsicon
+  Widget _userAndSettingsButtons() {
+    return Align(
+      alignment: const Alignment(1.95, 0.89),
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 250,
+            height: 1,
+          ),
+          IconButton(
             icon: const Icon(Icons.portrait_rounded),
             iconSize: 50,
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileInformation()));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileInformation(),
+                ),
+              );
             },
           ),
-        ));
+          IconButton(
+            icon: const Icon(Icons.settings),
+            iconSize: 50,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Settings(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
