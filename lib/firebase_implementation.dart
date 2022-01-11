@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'blackjack.dart';
 
-
 class FirebaseAuthImplementation extends ChangeNotifier {
   FirebaseAuthImplementation() {
     init();
@@ -474,7 +473,7 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnMap;
   }
 
-  Future<int> getBalance({required String userId}) async{
+  Future<int> getBalance({required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
     int returnInt = 0;
 
@@ -494,18 +493,19 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnInt;
   }
 
-  void changeBalance({required String userId, required int change, required add}) async{
+  Future<void> changeBalance(
+      {required String userId, required int change, required add}) async {
     CollectionReference statistics = database.collection('Statistics');
 
-    if(add){
-    await statistics
-        .doc(userId)
-        .update({'balance': FieldValue.increment(change)})
-        .then((value) => print('$change added to balance'))
-        .catchError(
-            (error) => print(error.toString())); //TODO:riktig felhantering
+    if (add) {
+      await statistics
+          .doc(userId)
+          .update({'balance': FieldValue.increment(change)})
+          .then((value) => print('$change added to balance'))
+          .catchError(
+              (error) => print(error.toString())); //TODO:riktig felhantering
 
-  }else{
+    } else {
       await statistics
           .doc(userId)
           .update({'balance': FieldValue.increment(-change)})
@@ -513,7 +513,5 @@ class FirestoreImplementation extends ChangeNotifier {
           .catchError(
               (error) => print(error.toString())); //TODO:riktig felhantering
     }
-
   }
-
 }

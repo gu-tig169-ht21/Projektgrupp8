@@ -7,13 +7,17 @@ import 'blackjack.dart';
 
 //ändrat stateful till stateless
 
-class LoginPage extends StatelessWidget {
-  LoginPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
 
-//TODO: byt ut stack
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

@@ -21,31 +21,40 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   @override
   void initState() {
-
-     Provider.of<PlayingCardsProvider>(context, listen: false).setUpCardThemes(context: context); //hämtar data som krävs av kortteman etc.
-     setUpStatsAndBalance();
-     Provider.of<PlayingCardsProvider>(context, listen: false).fetchBalance(context: context); //hämtar ditt saldo från databasen
+    Provider.of<PlayingCardsProvider>(context, listen: false).setUpCardThemes(
+        context: context); //hämtar data som krävs av kortteman etc.
+    setUpStatsAndBalance();
+    Provider.of<PlayingCardsProvider>(context, listen: false)
+        .fetchBalance(context: context); //hämtar ditt saldo från databasen
     super.initState();
   }
+
   void setUpStatsAndBalance() async {
     final directory = await getApplicationDocumentsDirectory();
     File file;
     DateTime _now = DateTime.now();
 
-    if(!File(directory.path +'/last_date.txt').existsSync()){ //om en fil med datum ej finns så genereras en med värdet 0 i
-      file = await File(directory.path +'/last_date.txt').create(recursive: true);
+    if (!File(directory.path + '/last_date.txt').existsSync()) {
+      //om en fil med datum ej finns så genereras en med värdet 0 i
+      file =
+          await File(directory.path + '/last_date.txt').create(recursive: true);
       file.writeAsString('0');
-    }else{
-      file = File(directory.path +'/last_date.txt');
+    } else {
+      file = File(directory.path + '/last_date.txt');
     }
     String lastDate = await file.readAsString();
 
-    if(_now.day != int.parse(lastDate)) { //om datumet som är lagrat ej är samma som dagens datum så får användaren $200
-      Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(userId: Provider.of<FirebaseAuthImplementation>(
-          context, listen: false).getUserId()!, change: 200, add: true);
+    if (_now.day != int.parse(lastDate)) {
+      //om datumet som är lagrat ej är samma som dagens datum så får användaren $200
+      await Provider.of<FirestoreImplementation>(context, listen: false)
+          .changeBalance(
+              userId: Provider.of<FirebaseAuthImplementation>(context,
+                      listen: false)
+                  .getUserId()!,
+              change: 200,
+              add: true);
     }
-    file.writeAsString('${_now.day}');//skriver dagens datum till filen
+    file.writeAsString('${_now.day}'); //skriver dagens datum till filen
     await Provider.of<StatisticsProvider>(context, listen: false)
         .setUpStatistics(context: context); //metoden som hämtar statistik
   }

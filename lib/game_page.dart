@@ -10,10 +10,6 @@ import 'package:playing_cards/playing_cards.dart';
 class GamePage extends StatelessWidget {
   const GamePage({Key? key}) : super(key: key);
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,13 +54,15 @@ class GamePage extends StatelessWidget {
                   }
                 case 'Forfeit':
                   {
-                    Provider.of<BlackJack>(context, listen: false).forfeit(context: context);
+                    Provider.of<BlackJack>(context, listen: false)
+                        .forfeit(context: context);
 
                     break;
                   }
                 case 'Quit to main menu':
                   {
-                    Provider.of<BlackJack>(context, listen: false).forfeit(context: context);
+                    Provider.of<BlackJack>(context, listen: false)
+                        .forfeit(context: context);
                     Navigator.pop(context);
                     break;
                   }
@@ -72,9 +70,15 @@ class GamePage extends StatelessWidget {
             },
           ),
           actions: [
-            Consumer(
+            Padding(
+              padding: const EdgeInsets.only(right: 30, top: 15),
+              child: Consumer(
                 builder: (context, state, child) => Text(
-                    '${Provider.of<PlayingCardsProvider>(context, listen: true).getBalance(context: context)}'))
+                  '\$${Provider.of<PlayingCardsProvider>(context, listen: true).getBalance(context: context)}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ),
+            ),
           ],
         ),
         body: Stack(children: [
@@ -99,9 +103,13 @@ class GamePage extends StatelessWidget {
         ]));
   }
 
+  //TODO har lade jag till tester kära vänner
   Widget startNewGame({required BuildContext context}) {
+    Provider.of<BlackJack>(context, listen: false)
+        .testingDouble(context: context);
     //här skapas ett nytt spel och startkort delas ut, ska kanske ha något med bet att göra
-    Provider.of<PlayingCardsProvider>(context, listen: false).fetchBalance(context: context);
+    Provider.of<PlayingCardsProvider>(context, listen: false)
+        .fetchBalance(context: context);
 
     return Column(
       //när spelaren tryckt på knapp så får dealrn sin tur FIXA
@@ -185,14 +193,28 @@ class GamePage extends StatelessWidget {
                   }
                 },
                 child: const Text('  Hit  '),
+                style: ButtonStyle(
+                    backgroundColor:
+                        Provider.of<BlackJack>(context, listen: false)
+                                .getDoubled
+                            ? (Provider.of<BlackJack>(context, listen: false)
+                                        .getPlayerHand
+                                        .length >
+                                    2)
+                                ? MaterialStateProperty.all(Colors.grey)
+                                : null
+                            : null),
               ),
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.money, size: 50),
-                  Consumer(
-                    builder: (context, state, child) => Text(
-                        '${Provider.of<BlackJack>(context, listen: true).getPlayerBet}'),
+                  const Text(
+                    'Playerbet',
+                    style: TextStyle(fontSize: 18),
                   ),
+                  Text(
+                      '\$${Provider.of<BlackJack>(context, listen: false).getPlayerBet}',
+                      style: const TextStyle(fontSize: 18))
                 ],
               ),
               Consumer<BlackJack>(
@@ -239,6 +261,10 @@ class GamePage extends StatelessWidget {
                       child: const Text('Stand'))),
             ],
           ),
+          const Divider(
+            height: 5,
+            color: Colors.transparent,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -266,6 +292,19 @@ class GamePage extends StatelessWidget {
                     }
                   },
                   child: const Text('  Split  ')),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Provider.of<BlackJack>(context, listen: false).getSplit
+                      ? const Text('Splitbet', style: TextStyle(fontSize: 18))
+                      : const SizedBox.shrink(),
+                  Provider.of<BlackJack>(context, listen: false).getSplit
+                      ? Text(
+                          '\$${Provider.of<BlackJack>(context, listen: false).getSplitBet}',
+                          style: const TextStyle(fontSize: 18))
+                      : const SizedBox.shrink()
+                ],
+              ),
               ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
@@ -781,46 +820,54 @@ class GamePage extends StatelessWidget {
   }
 
   Widget popUpBet({required bool firstRound, required BuildContext context}) {
-    Provider.of<PlayingCardsProvider>(context, listen: false).fetchBalance(context: context);
+    Provider.of<PlayingCardsProvider>(context, listen: false)
+        .fetchBalance(context: context);
 
     if (firstRound &&
-        Provider.of<PlayingCardsProvider>(context, listen: false).getBalance(context: context) != 0) {
+        Provider.of<PlayingCardsProvider>(context, listen: false)
+                .getBalance(context: context) !=
+            0) {
       return AlertDialog(
         title: const Text('Time to place your bet'),
         content: const Text('Choose your amount'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).increaseBet(bet: 25, context: context);
-              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
-              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .increaseBet(bet: 25, context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .testingSplit(context: context);
+
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('25'),
           ),
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).increaseBet(bet: 50, context: context);
-              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
-              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .increaseBet(bet: 50, context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .testingSplit(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('50'),
           ),
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).increaseBet(bet: 100, context: context);
-              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
-              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .increaseBet(bet: 100, context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .testingSplit(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('100'),
           ),
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).allIn(context: context);
-              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
-              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .allIn(context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .testingSplit(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('All in'),
@@ -828,22 +875,27 @@ class GamePage extends StatelessWidget {
         ],
       );
     } else if (firstRound &&
-        Provider.of<PlayingCardsProvider>(context, listen: false).getBalance(context: context) == 0) {
+        Provider.of<PlayingCardsProvider>(context, listen: false)
+                .getBalance(context: context) ==
+            0) {
       return AlertDialog(
         title: const Text('Out of cash'),
         content: const Text('You can play without betting'),
         actions: [
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
-              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .testingSplit(context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .testingDouble(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('Play without bet'),
           ),
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).forfeit(context: context);
+              Provider.of<BlackJack>(context, listen: false)
+                  .forfeit(context: context);
               Navigator.pop(context);
             },
             child: const Text('Quit'),
