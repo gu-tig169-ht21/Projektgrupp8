@@ -7,14 +7,15 @@ import 'blackjack.dart';
 
 //ändrat stateful till stateless
 
-class LoginPage extends StatelessWidget {
-  LoginPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
 //TODO: byt ut stack
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,16 +23,14 @@ class LoginPage extends StatelessWidget {
       body: Stack(
         children: [
           _logInTitle(),
-          _textEmail(),
-          _textPassword(),
-          _loginButton(context),
+          _loginFieldsAndButton(context),
           _registerText(context),
         ],
       ),
     );
   }
 
-  Widget _logInTitle() {
+  Widget _logInTitle() { //Titel för Login
     return const Padding(
       padding: EdgeInsets.only(left: 75, right: 0, top: 30, bottom: 0),
       child: Text(
@@ -41,63 +40,67 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _textEmail() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 175, bottom: 0),
-      child: TextField(
-        controller: emailController,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          icon: Icon(Icons.email),
-          labelText: 'Email',
+  Widget _loginFieldsAndButton(BuildContext context) { //textfält för email och lösenord samt login knapp
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    return Stack(
+      children: [
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 15, right: 15, top: 175, bottom: 0),
+          child: TextField( //textfält email
+            controller: emailController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.email),
+              labelText: 'Email',
+            ),
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget _textPassword() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 250, bottom: 0),
-      child: TextField(
-        obscureText: true,
-        controller: passwordController,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          icon: Icon(Icons.password),
-          labelText: 'Password',
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 15, right: 15, top: 250, bottom: 0),
+          child: TextField( //textfält lösenord
+            obscureText: true,
+            controller: passwordController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              icon: Icon(Icons.password),
+              labelText: 'Password',
+            ),
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget _loginButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 130, right: 0, top: 350, bottom: 0),
-      child: FractionallySizedBox(
-        widthFactor: 0.5,
-        heightFactor: 0.15,
-        child: ElevatedButton(
-          child: const Text('Log in'),
-          onPressed: () {
-            if (emailController.text.isNotEmpty &&
-                passwordController.text.isNotEmpty) {
-              try {
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .logIn(
-                        email: emailController.text,
-                        password: passwordController.text);
-                emailController.clear();
-                passwordController.clear();
-              } on FirebaseAuthException catch (e) {
-                BlackJack.errorHandling(e, context);
-              }
-            } else {
-              throw Exception();
-              //TODO: gör så att textfälten som ej är ifyllda blir markerade
-            }
-          },
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 130, right: 0, top: 350, bottom: 0),
+          child: FractionallySizedBox(
+            widthFactor: 0.5,
+            heightFactor: 0.15,
+            child: ElevatedButton( //login knapp
+              child: const Text('Log in'),
+              onPressed: () {
+                if (emailController.text.isNotEmpty &&
+                    passwordController.text.isNotEmpty) { //kollar om fälten ej är tomma och kallar sen på login metoden i FirebaseImplementation
+                  try {
+                    Provider.of<FirebaseAuthImplementation>(context,
+                            listen: false)
+                        .logIn(
+                            email: emailController.text,
+                            password: passwordController.text);
+                    emailController.clear();
+                    passwordController.clear();
+                  } on FirebaseAuthException catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
+                } else {
+                  throw Exception();
+                  //TODO: gör så att textfälten som ej är ifyllda blir markerade
+                }
+              },
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -123,6 +126,9 @@ class LoginPage extends StatelessWidget {
   }
 
   void _registerNewUserDialog(context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (context) {
