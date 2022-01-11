@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/deck_of_cards.dart';
 import 'package:playing_cards/playing_cards.dart';
-import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 
 class FirebaseAuthImplementation extends ChangeNotifier {
   FirebaseAuthImplementation() {
@@ -393,26 +389,6 @@ class FirestoreImplementation extends ChangeNotifier {
     }
   }
 
-  void changeBalance(
-      {required int change, required bool add, required String userId}) {
-    CollectionReference statistics = database.collection('Statistics');
-
-    if (add) {
-      statistics
-          .doc(userId)
-          .update({'balance': FieldValue.increment(change)})
-          .then((value) => print('Balance updated'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
-    } else {
-      statistics
-          .doc(userId)
-          .update({'balance': FieldValue.increment(-change)})
-          .then((value) => print('balance decreased'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
-    }
-  }
 
   Future<String> getChosenDeckTheme({required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
@@ -577,6 +553,48 @@ class FirestoreImplementation extends ChangeNotifier {
     });
 
     return returnMap;
+  }
+
+  Future<int> getBalance({required String userId}) async{
+    CollectionReference statistics = database.collection('Statistics');
+    int returnInt = 0;
+
+    await statistics
+        .doc(userId)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        try {
+          returnInt = documentSnapshot['balance'];
+        } on StateError catch (e) {
+          print(e);
+        }
+      }
+    });
+
+    return returnInt;
+  }
+
+  void changeBalance({required String userId, required int change, required add}) async{
+    CollectionReference statistics = database.collection('Statistics');
+
+    if(add){
+    statistics
+        .doc(userId)
+        .update({'balance': FieldValue.increment(change)})
+        .then((value) => print('$change added to balance'))
+        .catchError(
+            (error) => print(error.toString())); //TODO:riktig felhantering
+
+  }else{
+      statistics
+          .doc(userId)
+          .update({'balance': FieldValue.increment(-change)})
+          .then((value) => print('$change removed from balance'))
+          .catchError(
+              (error) => print(error.toString())); //TODO:riktig felhantering
+    }
+
   }
 
 

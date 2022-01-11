@@ -8,15 +8,13 @@ import 'package:provider/provider.dart';
 import 'blackjack.dart';
 import 'package:playing_cards/playing_cards.dart';
 
-class GamePage extends StatefulWidget {
+class GamePage extends StatelessWidget {
   const GamePage({Key? key}) : super(key: key);
 
-  @override
-  _GamePageState createState() => _GamePageState();
-}
 
-class _GamePageState extends State<GamePage> {
-  bool showDealerCard = false;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,13 +59,13 @@ class _GamePageState extends State<GamePage> {
                   }
                 case 'Forfeit':
                   {
-                    Provider.of<BlackJack>(context, listen: false).forfeit();
+                    Provider.of<BlackJack>(context, listen: false).forfeit(context: context);
 
                     break;
                   }
                 case 'Quit to main menu':
                   {
-                    Provider.of<BlackJack>(context, listen: false).forfeit();
+                    Provider.of<BlackJack>(context, listen: false).forfeit(context: context);
                     Navigator.pop(context);
                     break;
                   }
@@ -77,29 +75,34 @@ class _GamePageState extends State<GamePage> {
           actions: [
             Consumer(
                 builder: (context, state, child) => Text(
-                    '${Provider.of<BlackJack>(context, listen: true).getBalance}'))
+                    '${Provider.of<PlayingCardsProvider>(context, listen: true).getBalance(context: context)}'))
           ],
         ),
         body: Stack(children: [
-          startNewGame(),
+          startNewGame(context: context),
           Consumer<BlackJack>(
-              builder: (context, state, child) => winOrLosePopUp(
-                  Provider.of<BlackJack>(context, listen: false).getSplit,
-                  Provider.of<BlackJack>(context, listen: true).getWinCondition,
-                  Provider.of<BlackJack>(context, listen: true)
-                      .getSplitWinCondition)),
+            builder: (context, state, child) => winOrLosePopUp(
+                Provider.of<BlackJack>(context, listen: false).getSplit,
+                Provider.of<BlackJack>(context, listen: true).getWinCondition,
+                Provider.of<BlackJack>(context, listen: true)
+                    .getSplitWinCondition,
+                context: context),
+          ),
           // Consumer<BlackJack>(
           //     builder: (context, state, child) => splitOrDouble(
           //         Provider.of<BlackJack>(context, listen: false)
           //             .getCanDoubleOrSplit)),
           Consumer<BlackJack>(
               builder: (context, state, child) => popUpBet(
-                  Provider.of<BlackJack>(context, listen: false).getCanBet)),
+                  firstRound:
+                      Provider.of<BlackJack>(context, listen: false).getCanBet,
+                  context: context)),
         ]));
   }
 
-  Widget startNewGame() {
+  Widget startNewGame({required BuildContext context}) {
     //här skapas ett nytt spel och startkort delas ut, ska kanske ha något med bet att göra
+    Provider.of<PlayingCardsProvider>(context, listen: false).fetchBalance(context: context);
 
     return Column(
       //när spelaren tryckt på knapp så får dealrn sin tur FIXA
@@ -113,7 +116,8 @@ class _GamePageState extends State<GamePage> {
                     builder: (context, state, child) => getHand(
                         Provider.of<BlackJack>(context, listen: false)
                             .getDealerHand,
-                        dealer: true))),
+                        dealer: true,
+                        context: context))),
         Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -252,7 +256,7 @@ class _GamePageState extends State<GamePage> {
                         .getCanSplit) {
                       try {
                         Provider.of<BlackJack>(context, listen: false)
-                            .doSplit();
+                            .doSplit(context: context);
                         Provider.of<BlackJack>(context, listen: false)
                             .setCanSplit = false;
                       } catch (e) {
@@ -279,7 +283,7 @@ class _GamePageState extends State<GamePage> {
                         .getCanDouble) {
                       try {
                         Provider.of<BlackJack>(context, listen: false)
-                            .doDouble();
+                            .doDouble(context: context);
                         Provider.of<BlackJack>(context, listen: false)
                             .setCanDouble = false;
 
@@ -307,7 +311,8 @@ class _GamePageState extends State<GamePage> {
                         builder: (context, state, child) => getHand(
                             Provider.of<BlackJack>(context, listen: false)
                                 .getSplitHand,
-                            dealer: false))
+                            dealer: false,
+                            context: context))
                   ]))
               : const SizedBox.shrink(),
           Provider.of<BlackJack>(context, listen: false).getCanBet
@@ -324,14 +329,16 @@ class _GamePageState extends State<GamePage> {
                         builder: (context, state, child) => getHand(
                             Provider.of<BlackJack>(context, listen: false)
                                 .getPlayerHand,
-                            dealer: false)))
+                            dealer: false,
+                            context: context)))
                   ])),
         ])
       ],
     );
   }
 
-  Widget getHand(List<PlayingCard> hand, {required bool dealer}) {
+  Widget getHand(List<PlayingCard> hand,
+      {required bool dealer, required BuildContext context}) {
     //genererar vyn för spelaren och dealerns kort
     //ska dealern även visa kort om du blir tjock eller får blackjack utan att den tar en tur
 
@@ -361,7 +368,8 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget winOrLosePopUp(
-      bool split, String winOrLosePlayer, String winOrLoseSplit) {
+      bool split, String winOrLosePlayer, String winOrLoseSplit,
+      {required BuildContext context}) {
     //popup om du vinner eller förlorar där du kan starta en ny runda eller gå till startsidan?
     if (Provider.of<BlackJack>(context, listen: true).getSplit &&
         Provider.of<BlackJack>(context, listen: true).getDealerStop &&
@@ -379,9 +387,9 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .winnings(playerOrSplit: 'Player');
+                      .winnings(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
-                      .winnings(playerOrSplit: 'Split');
+                      .winnings(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -409,7 +417,7 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .winnings(playerOrSplit: 'Player');
+                      .winnings(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -437,9 +445,9 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .winnings(playerOrSplit: 'Player');
+                      .winnings(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
-                      .drawBet(playerOrSplit: 'Split');
+                      .drawBet(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -493,7 +501,7 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .winnings(playerOrSplit: 'Split');
+                      .winnings(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -521,7 +529,7 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .drawBet(playerOrSplit: 'Split');
+                      .drawBet(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -549,7 +557,7 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .drawBet(playerOrSplit: 'Player');
+                      .drawBet(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -577,9 +585,9 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .drawBet(playerOrSplit: 'Player');
+                      .drawBet(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
-                      .winnings(playerOrSplit: 'Split');
+                      .winnings(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -607,7 +615,7 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .drawBet(playerOrSplit: 'Player');
+                      .drawBet(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -643,9 +651,9 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .winnings(playerOrSplit: 'Player');
+                      .winnings(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
-                      .winnings(playerOrSplit: 'Split');
+                      .winnings(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -699,7 +707,7 @@ class _GamePageState extends State<GamePage> {
                   Provider.of<BlackJack>(context, listen: false).setSplitTurn =
                       false;
                   Provider.of<BlackJack>(context, listen: false)
-                      .drawBet(playerOrSplit: 'Player');
+                      .drawBet(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
                   Provider.of<FirestoreImplementation>(context, listen: false)
@@ -725,46 +733,47 @@ class _GamePageState extends State<GamePage> {
     }
   }
 
-  Widget popUpBet(bool firstRound) {
+  Widget popUpBet({required bool firstRound, required BuildContext context}) {
+    Provider.of<PlayingCardsProvider>(context, listen: false).fetchBalance(context: context);
+
     if (firstRound &&
-        Provider.of<BlackJack>(context, listen: false).getBalance != 0) {
+        Provider.of<PlayingCardsProvider>(context, listen: false).getBalance(context: context) != 0) {
       return AlertDialog(
         title: const Text('Time to place your bet'),
         content: const Text('Choose your amount'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).increaseBet(25);
-              Provider.of<BlackJack>(context, listen: false).testingSplit();
-              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).increaseBet(bet: 25, context: context);
+              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
+              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('25'),
           ),
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).increaseBet(50);
-              Provider.of<BlackJack>(context, listen: false).testingSplit();
-              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).increaseBet(bet: 50, context: context);
+              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
+              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('50'),
           ),
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).increaseBet(100);
-              Provider.of<BlackJack>(context, listen: false).testingSplit();
-              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).increaseBet(bet: 100, context: context);
+              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
+              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('100'),
           ),
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).increaseBet(
-                  Provider.of<BlackJack>(context, listen: false).allIn());
-              Provider.of<BlackJack>(context, listen: false).testingSplit();
-              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).allIn(context: context);
+              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
+              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('All in'),
@@ -772,22 +781,22 @@ class _GamePageState extends State<GamePage> {
         ],
       );
     } else if (firstRound &&
-        Provider.of<BlackJack>(context, listen: false).getBalance == 0) {
+        Provider.of<PlayingCardsProvider>(context, listen: false).getBalance(context: context) == 0) {
       return AlertDialog(
         title: const Text('Out of cash'),
         content: const Text('You can play without betting'),
         actions: [
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).testingSplit();
-              Provider.of<BlackJack>(context, listen: false).testingDouble();
+              Provider.of<BlackJack>(context, listen: false).testingSplit(context: context);
+              Provider.of<BlackJack>(context, listen: false).testingDouble(context: context);
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('Play without bet'),
           ),
           TextButton(
             onPressed: () {
-              Provider.of<BlackJack>(context, listen: false).forfeit();
+              Provider.of<BlackJack>(context, listen: false).forfeit(context: context);
               Navigator.pop(context);
             },
             child: const Text('Quit'),
