@@ -95,7 +95,6 @@ flutter:
       - assets/quiGonJinn.jpg
       - assets/yoda.jpg 
       - assets/profilepicture.png
-      - lib/localFiles/last_date.txt
 
   # To add assets to your application, add an assets section, like this:
   # assets:
