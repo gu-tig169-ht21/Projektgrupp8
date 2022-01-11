@@ -2,27 +2,37 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:provider/provider.dart';
+import 'blackjack.dart';
 
 class ProfileInformation extends StatelessWidget {
   const ProfileInformation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String? email = 'email';
+    try {
+      email = Provider.of<FirebaseAuthImplementation>(context, listen: true)
+          .getUserEmail();
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('User profile'),
       ),
-      body: Column(
-        children: [
-          _profilePicture(),
-          Text(
-            'Email: ${Provider.of<FirebaseAuthImplementation>(context, listen: true).getUserEmail()}',
-            style: const TextStyle(fontSize: 20),
-          ),
-          logOut(context),
-          changePassword(context),
-          deleteUser(context),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _profilePicture(),
+            Text(
+              'Email: $email',
+              style: const TextStyle(fontSize: 20),
+            ),
+            logOut(context),
+            changePassword(context),
+            deleteUser(context),
+          ],
+        ),
       ),
     );
   }
@@ -51,8 +61,12 @@ class ProfileInformation extends StatelessWidget {
       title: const Text('Log out'),
       subtitle: const Text('Logs you out of your account'),
       onTap: () {
-        Provider.of<FirebaseAuthImplementation>(context, listen: false)
-            .signOut();
+        try {
+          Provider.of<FirebaseAuthImplementation>(context, listen: false)
+              .signOut();
+        } on Exception catch (e) {
+          BlackJack.errorHandling(e, context);
+        }
         Navigator.pop(context);
       },
     );
@@ -63,79 +77,92 @@ class ProfileInformation extends StatelessWidget {
         newPassword = TextEditingController(),
         verifyNewPassword = TextEditingController();
     return ListTile(
-        title: const Text('Change password'),
-        subtitle: const Text('Changes your password'),
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                    title: const Text('Change your password'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          controller: oldPassword,
-                          decoration: const InputDecoration(
-                            labelText: 'Old Password',
-                          ),
-                        ),
-                        TextField(
-                          controller: newPassword,
-                          decoration: const InputDecoration(
-                            labelText: 'New password',
-                          ),
-                        ),
-                        TextField(
-                          controller: verifyNewPassword,
-                          decoration: const InputDecoration(
-                              labelText: 'Verify new password'),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            child: const Text('Change password'),
-                            onPressed: () {
-                              if (newPassword.text == verifyNewPassword.text) {
-                                try {
-                                  Provider.of<FirebaseAuthImplementation>(
-                                          context,
-                                          listen: false)
-                                      .changeUserPassword(
-                                          oldPassword.text, newPassword.text);
-                                  Navigator.pop(context);
-                                } on FirebaseAuthException catch (e) {
-                                  if (e.code == 'User-not-found') {
-                                    //TODO: gör nåt jävla skit, ändra i alertdialogen när du trycker på knappen?
-                                  } else if (e.code == 'Wrong-password') {
-                                    //TODO: gör nåt annat jävla skit
-                                  }
-                                } catch (e) {
-                                  //TODO: gör generell jävla skit
-                                }
-                                oldPassword.clear();
-                                newPassword.clear();
-                                verifyNewPassword.clear();
-                              } else {
-                                print('passwords didnt match');
-                              }
-                            },
-                          ),
-                          ElevatedButton(
-                            child: const Text('cancel'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
+      title: const Text('Change password'),
+      subtitle: const Text('Changes your password'),
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Change your password'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 60,
+                    child: TextField(
+                      obscureText: true,
+                      controller: oldPassword,
+                      decoration: const InputDecoration(
+                        labelText: 'Old Password',
                       ),
-                    ]);
-              });
-        });
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: TextField(
+                      obscureText: true,
+                      controller: newPassword,
+                      decoration: const InputDecoration(
+                        labelText: 'New password',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: TextField(
+                      obscureText: true,
+                      controller: verifyNewPassword,
+                      decoration: const InputDecoration(
+                          labelText: 'Verify new password'),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                Center(
+                  child: ElevatedButton(
+                    child: const Text(
+                      'Change password',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () {
+                      if (newPassword.text == verifyNewPassword.text) {
+                        try {
+                          Provider.of<FirebaseAuthImplementation>(context,
+                                  listen: false)
+                              .changeUserPassword(
+                                  oldPassword.text, newPassword.text);
+                          Navigator.pop(context);
+                        } on Exception catch (e) {
+                          BlackJack.errorHandling(e, context);
+                        }
+                        oldPassword.clear();
+                        newPassword.clear();
+                        verifyNewPassword.clear();
+                      } else {
+                        throw Exception();
+                      }
+                    },
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    child: const Text(
+                      'cancel',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget deleteUser(BuildContext context) {
@@ -175,8 +202,8 @@ class ProfileInformation extends StatelessWidget {
                                     listen: false)
                                 .deleteUser(password.text);
                             password.clear();
-                          } on FirebaseAuthException catch (e) {
-                            //TODO: implementera felhantering
+                          } on Exception catch (e) {
+                            BlackJack.errorHandling(e, context);
                           }
                           Navigator.pop(context);
                         },
@@ -197,3 +224,5 @@ class ProfileInformation extends StatelessWidget {
   }
 }
 //TODO: finlir och det sista som har med inloggning och användarhantering att göra.
+ 
+

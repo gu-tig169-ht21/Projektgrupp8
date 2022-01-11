@@ -1,10 +1,9 @@
-import 'dart:js';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'blackjack.dart';
 
 //ändrat stateful till stateless
 
@@ -90,15 +89,10 @@ class LoginPage extends StatelessWidget {
                 emailController.clear();
                 passwordController.clear();
               } on FirebaseAuthException catch (e) {
-                if (e.code == 'user-not-found') {
-                  //TODO: gör något vid fel
-                } else if (e.code == 'wrong-password') {
-                  //TODO:gör något
-                }
-              } catch (e) {
-                //TODO:kasta generellt felmeddelande
+                BlackJack.errorHandling(e, context);
               }
             } else {
+              throw Exception();
               //TODO: gör så att textfälten som ej är ifyllda blir markerade
             }
           },
@@ -174,18 +168,8 @@ class LoginPage extends StatelessWidget {
                       passwordController.clear();
                       Navigator.pop(context);
                     } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        //TODO: gör något vid fel
-                        print('weak');
-                      } else if (e.code == 'email-already-in-use') {
-                        //TODO:gör något
-                        print('already in use');
-                      }
-                    } catch (e) {
-                      //TODO:kasta generellt felmeddelande
-                      print(e);
+                      BlackJack.errorHandling(e, context);
                     }
-                  } else {
                     //TODO: gör så att textfälten som ej är ifyllda blir markerade
                   }
                 },

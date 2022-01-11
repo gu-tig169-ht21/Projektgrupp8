@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/firebase_implementation.dart';
@@ -392,15 +391,19 @@ class GamePage extends StatelessWidget {
                       .winnings(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -420,15 +423,19 @@ class GamePage extends StatelessWidget {
                       .winnings(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -450,15 +457,19 @@ class GamePage extends StatelessWidget {
                       .drawBet(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -476,15 +487,19 @@ class GamePage extends StatelessWidget {
                       false;
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -504,15 +519,19 @@ class GamePage extends StatelessWidget {
                       .winnings(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -532,15 +551,19 @@ class GamePage extends StatelessWidget {
                       .drawBet(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -560,15 +583,19 @@ class GamePage extends StatelessWidget {
                       .drawBet(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -590,15 +617,19 @@ class GamePage extends StatelessWidget {
                       .winnings(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -618,15 +649,19 @@ class GamePage extends StatelessWidget {
                       .drawBet(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -656,15 +691,19 @@ class GamePage extends StatelessWidget {
                       .winnings(playerOrSplit: 'Split', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -682,15 +721,19 @@ class GamePage extends StatelessWidget {
                       false;
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
@@ -710,15 +753,19 @@ class GamePage extends StatelessWidget {
                       .drawBet(playerOrSplit: 'Player', context: context);
                   Provider.of<BlackJack>(context, listen: false)
                       .addCardsToDB(context: context);
-                  Provider.of<FirestoreImplementation>(context, listen: false)
-                      .incrementGameCountAndWinOrLose(
-                          split: split,
-                          splitWinOrLose: winOrLoseSplit,
-                          winOrLose: winOrLosePlayer,
-                          userId: Provider.of<FirebaseAuthImplementation>(
-                                  context,
-                                  listen: false)
-                              .getUserId()!);
+                  try {
+                    Provider.of<FirestoreImplementation>(context, listen: false)
+                        .incrementGameCountAndWinOrLose(
+                            split: split,
+                            splitWinOrLose: winOrLoseSplit,
+                            winOrLose: winOrLosePlayer,
+                            userId: Provider.of<FirebaseAuthImplementation>(
+                                    context,
+                                    listen: false)
+                                .getUserId()!);
+                  } on Exception catch (e) {
+                    BlackJack.errorHandling(e, context);
+                  }
                   Provider.of<BlackJack>(context, listen: false).setUpNewGame();
                   //lägg till förändringar till saldo samt bet här
                 },
