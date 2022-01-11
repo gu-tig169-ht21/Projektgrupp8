@@ -3,6 +3,8 @@ import 'package:my_first_app/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 
+import 'blackjack.dart';
+
 class PlayingCardsProvider extends ChangeNotifier {
   var playingcardThemeMode = PlayingCardsThemes.standardStyle;
   String cardStyleString = 'Standard';
@@ -12,7 +14,6 @@ class PlayingCardsProvider extends ChangeNotifier {
   bool starWarsDeckUnlocked = false;
   bool goldenDeckUnlocked = false;
   int balance = 0;
-
 
   get getStarWarsDeckUnlocked {
     return starWarsDeckUnlocked;
@@ -47,12 +48,22 @@ class PlayingCardsProvider extends ChangeNotifier {
     return playingcardThemeMode;
   }
 
-  void fetchBalance({required BuildContext context}) async{
-    balance = await Provider.of<FirestoreImplementation>(context, listen: false).getBalance(userId: Provider.of<FirebaseAuthImplementation>(context, listen:false).getUserId()!);
-    notifyListeners();
+//TODO kolla så att try stämmer gällande notify listeners
+  void fetchBalance({required BuildContext context}) async {
+    try {
+      balance =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getBalance(
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+      notifyListeners();
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
   }
 
-  int getBalance({required BuildContext context}){
+  int getBalance({required BuildContext context}) {
     fetchBalance(context: context);
     return balance;
   }

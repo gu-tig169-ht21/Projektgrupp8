@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'blackjack.dart';
 
-
 class FirebaseAuthImplementation extends ChangeNotifier {
   FirebaseAuthImplementation() {
     init();
@@ -474,7 +473,7 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnMap;
   }
 
-  Future<int> getBalance({required String userId}) async{
+  Future<int> getBalance({required String userId}) async {
     CollectionReference statistics = database.collection('Statistics');
     int returnInt = 0;
 
@@ -486,7 +485,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['balance'];
         } on StateError catch (e) {
-          print(e);
+          throw Exception(e);
         }
       }
     });
@@ -494,26 +493,20 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnInt;
   }
 
-  void changeBalance({required String userId, required int change, required add}) async{
+  void changeBalance(
+      {required String userId, required int change, required add}) async {
     CollectionReference statistics = database.collection('Statistics');
 
-    if(add){
-    statistics
-        .doc(userId)
-        .update({'balance': FieldValue.increment(change)})
-        .then((value) => print('$change added to balance'))
-        .catchError(
-            (error) => print(error.toString())); //TODO:riktig felhantering
-
-  }else{
+    if (add) {
       statistics
           .doc(userId)
-          .update({'balance': FieldValue.increment(-change)})
-          .then((value) => print('$change removed from balance'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
+          .update({'balance': FieldValue.increment(change)}).catchError(
+              (e) => throw Exception(e));
+    } else {
+      statistics
+          .doc(userId)
+          .update({'balance': FieldValue.increment(-change)}).catchError(
+              (e) => throw Exception(e));
     }
-
   }
-
 }
