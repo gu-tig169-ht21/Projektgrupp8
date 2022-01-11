@@ -20,17 +20,19 @@ class ProfileInformation extends StatelessWidget {
       appBar: AppBar(
         title: const Text('User profile'),
       ),
-      body: Column(
-        children: [
-          _profilePicture(),
-          Text(
-            'Email: $email',
-            style: const TextStyle(fontSize: 20),
-          ),
-          logOut(context),
-          changePassword(context),
-          deleteUser(context),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _profilePicture(),
+            Text(
+              'Email: $email',
+              style: const TextStyle(fontSize: 20),
+            ),
+            logOut(context),
+            changePassword(context),
+            deleteUser(context),
+          ],
+        ),
       ),
     );
   }

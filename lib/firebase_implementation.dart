@@ -44,8 +44,8 @@ class FirebaseAuthImplementation extends ChangeNotifier {
   void createNewUser({required String email, required String password}) async {
     //funktionen för att skapa en ny användare
     try {
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw FirebaseAuthException(code: 'weak-password');
@@ -60,8 +60,7 @@ class FirebaseAuthImplementation extends ChangeNotifier {
   void logIn({required String email, required String password}) async {
     //funktion för att logga in en användare
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw FirebaseAuthException(code: e.code);
