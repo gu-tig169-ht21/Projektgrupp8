@@ -5,16 +5,15 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'blackjack.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+//ändrat stateful till stateless
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
+class LoginPage extends StatelessWidget {
+  LoginPage({Key? key}) : super(key: key);
 
-class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+//TODO: byt ut stack
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,8 @@ class _LoginPageState extends State<LoginPage> {
           _logInTitle(),
           _textEmail(),
           _textPassword(),
-          _loginButton(),
-          _registerText(),
+          _loginButton(context),
+          _registerText(context),
         ],
       ),
     );
@@ -71,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginButton() {
+  Widget _loginButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 130, right: 0, top: 350, bottom: 0),
       child: FractionallySizedBox(
@@ -102,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _registerText() {
+  Widget _registerText(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 130, right: 0, top: 600),
       child: RichText(
@@ -115,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: const TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    _registerNewUserDialog();
+                    _registerNewUserDialog(context);
                   })
           ],
         ),
@@ -123,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _registerNewUserDialog() {
+  void _registerNewUserDialog(context) {
     showDialog(
       context: context,
       builder: (context) {

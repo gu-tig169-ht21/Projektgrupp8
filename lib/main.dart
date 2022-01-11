@@ -62,7 +62,7 @@ class MainApp extends StatelessWidget {
         .isUserLoggedIn()) {
       return const StartPage();
     } else {
-      return const LoginPage();
+      return LoginPage();
     }
   }
 }

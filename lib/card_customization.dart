@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/firebase_implementation.dart';
 import 'package:provider/provider.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'card_themes.dart';
 import 'blackjack.dart';
-
-//TODO: finjustera balances storlek i theme
 
 class CustomizationPage extends StatelessWidget {
   CustomizationPage({Key? key}) : super(key: key);
@@ -41,7 +38,7 @@ class CustomizationPage extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.only(right: 30),
             child: Text(
-                '\$ ${Provider.of<BlackJack>(context, listen: true).getBalance}'))
+                '\$ ${Provider.of<PlayingCardsProvider>(context, listen: false).getBalance(context: context)}'))
       ],
     );
   }
@@ -111,7 +108,7 @@ class CustomizationPage extends StatelessWidget {
                         .getDeckUnlocked(
                             starWarsOrGolden: _deck, context: context)) {
                   Provider.of<BlackJack>(context, listen: false)
-                      .subtractFromBalance(_price);
+                      .subtractFromBalance(i: _price, context: context);
                   Provider.of<PlayingCardsProvider>(context, listen: false)
                       .setDeckUnlocked(
                           starWarsOrGolden: _deck, context: context);
