@@ -19,9 +19,9 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-
   @override
   void initState() {
+
      Provider.of<PlayingCardsProvider>(context, listen: false).setUpCardThemes(context: context); //hämtar data som krävs av kortteman etc.
      setUpStatsAndBalance();
      Provider.of<PlayingCardsProvider>(context, listen: false).fetchBalance(context: context); //hämtar ditt saldo från databasen
@@ -46,8 +46,6 @@ class _StartPageState extends State<StartPage> {
           context, listen: false).getUserId()!, change: 200, add: true);
     }
     file.writeAsString('${_now.day}');//skriver dagens datum till filen
-
-
     await Provider.of<StatisticsProvider>(context, listen: false)
         .setUpStatistics(context: context); //metoden som hämtar statistik
   }
@@ -63,8 +61,6 @@ class _StartPageState extends State<StartPage> {
           _playButton(),
           _howToPlayButton(),
           _statisticsButton(),
-          //_userIcon(),
-          //_settingsIcon(),
           _userAndSettingsButtons()
         ],
       ),
@@ -172,56 +168,6 @@ class _StartPageState extends State<StartPage> {
       ),
     );
   }
-
-  //widget för inställningsikon
-  //TODO: eventuellt ta bort denna widgeten???
-
-  // Widget _settingsIcon() {
-  //   return Align(
-  //     alignment: const Alignment(1.95, 0.89),
-  //     child: FractionallySizedBox(
-  //       widthFactor: 0.6,
-  //       heightFactor: 0.1,
-  //       child: IconButton(
-  //         icon: const Icon(Icons.settings),
-  //         iconSize: 50,
-  //         onPressed: () {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => const Settings(),
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
-
-//Widget för profilikonen
-//TODO: EVENTUELLT TA BORT DENNA WIDGETEN??
-
-  // Widget _userIcon() {
-  //   return Align(
-  //     alignment: const Alignment(0.9, 0.89),
-  //     child: FractionallySizedBox(
-  //       widthFactor: 0.6,
-  //       heightFactor: 0.1,
-  //       child: IconButton(
-  //         icon: const Icon(Icons.portrait_rounded),
-  //         iconSize: 50,
-  //         onPressed: () {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => const ProfileInformation(),
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 
 //Widget för UserIcon och Settingsicon
   Widget _userAndSettingsButtons() {

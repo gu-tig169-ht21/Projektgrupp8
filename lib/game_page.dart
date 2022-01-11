@@ -354,7 +354,7 @@ class GamePage extends StatelessWidget {
               style: Provider.of<PlayingCardsProvider>(context, listen: false)
                   .getPlayingcardThemeMode,
               card: hand[i],
-              elevation: 3.0,
+              elevation: 10,
               showBack: dealer
                   ? i == 0
                       ? showDealerCard
