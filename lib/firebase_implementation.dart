@@ -498,7 +498,7 @@ class FirestoreImplementation extends ChangeNotifier {
     CollectionReference statistics = database.collection('Statistics');
 
     if(add){
-    statistics
+    await statistics
         .doc(userId)
         .update({'balance': FieldValue.increment(change)})
         .then((value) => print('$change added to balance'))
@@ -506,7 +506,7 @@ class FirestoreImplementation extends ChangeNotifier {
             (error) => print(error.toString())); //TODO:riktig felhantering
 
   }else{
-      statistics
+      await statistics
           .doc(userId)
           .update({'balance': FieldValue.increment(-change)})
           .then((value) => print('$change removed from balance'))

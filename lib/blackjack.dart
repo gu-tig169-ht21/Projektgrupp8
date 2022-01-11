@@ -196,7 +196,7 @@ class BlackJack extends ChangeNotifier {
   void forfeit({required BuildContext context}) async{
     int balance = await Provider.of<FirestoreImplementation>(context, listen: false).getBalance(userId: Provider.of<FirebaseAuthImplementation>(context, listen:false).getUserId()!);
 
-    balance = balance + playerBet ~/ 2;
+    Provider.of<FirestoreImplementation>(context, listen: false).changeBalance(userId: Provider.of<FirebaseAuthImplementation>(context, listen:false).getUserId()!, change: playerBet ~/ 2, add: true);
     setUpNewGame();
     notifyListeners();
   }

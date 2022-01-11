@@ -3,6 +3,8 @@ import 'package:my_first_app/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 
+import 'blackjack.dart';
+
 class PlayingCardsProvider extends ChangeNotifier {
   var playingcardThemeMode = PlayingCardsThemes.standardStyle;
   String cardStyleString = 'Standard';
