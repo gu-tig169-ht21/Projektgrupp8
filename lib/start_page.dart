@@ -1,4 +1,3 @@
-import 'package:my_first_app/card_customization.dart';
 import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:my_first_app/game_page.dart';
@@ -18,13 +17,14 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-
   @override
   void initState() {
-     Provider.of<PlayingCardsProvider>(context, listen: false).setUpCardThemes(context: context);
-     setUpStats();
+    Provider.of<PlayingCardsProvider>(context, listen: false)
+        .setUpCardThemes(context: context);
+    setUpStats();
     super.initState();
   }
+
   void setUpStats() async {
     await Provider.of<StatisticsProvider>(context, listen: false)
         .setUpStatistics(context: context);
@@ -41,8 +41,6 @@ class _StartPageState extends State<StartPage> {
           _playButton(),
           _howToPlayButton(),
           _statisticsButton(),
-          //_userIcon(),
-          //_settingsIcon(),
           _userAndSettingsButtons()
         ],
       ),
@@ -150,56 +148,6 @@ class _StartPageState extends State<StartPage> {
       ),
     );
   }
-
-  //widget för inställningsikon
-  //TODO: eventuellt ta bort denna widgeten???
-
-  // Widget _settingsIcon() {
-  //   return Align(
-  //     alignment: const Alignment(1.95, 0.89),
-  //     child: FractionallySizedBox(
-  //       widthFactor: 0.6,
-  //       heightFactor: 0.1,
-  //       child: IconButton(
-  //         icon: const Icon(Icons.settings),
-  //         iconSize: 50,
-  //         onPressed: () {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => const Settings(),
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
-
-//Widget för profilikonen
-//TODO: EVENTUELLT TA BORT DENNA WIDGETEN??
-
-  // Widget _userIcon() {
-  //   return Align(
-  //     alignment: const Alignment(0.9, 0.89),
-  //     child: FractionallySizedBox(
-  //       widthFactor: 0.6,
-  //       heightFactor: 0.1,
-  //       child: IconButton(
-  //         icon: const Icon(Icons.portrait_rounded),
-  //         iconSize: 50,
-  //         onPressed: () {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => const ProfileInformation(),
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 
 //Widget för UserIcon och Settingsicon
   Widget _userAndSettingsButtons() {
