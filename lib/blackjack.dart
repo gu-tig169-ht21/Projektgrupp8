@@ -209,7 +209,7 @@ class BlackJack extends ChangeNotifier {
                 Provider.of<FirebaseAuthImplementation>(context, listen: false)
                     .getUserId()!);
 
-    balance = balance + playerBet ~/ 2;
+    Provider.of<FirestoreImplementation>(context, listen: false).changeBalance(userId: Provider.of<FirebaseAuthImplementation>(context, listen:false).getUserId()!, change: playerBet ~/ 2, add: true);
     setUpNewGame();
     notifyListeners();
   }

@@ -48,6 +48,7 @@ class PlayingCardsProvider extends ChangeNotifier {
     return playingcardThemeMode;
   }
 
+
 //TODO kolla så att try stämmer gällande notify listeners
   void fetchBalance({required BuildContext context}) async {
     try {

@@ -497,8 +497,17 @@ class FirestoreImplementation extends ChangeNotifier {
       {required String userId, required int change, required add}) async {
     CollectionReference statistics = database.collection('Statistics');
 
-    if (add) {
-      statistics
+
+    if(add){
+    await statistics
+        .doc(userId)
+        .update({'balance': FieldValue.increment(change)})
+        .then((value) => print('$change added to balance'))
+        .catchError(
+            (error) => print(error.toString())); //TODO:riktig felhantering
+
+  }else{
+      await statistics
           .doc(userId)
           .update({'balance': FieldValue.increment(change)}).catchError(
               (e) => throw Exception(e));
