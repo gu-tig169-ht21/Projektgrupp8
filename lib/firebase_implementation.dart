@@ -493,20 +493,21 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnInt;
   }
 
-  void changeBalance(
+
+  Future<void> changeBalance(
       {required String userId, required int change, required add}) async {
     CollectionReference statistics = database.collection('Statistics');
 
+    if (add) {
+      await statistics
+          .doc(userId)
+          .update({'balance': FieldValue.increment(change)})
+          .then((value) => print('$change added to balance'))
+          .catchError(
+              (error) => print(error.toString())); //TODO:riktig felhantering
 
-    if(add){
-    await statistics
-        .doc(userId)
-        .update({'balance': FieldValue.increment(change)})
-        .then((value) => print('$change added to balance'))
-        .catchError(
-            (error) => print(error.toString())); //TODO:riktig felhantering
 
-  }else{
+    } else {
       await statistics
           .doc(userId)
           .update({'balance': FieldValue.increment(change)}).catchError(

@@ -48,7 +48,7 @@ class _StartPageState extends State<StartPage> {
     if (_now.day != int.parse(lastDate)) {
       //om datumet som är lagrat ej är samma som dagens datum så får användaren $200
       try {
-        Provider.of<FirestoreImplementation>(context, listen: false)
+        await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
