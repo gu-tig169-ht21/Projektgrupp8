@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:my_first_app/deck_of_cards.dart';
-import 'package:my_first_app/firebase_implementation.dart';
+import 'package:my_first_app/game_engine/deck_of_cards.dart';
+import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
-import 'blackjack.dart';
+import '../game_engine/blackjack.dart';
 
 class DrawnCard {
   String name;
@@ -12,61 +12,60 @@ class DrawnCard {
   DrawnCard(this.name, this.timesDrawn);
 }
 
-class StatisticsProvider extends ChangeNotifier {
-  int gamesPlayed = 0;
-  int gamesWon = 0;
-  int gamesLost = 0;
-  Map<String, dynamic> drawnCards = <String, dynamic>{};
+class StatisticsHandler extends ChangeNotifier {
+  int _gamesPlayed = 0;
+  int _gamesWon = 0;
+  int _gamesLost = 0;
+  Map<String, dynamic> _drawnCards = <String, dynamic>{};
 
   get getGamesPlayed {
-    return gamesPlayed;
+    return _gamesPlayed;
   }
 
   get getGamesWon {
-    return gamesWon;
+    return _gamesWon;
   }
 
   get getGamesLost {
-    return gamesLost;
+    return _gamesLost;
   }
 
-//TODO kolla om denna är ny ellerom vi bara missade den
   Future<void> setUpStatistics({required BuildContext context}) async {
     String userId = '0';
     try {
       userId = Provider.of<FirebaseAuthImplementation>(context, listen: false)
           .getUserId()!;
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
 
     try {
-      gamesPlayed =
+      _gamesPlayed =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getGamesPlayed(userId: userId);
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
     try {
-      gamesWon =
+      _gamesWon =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getGamesWon(userId: userId);
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
     try {
-      gamesLost =
+      _gamesLost =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getGamesLost(userId: userId);
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
     try {
-      drawnCards =
+      _drawnCards =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getDrawnCards(userId: userId);
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
 
     notifyListeners();
@@ -75,7 +74,7 @@ class StatisticsProvider extends ChangeNotifier {
   List<DrawnCard> drawnCardsToList() {
     List<DrawnCard> drawnCardsList = <DrawnCard>[];
 
-    drawnCards.forEach((key, value) {
+    _drawnCards.forEach((key, value) {
       drawnCardsList.add(DrawnCard(key, value));
     });
 
@@ -85,7 +84,7 @@ class StatisticsProvider extends ChangeNotifier {
   PlayingCard mostDrawnCard() {
     List<DrawnCard> drawnCardsList = <DrawnCard>[];
 
-    drawnCards.forEach((key, value) {
+    _drawnCards.forEach((key, value) {
       drawnCardsList.add(DrawnCard(key, value));
     });
 

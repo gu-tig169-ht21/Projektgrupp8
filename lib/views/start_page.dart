@@ -1,13 +1,13 @@
-import 'package:my_first_app/blackjack.dart';
-import 'package:my_first_app/card_themes.dart';
-import 'package:my_first_app/firebase_implementation.dart';
-import 'package:my_first_app/game_page.dart';
-import 'package:my_first_app/profile_information_page.dart';
-import 'package:my_first_app/settings_page.dart';
-import 'package:my_first_app/statistics.dart';
-import 'package:my_first_app/statistics_provider.dart';
+import 'package:my_first_app/game_engine/blackjack.dart';
+import 'package:my_first_app/models/card_themes.dart';
+import 'package:my_first_app/models/firebase/firebase_implementation.dart';
+import 'package:my_first_app/views/game_page.dart';
+import 'package:my_first_app/views/profile_information_page.dart';
+import 'package:my_first_app/views/settings_page.dart';
+import 'package:my_first_app/views/statistics_page.dart';
+import 'package:my_first_app/models/statistics_handler.dart';
 import 'package:provider/provider.dart';
-import 'how_to_play.dart';
+import 'how_to_play_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -22,10 +22,10 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   @override
   void initState() {
-    Provider.of<PlayingCardsProvider>(context, listen: false).setUpCardThemes(
+    Provider.of<CardThemeHandler>(context, listen: false).setUpCardThemes(
         context: context); //hämtar data som krävs av kortteman etc.
     setUpStatsAndBalance();
-    Provider.of<PlayingCardsProvider>(context, listen: false)
+    Provider.of<CardThemeHandler>(context, listen: false)
         .fetchBalance(context: context); //hämtar ditt saldo från databasen
     super.initState();
   }
@@ -56,15 +56,15 @@ class _StartPageState extends State<StartPage> {
                 change: 200,
                 add: true);
       } on Exception catch (e) {
-        BlackJack.errorHandling(e, context);
+        BlackJackGameEngine.errorHandling(e, context);
       }
     }
     file.writeAsString('${_now.day}'); //skriver dagens datum till filen
     try {
-      await Provider.of<StatisticsProvider>(context, listen: false)
+      await Provider.of<StatisticsHandler>(context, listen: false)
           .setUpStatistics(context: context);
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
     //metoden som hämtar statistik
   }
@@ -134,7 +134,7 @@ class _StartPageState extends State<StartPage> {
                               listen: false)
                           .getUserId()!);
             } on Exception catch (e) {
-              BlackJack.errorHandling(e, context);
+              BlackJackGameEngine.errorHandling(e, context);
             }
             Navigator.push(
               context,
@@ -183,7 +183,7 @@ class _StartPageState extends State<StartPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const Statistics(),
+                builder: (context) => const StatisticsPage(),
               ),
             );
           },
@@ -209,7 +209,7 @@ class _StartPageState extends State<StartPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProfileInformation(),
+                  builder: (context) => const ProfileInformationPage(),
                 ),
               );
             },
@@ -221,7 +221,7 @@ class _StartPageState extends State<StartPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const Settings(),
+                  builder: (context) => const SettingsPage(),
                 ),
               );
             },

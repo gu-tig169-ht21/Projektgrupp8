@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/firebase_implementation.dart';
+import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'blackjack.dart';
+import '../game_engine/blackjack.dart';
 
 //ändrat stateful till stateless
 
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                     emailController.clear();
                     passwordController.clear();
                   } on FirebaseAuthException catch (e) {
-                    BlackJack.errorHandling(e, context);
+                    BlackJackGameEngine.errorHandling(e, context);
                   }
                 } else {
                   throw Exception();
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                       passwordController.clear();
                       Navigator.pop(context);
                     } on FirebaseAuthException catch (e) {
-                      BlackJack.errorHandling(e, context);
+                      BlackJackGameEngine.errorHandling(e, context);
                     }
                   }
                 },

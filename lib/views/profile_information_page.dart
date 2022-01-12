@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/firebase_implementation.dart';
+import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:provider/provider.dart';
-import 'blackjack.dart';
+import '../game_engine/blackjack.dart';
 
-class ProfileInformation extends StatelessWidget {
-  const ProfileInformation({Key? key}) : super(key: key);
+class ProfileInformationPage extends StatelessWidget {
+  const ProfileInformationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class ProfileInformation extends StatelessWidget {
       email = Provider.of<FirebaseAuthImplementation>(context, listen: true)
           .getUserEmail();
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
     return Scaffold(
       appBar: AppBar(
@@ -32,9 +32,9 @@ class ProfileInformation extends StatelessWidget {
               color: Colors.transparent,
               height: 30,
             ),
-            logOut(context),
-            changePassword(context),
-            deleteUser(context),
+            _logOut(context),
+            _changePassword(context),
+            _deleteUser(context),
           ],
         ),
       ),
@@ -60,7 +60,7 @@ class ProfileInformation extends StatelessWidget {
     );
   }
 
-  Widget logOut(BuildContext context) {
+  Widget _logOut(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.logout),
       title: const Text('Log out'),
@@ -71,14 +71,14 @@ class ProfileInformation extends StatelessWidget {
           Provider.of<FirebaseAuthImplementation>(context, listen: false)
               .signOut();
         } on Exception catch (e) {
-          BlackJack.errorHandling(e, context);
+          BlackJackGameEngine.errorHandling(e, context);
         }
         Navigator.pop(context);
       },
     );
   }
 
-  Widget changePassword(BuildContext context) {
+  Widget _changePassword(BuildContext context) {
     TextEditingController oldPassword = TextEditingController(),
         newPassword = TextEditingController(),
         verifyNewPassword = TextEditingController();
@@ -143,7 +143,7 @@ class ProfileInformation extends StatelessWidget {
                                   oldPassword.text, newPassword.text);
                           Navigator.pop(context);
                         } on Exception catch (e) {
-                          BlackJack.errorHandling(e, context);
+                          BlackJackGameEngine.errorHandling(e, context);
                         }
                         oldPassword.clear();
                         newPassword.clear();
@@ -174,7 +174,7 @@ class ProfileInformation extends StatelessWidget {
     );
   }
 
-  Widget deleteUser(BuildContext context) {
+  Widget _deleteUser(BuildContext context) {
     TextEditingController password = TextEditingController();
     return ListTile(
       leading: const Icon(Icons.delete),
@@ -217,7 +217,7 @@ class ProfileInformation extends StatelessWidget {
                                 .deleteUser(password.text);
                             password.clear();
                           } on Exception catch (e) {
-                            BlackJack.errorHandling(e, context);
+                            BlackJackGameEngine.errorHandling(e, context);
                           }
                           Navigator.pop(context);
                         },

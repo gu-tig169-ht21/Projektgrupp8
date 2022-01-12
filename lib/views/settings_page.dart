@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/blackjack.dart';
-import 'card_customization.dart';
+import 'package:my_first_app/game_engine/blackjack.dart';
+import 'card_customization_page.dart';
 import 'package:provider/provider.dart';
 
 //TODO: tog bort const från filer game_page(rad 56) och start_page (rad 143)
 
-class Settings extends StatelessWidget {
-  const Settings({Key? key}) : super(key: key);
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +78,7 @@ Widget _numberOfDecks() {
           value:
               '${Provider.of<ChangeNumberOfDecks>(context, listen: false).getSelectedNumberOfDecks}',
           onChanged: (String? newValue) {
-            Provider.of<BlackJack>(context, listen: false).addDecks(newValue!);
+            Provider.of<BlackJackGameEngine>(context, listen: false).addDecks(newValue!);
             Provider.of<ChangeNumberOfDecks>(context, listen: false)
                 .setSelectedDecks(newValue);
           },
@@ -115,23 +115,23 @@ class ChangeNumberOfDecks with ChangeNotifier {
 //Provider för att ändra mellan darktheme/standardtheme
 class ChangeTheme extends ChangeNotifier {
   var _thememode = ThemeMode.light;
-  bool themeModeSwitch = false;
+  bool _themeModeSwitch = false;
   get getThemeMode {
     return _thememode;
   }
 
   get getThemeModeSwitch {
-    return themeModeSwitch;
+    return _themeModeSwitch;
   }
 
   void changeDarkTheme(bool value) {
     if (value == true) {
       _thememode = ThemeMode.dark;
-      themeModeSwitch = true;
+      _themeModeSwitch = true;
       notifyListeners();
     } else {
       _thememode = ThemeMode.light;
-      themeModeSwitch = false;
+      _themeModeSwitch = false;
       notifyListeners();
     }
   }

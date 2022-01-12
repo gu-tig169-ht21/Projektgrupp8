@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/blackjack.dart';
-import 'package:my_first_app/card_themes.dart';
-import 'package:my_first_app/firebase_implementation.dart';
-import 'package:my_first_app/firebase_options.dart';
-import 'package:my_first_app/how_to_play.dart';
-import 'package:my_first_app/settings_page.dart';
-import 'package:my_first_app/start_page.dart';
-import 'package:my_first_app/statistics_provider.dart';
-import 'package:my_first_app/theme.dart';
+import 'package:my_first_app/game_engine/blackjack.dart';
+import 'package:my_first_app/models/card_themes.dart';
+import 'package:my_first_app/models/firebase/firebase_implementation.dart';
+import 'package:my_first_app/models/firebase/firebase_options.dart';
+import 'package:my_first_app/views/how_to_play_page.dart';
+import 'package:my_first_app/views/settings_page.dart';
+import 'package:my_first_app/views/start_page.dart';
+import 'package:my_first_app/models/statistics_handler.dart';
+import 'package:my_first_app/theme_data/theme.dart';
 import 'package:provider/provider.dart';
 import 'settings_page.dart';
 import 'login_page.dart';
@@ -23,12 +23,12 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (context) => ChangeNumberOfDecks()),
       ChangeNotifierProvider(create: (context) => ChangeTheme()),
-      ChangeNotifierProvider(create: (context) => HowToPlay()),
+      ChangeNotifierProvider(create: (context) => HowToPlayPage()),
       ChangeNotifierProvider(
-        create: (context) => BlackJack(),
+        create: (context) => BlackJackGameEngine(),
       ),
       ChangeNotifierProvider(
-        create: (context) => PlayingCardsProvider(),
+        create: (context) => CardThemeHandler(),
       ),
       ChangeNotifierProvider(
         create: (context) => FirebaseAuthImplementation(),
@@ -36,7 +36,7 @@ void main() async {
       ChangeNotifierProvider(
         create: (context) => FirestoreImplementation(),
       ),
-      ChangeNotifierProvider(create: (context) => StatisticsProvider()),
+      ChangeNotifierProvider(create: (context) => StatisticsHandler()),
     ],
     child: const MainApp(),
   ));
@@ -50,25 +50,25 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'blackjack:)',
-      home: startUp(context),
+      home: _startUp(context),
       theme: ThemeCustom.StandardTheme,
       darkTheme: ThemeCustom.DarkTheme,
       themeMode: Provider.of<ChangeTheme>(context, listen: true).getThemeMode,
     );
   }
 
-  Widget startUp(BuildContext context) {
+  Widget _startUp(BuildContext context) {
     bool testLogin = false;
     try {
       testLogin = Provider.of<FirebaseAuthImplementation>(context, listen: true)
           .isUserLoggedIn();
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
     if (testLogin) {
       return const StartPage();
     } else {
-      return LoginPage();
+      return const LoginPage();
     }
   }
 }

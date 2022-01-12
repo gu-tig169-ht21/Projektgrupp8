@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/blackjack.dart';
-import 'package:my_first_app/settings_page.dart';
+import 'package:my_first_app/game_engine/blackjack.dart';
+import 'package:my_first_app/views/settings_page.dart';
 import 'package:provider/provider.dart';
-import 'rules.dart';
+import '../models/rules.dart';
 
 //fixa så att texten ändras i rutan utan att använda setstate eftersom vi använder provider.
 
 //class med changenotifier
-class HowToPlay extends ChangeNotifier {
-  String chosenChapter = 'How to play';
+class HowToPlayPage extends ChangeNotifier {
+  String _chosenChapter = 'How to play';
 
   String get getChosenChapter {
-    return chosenChapter;
+    return _chosenChapter;
   }
 
   void chooseChapter(String choice) {
-    chosenChapter = choice;
+    _chosenChapter = choice;
     notifyListeners();
   }
 }
 
-class HelpPage extends StatefulWidget {
+class HelpPage extends StatelessWidget {
   const HelpPage({Key? key}) : super(key: key);
 
-  @override
-  State<HelpPage> createState() => _HelpPageState();
-}
-
-class _HelpPageState extends State<HelpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +38,10 @@ class _HelpPageState extends State<HelpPage> {
                     : Colors.black,
                 fontSize: 20),
             value:
-                Provider.of<HowToPlay>(context, listen: true).getChosenChapter,
+                Provider.of<HowToPlayPage>(context, listen: true).getChosenChapter,
             onChanged: (String? chosenValue) {
               //kallar på funktionen med hjälp av en provider
-              Provider.of<HowToPlay>(context, listen: false)
+              Provider.of<HowToPlayPage>(context, listen: false)
                   .chooseChapter(chosenValue!);
             },
             //lista med de alternativ användaren får
@@ -58,13 +53,13 @@ class _HelpPageState extends State<HelpPage> {
             }).toList(),
           ),
         ),
-        body: Consumer<HowToPlay>(
-            builder: (context, state, child) => getText(
-                Provider.of<HowToPlay>(context, listen: false)
+        body: Consumer<HowToPlayPage>(
+            builder: (context, state, child) => _getText(
+                Provider.of<HowToPlayPage>(context, listen: false)
                     .getChosenChapter)));
   }
 
-  Widget getText(String chosenText) {
+  Widget _getText(String chosenText) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Center(

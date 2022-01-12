@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:my_first_app/statistics_provider.dart';
+import 'package:my_first_app/models/statistics_handler.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 
-class Statistics extends StatefulWidget {
-  const Statistics({Key? key}) : super(key: key);
+class StatisticsPage extends StatefulWidget {
+  const StatisticsPage({Key? key}) : super(key: key);
 
   @override
-  State<Statistics> createState() => _StatisticsState();
+  State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
-class _StatisticsState extends State<Statistics> {
+class _StatisticsPageState extends State<StatisticsPage> {
   @override
   void initState() {
     setUpStats();
@@ -19,7 +19,7 @@ class _StatisticsState extends State<Statistics> {
   }
 
   void setUpStats() async {
-    await Provider.of<StatisticsProvider>(context, listen: false)
+    await Provider.of<StatisticsHandler>(context, listen: false)
         .setUpStatistics(context: context);
   }
 
@@ -46,7 +46,7 @@ List<charts.Series<DrawnCard, String>> _getChartData(
 //värden som presenteras i barchart
 
   List<DrawnCard> cards =
-      Provider.of<StatisticsProvider>(context, listen: false)
+      Provider.of<StatisticsHandler>(context, listen: false)
           .drawnCardsToList();
   cards.sort((a, b) => b.timesDrawn.compareTo(a
       .timesDrawn)); //sorterar korten i ordning utefter hur många gånger man dragit dem
@@ -98,7 +98,7 @@ Widget titles({required BuildContext context}) {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                'Games won \n ${Provider.of<StatisticsProvider>(context, listen: true).getGamesWon}',
+                'Games won \n ${Provider.of<StatisticsHandler>(context, listen: true).getGamesWon}',
                 textAlign: TextAlign.center,
               ),
             ],
@@ -115,7 +115,7 @@ Widget titles({required BuildContext context}) {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                'Games played \n ${Provider.of<StatisticsProvider>(context, listen: true).getGamesPlayed}',
+                'Games played \n ${Provider.of<StatisticsHandler>(context, listen: true).getGamesPlayed}',
                 textAlign: TextAlign.center,
               ),
             ],
@@ -132,7 +132,7 @@ Widget titles({required BuildContext context}) {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                'Games lost \n ${Provider.of<StatisticsProvider>(context, listen: true).getGamesLost}',
+                'Games lost \n ${Provider.of<StatisticsHandler>(context, listen: true).getGamesLost}',
                 textAlign: TextAlign.center,
               ),
             ],
@@ -167,7 +167,7 @@ Widget _mostCommonCardValue(BuildContext context) {
     child: SizedBox(
       width: 120,
       child: PlayingCardView(
-        card: Provider.of<StatisticsProvider>(context, listen: false)
+        card: Provider.of<StatisticsHandler>(context, listen: false)
             .mostDrawnCard(),
         elevation: 3.0,
       ),

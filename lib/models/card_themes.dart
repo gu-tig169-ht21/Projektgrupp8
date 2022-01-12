@@ -1,58 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/firebase_implementation.dart';
+import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 
-import 'blackjack.dart';
+import '../game_engine/blackjack.dart';
 
-class PlayingCardsProvider extends ChangeNotifier {
-  var playingcardThemeMode = PlayingCardsThemes.standardStyle;
-  String cardStyleString = 'Standard';
-  int chosenPageViewCard = 0;
-  int starWarsDeckPrice = 100;
-  int goldenDeckPrice = 1000;
-  bool starWarsDeckUnlocked = false;
-  bool goldenDeckUnlocked = false;
-  int balance = 0;
+class CardThemeHandler extends ChangeNotifier {
+  var _playingCardThemeMode = PlayingCardsThemes.standardStyle;
+  String _cardStyleString = 'Standard';
+  int _chosenPageViewCard = 0;
+  final int _starWarsDeckPrice = 100;
+  final int _goldenDeckPrice = 1000;
+  bool _starWarsDeckUnlocked = false;
+  bool _goldenDeckUnlocked = false;
+  int _balance = 0;
 
   get getStarWarsDeckUnlocked {
-    return starWarsDeckUnlocked;
+    return _starWarsDeckUnlocked;
   }
 
   get getGoldenDeckUnlocked {
-    return goldenDeckUnlocked;
+    return _goldenDeckUnlocked;
   }
 
   get getStarWarsDeckPrice {
-    return starWarsDeckPrice;
+    return _starWarsDeckPrice;
   }
 
   get getGoldenDeckPrice {
-    return goldenDeckPrice;
+    return _goldenDeckPrice;
   }
 
   get getChosenPageViewCard {
-    return chosenPageViewCard;
+    return _chosenPageViewCard;
   }
 
   set setChosenPageViewCard(int i) {
-    chosenPageViewCard = i;
+    _chosenPageViewCard = i;
     notifyListeners();
   }
 
   get getCardStyleString {
-    return cardStyleString;
+    return _cardStyleString;
   }
 
-  get getPlayingcardThemeMode {
-    return playingcardThemeMode;
+  get getPlayingCardThemeMode {
+    return _playingCardThemeMode;
   }
 
 
 //TODO kolla så att try stämmer gällande notify listeners
   void fetchBalance({required BuildContext context}) async {
     try {
-      balance =
+      _balance =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getBalance(
                   userId: Provider.of<FirebaseAuthImplementation>(context,
@@ -60,13 +60,13 @@ class PlayingCardsProvider extends ChangeNotifier {
                       .getUserId()!);
       notifyListeners();
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
   }
 
   int getBalance({required BuildContext context}) {
     fetchBalance(context: context);
-    return balance;
+    return _balance;
   }
 
   Future<void> setUpCardThemes({required BuildContext context}) async {
@@ -80,11 +80,11 @@ class PlayingCardsProvider extends ChangeNotifier {
                           .getUserId()!),
           context: context);
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
 
     try {
-      starWarsDeckUnlocked =
+      _starWarsDeckUnlocked =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getUnlockedDeck(
                   deck: 'StarWars',
@@ -92,11 +92,11 @@ class PlayingCardsProvider extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
 
     try {
-      goldenDeckUnlocked =
+      _goldenDeckUnlocked =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getUnlockedDeck(
                   deck: 'Golden',
@@ -104,7 +104,7 @@ class PlayingCardsProvider extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      BlackJack.errorHandling(e, context);
+      BlackJackGameEngine.errorHandling(e, context);
     }
   }
 
@@ -117,9 +117,9 @@ class PlayingCardsProvider extends ChangeNotifier {
             userId:
                 Provider.of<FirebaseAuthImplementation>(context, listen: false)
                     .getUserId()!);
-        starWarsDeckUnlocked = true;
+        _starWarsDeckUnlocked = true;
       } on Exception catch (e) {
-        BlackJack.errorHandling(e, context);
+        BlackJackGameEngine.errorHandling(e, context);
       }
     } else if (starWarsOrGolden == 'Golden') {
       try {
@@ -128,9 +128,9 @@ class PlayingCardsProvider extends ChangeNotifier {
             userId:
                 Provider.of<FirebaseAuthImplementation>(context, listen: false)
                     .getUserId()!);
-        goldenDeckUnlocked = true;
+        _goldenDeckUnlocked = true;
       } on Exception catch (e) {
-        BlackJack.errorHandling(e, context);
+        BlackJackGameEngine.errorHandling(e, context);
       }
     }
   }
@@ -138,9 +138,9 @@ class PlayingCardsProvider extends ChangeNotifier {
   bool getDeckUnlocked(
       {required String starWarsOrGolden, required BuildContext context}) {
     if (starWarsOrGolden == 'StarWars') {
-      return starWarsDeckUnlocked;
+      return _starWarsDeckUnlocked;
     } else if (starWarsOrGolden == 'Golden') {
-      return goldenDeckUnlocked;
+      return _goldenDeckUnlocked;
     } else {
       return true;
     }
@@ -157,11 +157,11 @@ class PlayingCardsProvider extends ChangeNotifier {
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!);
-        playingcardThemeMode = PlayingCardsThemes.standardStyle;
-        cardStyleString = style;
+        _playingCardThemeMode = PlayingCardsThemes.standardStyle;
+        _cardStyleString = style;
         notifyListeners();
       } on Exception catch (e) {
-        BlackJack.errorHandling(e, context);
+        BlackJackGameEngine.errorHandling(e, context);
       }
     } else if (style == 'StarWars') {
       try {
@@ -171,11 +171,11 @@ class PlayingCardsProvider extends ChangeNotifier {
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!);
-        playingcardThemeMode = PlayingCardsThemes.starWarsStyle;
-        cardStyleString = style;
+        _playingCardThemeMode = PlayingCardsThemes.starWarsStyle;
+        _cardStyleString = style;
         notifyListeners();
       } on Exception catch (e) {
-        BlackJack.errorHandling(e, context);
+        BlackJackGameEngine.errorHandling(e, context);
       }
     } else if (style == 'Golden') {
       try {
@@ -185,11 +185,11 @@ class PlayingCardsProvider extends ChangeNotifier {
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!);
-        playingcardThemeMode = PlayingCardsThemes.goldenStyle;
-        cardStyleString = style;
+        _playingCardThemeMode = PlayingCardsThemes.goldenStyle;
+        _cardStyleString = style;
         notifyListeners();
       } on Exception catch (e) {
-        BlackJack.errorHandling(e, context);
+        BlackJackGameEngine.errorHandling(e, context);
       }
     }
   }
@@ -200,12 +200,12 @@ class PlayingCardsProvider extends ChangeNotifier {
     int value = 0;
 
     if (style == 'StarWars') {
-      value = starWarsDeckPrice;
+      value = _starWarsDeckPrice;
     } else {
-      value = goldenDeckPrice;
+      value = _goldenDeckPrice;
     }
 
-    if (balance >= value) {
+    if (_balance >= value) {
       return true;
     } else {
       return false;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:playing_cards/playing_cards.dart';
-import 'deck_of_cards.dart';
+import '../game_engine/deck_of_cards.dart';
 
 //TODO: formatera regel-texten snyggare??
 

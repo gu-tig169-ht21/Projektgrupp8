@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/deck_of_cards.dart';
+import 'package:my_first_app/game_engine/deck_of_cards.dart';
 import 'package:playing_cards/playing_cards.dart';
-import 'package:provider/provider.dart';
-import 'firebase_options.dart';
-import 'blackjack.dart';
 
 class FirebaseAuthImplementation extends ChangeNotifier {
   FirebaseAuthImplementation() {
@@ -133,14 +130,14 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   Future<void> init() async {
-    database = FirebaseFirestore.instance;
+    _database = FirebaseFirestore.instance;
   }
 
-  FirebaseFirestore database = FirebaseFirestore.instance;
+  FirebaseFirestore _database = FirebaseFirestore.instance;
 
   void createNewUsrStat({required String userId}) async {
     //skapar ett nytt dokument i databasen(används när en ny användare registreras)
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
 
     final snapShot = await statistics.doc(userId).get();
 
@@ -226,7 +223,7 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   void incrementCardInDB({required PlayingCard card, required String userId}) {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
 
     statistics.doc(userId).update({
       'drawnCards.${DeckOfCards().suitToString(card)}.${DeckOfCards().cardToString(card)}':
@@ -239,7 +236,7 @@ class FirestoreImplementation extends ChangeNotifier {
       required String splitWinOrLose,
       required String winOrLose,
       required String userId}) {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
     if (!split) {
       if (winOrLose == 'Win') {
         statistics.doc(userId).update({
@@ -319,7 +316,7 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   Future<String> getChosenDeckTheme({required String userId}) async {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
     String returnString = 'Something went wrong';
 
     await statistics
@@ -340,7 +337,7 @@ class FirestoreImplementation extends ChangeNotifier {
 
   void changeDeckTheme({required String deck, required String userId}) {
     //ändrar standardval på kortlekstema
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
 
     statistics
         .doc(userId)
@@ -349,7 +346,7 @@ class FirestoreImplementation extends ChangeNotifier {
 
   Future<bool> getUnlockedDeck(
       {required String deck, required String userId}) async {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
     bool returnBool = false;
     String deckFieldValue = 'starWarsDeckUnlocked';
     if (deck == 'StarWars') {
@@ -375,7 +372,7 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   void unlockDeck({required String deck, required String userId}) {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
 
     if (deck == 'StarWars') {
       statistics.doc(userId).update({'starWarsDeckUnlocked': true}).catchError(
@@ -387,7 +384,7 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   Future<int> getGamesPlayed({required String userId}) async {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
     int returnInt = 0;
 
     await statistics
@@ -407,7 +404,7 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   Future<int> getGamesWon({required String userId}) async {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
     int returnInt = 0;
 
     await statistics
@@ -427,7 +424,7 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   Future<int> getGamesLost({required String userId}) async {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
     int returnInt = 0;
 
     await statistics
@@ -447,7 +444,7 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   Future<dynamic> getDrawnCards({required String userId}) async {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
     Map<String, dynamic> returnMap = <String, dynamic>{};
 
     await statistics
@@ -474,7 +471,7 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   Future<int> getBalance({required String userId}) async {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
     int returnInt = 0;
 
     await statistics
@@ -496,7 +493,7 @@ class FirestoreImplementation extends ChangeNotifier {
 
   Future<void> changeBalance(
       {required String userId, required int change, required add}) async {
-    CollectionReference statistics = database.collection('Statistics');
+    CollectionReference statistics = _database.collection('Statistics');
 
     if (add) {
       await statistics
@@ -509,11 +506,6 @@ class FirestoreImplementation extends ChangeNotifier {
 
     } else {
       await statistics
-          .doc(userId)
-          .update({'balance': FieldValue.increment(change)}).catchError(
-              (e) => throw Exception(e));
-    } else {
-      statistics
           .doc(userId)
           .update({'balance': FieldValue.increment(-change)}).catchError(
               (e) => throw Exception(e));
