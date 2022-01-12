@@ -129,7 +129,7 @@ class CustomizationPage extends StatelessWidget {
                                 .getDeckUnlocked(
                                     starWarsOrGolden: _deck, context: context))
                         ? null
-                        : MaterialStateProperty.all(Colors.grey),
+                        : MaterialStateProperty.all(Colors.grey[700]),
               ),
             );
           },
@@ -196,7 +196,7 @@ class CustomizationPage extends StatelessWidget {
                         listen: false)
                     .getDeckUnlocked(starWarsOrGolden: _deck, context: context))
                 ? null
-                : MaterialStateProperty.all(Colors.grey),
+                : MaterialStateProperty.all(Colors.grey[700]),
           ),
         ),
       ),
@@ -292,11 +292,13 @@ Widget _card2(BuildContext context) {
             style: TextStyle(fontSize: 25),
             textAlign: TextAlign.center,
           ),
-          Text(
-            '\$ ${Provider.of<PlayingCardsProvider>(context, listen: false).getStarWarsDeckPrice}',
-            style: const TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
+          (!Provider.of<PlayingCardsProvider>(context, listen: false)
+                  .getDeckUnlocked(
+                      starWarsOrGolden: 'StarWars', context: context))
+              ? Text(
+                  '\$ ${Provider.of<PlayingCardsProvider>(context, listen: false).getStarWarsDeckUnlocked}',
+                  style: const TextStyle(fontSize: 15))
+              : const Text('Unlocked', style: TextStyle(fontSize: 15))
         ],
       ),
       Align(
@@ -308,6 +310,18 @@ Widget _card2(BuildContext context) {
                 Icons.check_sharp,
                 size: 45,
                 color: Colors.green,
+              )
+            : const SizedBox.shrink(),
+      ),
+      Align(
+        alignment: Alignment.topRight,
+        child: (!Provider.of<PlayingCardsProvider>(context, listen: false)
+                .getDeckUnlocked(
+                    starWarsOrGolden: 'StarWars', context: context))
+            ? const Icon(
+                Icons.lock,
+                size: 45,
+                color: Colors.black87,
               )
             : const SizedBox.shrink(),
       ),
@@ -347,10 +361,13 @@ Widget _card3(BuildContext context) {
             'Golden Deck',
             style: TextStyle(fontSize: 25),
           ),
-          Text(
-            '\$ ${Provider.of<PlayingCardsProvider>(context, listen: false).getGoldenDeckPrice}',
-            style: const TextStyle(fontSize: 15),
-          ),
+          (!Provider.of<PlayingCardsProvider>(context, listen: false)
+                  .getDeckUnlocked(
+                      starWarsOrGolden: 'Golden', context: context))
+              ? Text(
+                  '\$ ${Provider.of<PlayingCardsProvider>(context, listen: false).getGoldenDeckPrice}',
+                  style: const TextStyle(fontSize: 15))
+              : const Text('Unlocked', style: TextStyle(fontSize: 15)),
         ],
       ),
       Align(
@@ -362,6 +379,17 @@ Widget _card3(BuildContext context) {
                 Icons.check_sharp,
                 size: 45,
                 color: Colors.green,
+              )
+            : const SizedBox.shrink(),
+      ),
+      Align(
+        alignment: Alignment.topRight,
+        child: (!Provider.of<PlayingCardsProvider>(context, listen: false)
+                .getDeckUnlocked(starWarsOrGolden: 'Golden', context: context))
+            ? const Icon(
+                Icons.lock,
+                size: 45,
+                color: Colors.black87,
               )
             : const SizedBox.shrink(),
       ),
