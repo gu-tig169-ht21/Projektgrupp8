@@ -186,7 +186,6 @@ class GamePage extends StatelessWidget {
                         Provider.of<BlackJack>(context, listen: false)
                             .winOrLose(playerOrSplit: 'Player');
                       }
-                      ;
                     }
                   } catch (e) {
                     //gör en popup som säger att du inte kan dra kort FIXA
@@ -231,7 +230,6 @@ class GamePage extends StatelessWidget {
                               .setSplitTurn = true;
                           if (Provider.of<BlackJack>(context, listen: false)
                               .getSplitStop) {
-                            print('dealers turn splitstop');
                             Provider.of<BlackJack>(context, listen: false)
                                 .dealersTurn();
                           }
@@ -324,9 +322,9 @@ class GamePage extends StatelessWidget {
                             .doDouble(context: context);
                         Provider.of<BlackJack>(context, listen: false)
                             .setCanDouble = false;
-
-                        //FIXA POPUP OM DU INTE KAN DUBBLA!!!!!!!!!!!!!!!!!!!!!!!!!!
-                      } catch (e) {}
+                      } on Exception catch (e) {
+                        BlackJack.errorHandling(e, context);
+                      }
                     } else {
                       null;
                     }
@@ -837,7 +835,6 @@ class GamePage extends StatelessWidget {
                   .increaseBet(bet: 25, context: context);
               Provider.of<BlackJack>(context, listen: false)
                   .testingSplit(context: context);
-
               Provider.of<BlackJack>(context, listen: false).setCanBet = false;
             },
             child: const Text('25'),

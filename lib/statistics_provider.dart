@@ -30,10 +30,15 @@ class StatisticsProvider extends ChangeNotifier {
     return gamesLost;
   }
 
+//TODO kolla om denna är ny ellerom vi bara missade den
   Future<void> setUpStatistics({required BuildContext context}) async {
-    String userId =
-        Provider.of<FirebaseAuthImplementation>(context, listen: false)
-            .getUserId()!;
+    String userId = '0';
+    try {
+      userId = Provider.of<FirebaseAuthImplementation>(context, listen: false)
+          .getUserId()!;
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
 
     try {
       gamesPlayed =

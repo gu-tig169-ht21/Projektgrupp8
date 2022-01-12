@@ -136,16 +136,20 @@ class BlackJack extends ChangeNotifier {
     notifyListeners();
   }
 
-  void subtractFromBalance(
-      {required int i, required BuildContext context}) async {
-    await Provider.of<FirestoreImplementation>(context, listen: false)
-        .changeBalance(
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!,
-            change: i,
-            add: false);
-    notifyListeners();
+  void subtractFromBalance({required int i, required BuildContext context}) async {
+    try {
+      await Provider.of<FirestoreImplementation>(context, listen: false)
+          .changeBalance(
+              userId: Provider.of<FirebaseAuthImplementation>(context,
+                      listen: false)
+                  .getUserId()!,
+              change: i,
+              add: false);
+      notifyListeners();
+    } on Exception catch (e) {
+      errorHandling(e, context);
+    }
+
   }
 
   void addDecks(String a) {
@@ -202,6 +206,7 @@ class BlackJack extends ChangeNotifier {
     startingHands();
     notifyListeners();
   }
+
 
   void forfeit({required BuildContext context}) async {
     await Provider.of<FirestoreImplementation>(context, listen: false)
@@ -320,27 +325,35 @@ class BlackJack extends ChangeNotifier {
   }
 
   void winnings(
-      {required String playerOrSplit, required BuildContext context}) async {
+      {required String playerOrSplit, required BuildContext context}) async{
     //delar upp vinsten, beroende på angivet argument för player eller split bet
     //hanterar dina vunna riksdaler
     if (playerOrSplit == 'Player') {
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: playerBet * 2,
-              add: true);
+      try {
+        await Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: playerBet * 2,
+                add: true);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
       Provider.of<PlayingCardsProvider>(context, listen: false)
           .fetchBalance(context: context);
     } else if (playerOrSplit == 'Split') {
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: playerBet * 2,
-              add: true);
+      try {
+        await Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: playerBet * 2,
+                add: true);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
       Provider.of<PlayingCardsProvider>(context, listen: false)
           .fetchBalance(context: context);
     } else {
@@ -352,23 +365,32 @@ class BlackJack extends ChangeNotifier {
       {required String playerOrSplit, required BuildContext context}) async {
     //ger tillbaka dina pengar om du får en draw med dealern
     if (playerOrSplit == 'Player') {
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: playerBet,
-              add: true);
+      try {
+        await Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: playerBet,
+                add: true);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
       Provider.of<PlayingCardsProvider>(context, listen: false)
           .fetchBalance(context: context);
     } else if (playerOrSplit == 'Split') {
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: playerBet,
-              add: true);
+      try {
+        await Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: playerBet,
+                add: true);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
+
       Provider.of<PlayingCardsProvider>(context, listen: false)
           .fetchBalance(context: context);
     } else {
@@ -377,23 +399,32 @@ class BlackJack extends ChangeNotifier {
   }
 
   void increaseBet({required int bet, required BuildContext context}) async {
-    int balance = await Provider.of<FirestoreImplementation>(context,
-            listen: false)
-        .getBalance(
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
+    int balance = 0;
+    try {
+      balance =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getBalance(
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+    } on Exception catch (e) {
+      errorHandling(e, context);
+    }
     //returna det nya bettet istället
     //ökar spelarens insats
     if (bet <= balance) {
       playerBet += bet;
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: bet,
-              add: false);
+      try {
+        await Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: bet,
+                add: false);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
       Provider.of<PlayingCardsProvider>(context, listen: false)
           .fetchBalance(context: context);
       notifyListeners();
@@ -405,22 +436,31 @@ class BlackJack extends ChangeNotifier {
   }
 
   void allIn({required BuildContext context}) async {
-    int balance = await Provider.of<FirestoreImplementation>(context,
-            listen: false)
-        .getBalance(
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
+    int balance = 0;
+    try {
+      balance =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getBalance(
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+    } on Exception catch (e) {
+      errorHandling(e, context);
+    }
 
     if (balance > 0) {
       playerBet = balance;
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: balance,
-              add: false);
+      try {
+        await Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: balance,
+                add: false);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
       Provider.of<PlayingCardsProvider>(context, listen: false)
           .fetchBalance(context: context);
       notifyListeners();
@@ -433,21 +473,29 @@ class BlackJack extends ChangeNotifier {
 
   void addCardsToDB({required BuildContext context}) {
     for (PlayingCard card in playerHand) {
-      Provider.of<FirestoreImplementation>(context, listen: false)
-          .incrementCardInDB(
-              card: card,
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!);
-    }
-    if (split) {
-      for (PlayingCard card in splitHand) {
+      try {
         Provider.of<FirestoreImplementation>(context, listen: false)
             .incrementCardInDB(
                 card: card,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
+    }
+    if (split) {
+      for (PlayingCard card in splitHand) {
+        try {
+          Provider.of<FirestoreImplementation>(context, listen: false)
+              .incrementCardInDB(
+                  card: card,
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+        } on Exception catch (e) {
+          errorHandling(e, context);
+        }
       }
     }
   }
@@ -488,12 +536,17 @@ class BlackJack extends ChangeNotifier {
   }
 
   void testingDouble({required BuildContext context}) async {
-    int balance = await Provider.of<FirestoreImplementation>(context,
-            listen: false)
-        .getBalance(
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
+    int balance = 0;
+    try {
+      balance =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getBalance(
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+    } on Exception catch (e) {
+      errorHandling(e, context);
+    }
 
     if (balance >= playerBet) {
       canDouble = true;
@@ -507,21 +560,30 @@ class BlackJack extends ChangeNotifier {
   void doDouble({required BuildContext context}) async {
     incrementRounds();
     //en dubblering av insatsen
-    int balance = await Provider.of<FirestoreImplementation>(context,
-            listen: false)
-        .getBalance(
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
+    int balance = 0;
+    try {
+      balance =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getBalance(
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+    } on Exception catch (e) {
+      errorHandling(e, context);
+    }
 
     if (balance >= playerBet) {
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: playerBet,
-              add: false);
+      try {
+        Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: playerBet,
+                add: false);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
       playerBet = playerBet * 2;
       doubled = true;
       Provider.of<PlayingCardsProvider>(context, listen: false)
@@ -534,12 +596,17 @@ class BlackJack extends ChangeNotifier {
   }
 
   void testingSplit({required BuildContext context}) async {
-    int balance = await Provider.of<FirestoreImplementation>(context,
-            listen: false)
-        .getBalance(
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
+    int balance = 0;
+    try {
+      balance =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getBalance(
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+    } on Exception catch (e) {
+      errorHandling(e, context);
+    }
 
     if (playerHand[0].value == playerHand[1].value &&
         balance >= playerBet &&
@@ -553,12 +620,18 @@ class BlackJack extends ChangeNotifier {
   }
 
   void doSplit({required BuildContext context}) async {
-    int balance = await Provider.of<FirestoreImplementation>(context,
-            listen: false)
-        .getBalance(
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
+    incrementRounds();
+    int balance = 0;
+    try {
+      balance =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getBalance(
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+    } on Exception catch (e) {
+      errorHandling(e, context);
+    }
     //gör en split om det väljs och kraven uppfylls
     PlayingCard card = DeckOfCards().pickACard(deck);
     if (playerHand[0].value == playerHand[1].value &&
@@ -568,13 +641,17 @@ class BlackJack extends ChangeNotifier {
       playerHand.removeAt(1);
 
       splitBet = playerBet;
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: splitBet,
-              add: false);
+      try {
+       await Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: splitBet,
+                add: false);
+      } on Exception catch (e) {
+        errorHandling(e, context);
+      }
       Provider.of<PlayingCardsProvider>(context, listen: false)
           .fetchBalance(context: context);
       playerHand.add(card);

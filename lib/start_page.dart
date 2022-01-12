@@ -1,3 +1,4 @@
+import 'package:my_first_app/blackjack.dart';
 import 'package:my_first_app/card_themes.dart';
 import 'package:my_first_app/firebase_implementation.dart';
 import 'package:my_first_app/game_page.dart';
@@ -46,17 +47,26 @@ class _StartPageState extends State<StartPage> {
 
     if (_now.day != int.parse(lastDate)) {
       //om datumet som är lagrat ej är samma som dagens datum så får användaren $200
-      await Provider.of<FirestoreImplementation>(context, listen: false)
-          .changeBalance(
-              userId: Provider.of<FirebaseAuthImplementation>(context,
-                      listen: false)
-                  .getUserId()!,
-              change: 200,
-              add: true);
+      try {
+        await Provider.of<FirestoreImplementation>(context, listen: false)
+            .changeBalance(
+                userId: Provider.of<FirebaseAuthImplementation>(context,
+                        listen: false)
+                    .getUserId()!,
+                change: 200,
+                add: true);
+      } on Exception catch (e) {
+        BlackJack.errorHandling(e, context);
+      }
     }
     file.writeAsString('${_now.day}'); //skriver dagens datum till filen
-    await Provider.of<StatisticsProvider>(context, listen: false)
-        .setUpStatistics(context: context); //metoden som hämtar statistik
+    try {
+      await Provider.of<StatisticsProvider>(context, listen: false)
+          .setUpStatistics(context: context);
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
+    //metoden som hämtar statistik
   }
 
   @override
@@ -117,11 +127,15 @@ class _StartPageState extends State<StartPage> {
         child: ElevatedButton(
           child: const Text('PLAY NOW'),
           onPressed: () {
-            Provider.of<FirestoreImplementation>(context, listen: false)
-                .createNewUsrStat(
-                    userId: Provider.of<FirebaseAuthImplementation>(context,
-                            listen: false)
-                        .getUserId()!);
+            try {
+              Provider.of<FirestoreImplementation>(context, listen: false)
+                  .createNewUsrStat(
+                      userId: Provider.of<FirebaseAuthImplementation>(context,
+                              listen: false)
+                          .getUserId()!);
+            } on Exception catch (e) {
+              BlackJack.errorHandling(e, context);
+            }
             Navigator.push(
               context,
               MaterialPageRoute(

@@ -58,8 +58,14 @@ class MainApp extends StatelessWidget {
   }
 
   Widget startUp(BuildContext context) {
-    if (Provider.of<FirebaseAuthImplementation>(context, listen: true)
-        .isUserLoggedIn()) {
+    bool testLogin = false;
+    try {
+      testLogin = Provider.of<FirebaseAuthImplementation>(context, listen: true)
+          .isUserLoggedIn();
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
+    if (testLogin) {
       return const StartPage();
     } else {
       return LoginPage();

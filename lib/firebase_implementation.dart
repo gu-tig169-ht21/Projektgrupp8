@@ -485,13 +485,14 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['balance'];
         } on StateError catch (e) {
-          print(e);
+          throw Exception(e);
         }
       }
     });
 
     return returnInt;
   }
+
 
   Future<void> changeBalance(
       {required String userId, required int change, required add}) async {
@@ -505,13 +506,17 @@ class FirestoreImplementation extends ChangeNotifier {
           .catchError(
               (error) => print(error.toString())); //TODO:riktig felhantering
 
+
     } else {
       await statistics
           .doc(userId)
-          .update({'balance': FieldValue.increment(-change)})
-          .then((value) => print('$change removed from balance'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
+          .update({'balance': FieldValue.increment(change)}).catchError(
+              (e) => throw Exception(e));
+    } else {
+      statistics
+          .doc(userId)
+          .update({'balance': FieldValue.increment(-change)}).catchError(
+              (e) => throw Exception(e));
     }
   }
 }
