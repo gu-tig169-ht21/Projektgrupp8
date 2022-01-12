@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
-
-import '../game_engine/blackjack.dart';
 import '../game_engine/error_handling.dart';
 
 class CardThemeHandler extends ChangeNotifier {
@@ -49,12 +47,12 @@ class CardThemeHandler extends ChangeNotifier {
     return _playingCardThemeMode;
   }
 
-//TODO kolla så att try stämmer gällande notify listeners
   void fetchBalance({required BuildContext context}) async {
     try {
       _balance =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getBalance(
+                  context: context,
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
                       .getUserId()!);
@@ -75,6 +73,7 @@ class CardThemeHandler extends ChangeNotifier {
           style:
               await Provider.of<FirestoreImplementation>(context, listen: false)
                   .getChosenDeckTheme(
+                      context: context,
                       userId: Provider.of<FirebaseAuthImplementation>(context,
                               listen: false)
                           .getUserId()!),
@@ -87,6 +86,7 @@ class CardThemeHandler extends ChangeNotifier {
       _starWarsDeckUnlocked =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getUnlockedDeck(
+                  context: context,
                   deck: 'StarWars',
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
@@ -99,6 +99,7 @@ class CardThemeHandler extends ChangeNotifier {
       _goldenDeckUnlocked =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getUnlockedDeck(
+                  context: context,
                   deck: 'Golden',
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
@@ -113,6 +114,7 @@ class CardThemeHandler extends ChangeNotifier {
     if (starWarsOrGolden == 'StarWars') {
       try {
         Provider.of<FirestoreImplementation>(context, listen: false).unlockDeck(
+            context: context,
             deck: starWarsOrGolden,
             userId:
                 Provider.of<FirebaseAuthImplementation>(context, listen: false)
@@ -124,6 +126,7 @@ class CardThemeHandler extends ChangeNotifier {
     } else if (starWarsOrGolden == 'Golden') {
       try {
         Provider.of<FirestoreImplementation>(context, listen: false).unlockDeck(
+            context: context,
             deck: starWarsOrGolden,
             userId:
                 Provider.of<FirebaseAuthImplementation>(context, listen: false)
@@ -153,6 +156,7 @@ class CardThemeHandler extends ChangeNotifier {
       try {
         Provider.of<FirestoreImplementation>(context, listen: false)
             .changeDeckTheme(
+                context: context,
                 deck: style,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
@@ -167,6 +171,7 @@ class CardThemeHandler extends ChangeNotifier {
       try {
         Provider.of<FirestoreImplementation>(context, listen: false)
             .changeDeckTheme(
+                context: context,
                 deck: style,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
@@ -181,6 +186,7 @@ class CardThemeHandler extends ChangeNotifier {
       try {
         Provider.of<FirestoreImplementation>(context, listen: false)
             .changeDeckTheme(
+                context: context,
                 deck: style,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)

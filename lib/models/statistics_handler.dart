@@ -3,7 +3,6 @@ import 'package:my_first_app/game_engine/deck_of_cards.dart';
 import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
-import '../game_engine/blackjack.dart';
 import '../game_engine/error_handling.dart';
 
 class DrawnCard {
@@ -43,28 +42,28 @@ class StatisticsHandler extends ChangeNotifier {
     try {
       _gamesPlayed =
           await Provider.of<FirestoreImplementation>(context, listen: false)
-              .getGamesPlayed(userId: userId);
+              .getGamesPlayed(userId: userId, context: context);
     } on Exception catch (e) {
       ErrorHandling().errorHandling(e, context);
     }
     try {
       _gamesWon =
           await Provider.of<FirestoreImplementation>(context, listen: false)
-              .getGamesWon(userId: userId);
+              .getGamesWon(userId: userId, context: context);
     } on Exception catch (e) {
       ErrorHandling().errorHandling(e, context);
     }
     try {
       _gamesLost =
           await Provider.of<FirestoreImplementation>(context, listen: false)
-              .getGamesLost(userId: userId);
+              .getGamesLost(userId: userId, context: context);
     } on Exception catch (e) {
       ErrorHandling().errorHandling(e, context);
     }
     try {
       _drawnCards =
           await Provider.of<FirestoreImplementation>(context, listen: false)
-              .getDrawnCards(userId: userId);
+              .getDrawnCards(userId: userId, context: context);
     } on Exception catch (e) {
       ErrorHandling().errorHandling(e, context);
     }

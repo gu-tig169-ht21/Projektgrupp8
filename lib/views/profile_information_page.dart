@@ -70,7 +70,7 @@ class ProfileInformationPage extends StatelessWidget {
       onTap: () {
         try {
           Provider.of<FirebaseAuthImplementation>(context, listen: false)
-              .signOut();
+              .signOut(context);
         } on Exception catch (e) {
           ErrorHandling().errorHandling(e, context);
         }
@@ -143,7 +143,7 @@ class ProfileInformationPage extends StatelessWidget {
                           Provider.of<FirebaseAuthImplementation>(context,
                                   listen: false)
                               .changeUserPassword(
-                                  oldPassword.text, newPassword.text);
+                                  oldPassword.text, newPassword.text, context);
                           Navigator.pop(context);
                         } on Exception catch (e) {
                           ErrorHandling().errorHandling(e, context);
@@ -151,9 +151,12 @@ class ProfileInformationPage extends StatelessWidget {
                         oldPassword.clear();
                         newPassword.clear();
                         verifyNewPassword.clear();
-                      } else {
-                        throw Exception();
-                        //TODO fixa felmeddelande
+                      } else if (newPassword.text.isEmpty ||
+                          verifyNewPassword.text.isEmpty ||
+                          oldPassword.text.isEmpty) {
+                        ErrorHandling().errorHandling(
+                            'One or multiple textfields are empty, please try again',
+                            context);
                       }
                     },
                   ),
@@ -220,7 +223,7 @@ class ProfileInformationPage extends StatelessWidget {
                           try {
                             Provider.of<FirebaseAuthImplementation>(context,
                                     listen: false)
-                                .deleteUser(password.text);
+                                .deleteUser(password.text, context);
                             password.clear();
                           } on Exception catch (e) {
                             ErrorHandling().errorHandling(e, context);

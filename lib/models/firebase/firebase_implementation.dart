@@ -58,26 +58,33 @@ class FirebaseAuthImplementation extends ChangeNotifier {
     }
   }
 
-  void logIn({required String email, required String password}) async {
+  void logIn(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
     //funktion för att logga in en användare
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        throw FirebaseAuthException(code: e.code);
+        ErrorHandling().errorHandling(e, context);
       } else if (e.code == 'wrong-password') {
-        throw FirebaseAuthException(code: e.code);
+        ErrorHandling().errorHandling(e, context);
       }
     } catch (e) {
-      throw Exception(e);
+      ErrorHandling().errorHandling(e, context);
     }
   }
 
-  void signOut() async {
-    await _auth.signOut();
+  void signOut(BuildContext context) async {
+    try {
+      await _auth.signOut();
+    } on FirebaseAuthException catch (e) {
+      ErrorHandling().errorHandling(e, context);
+    }
   }
 
-  void deleteUser(String password) async {
+  void deleteUser(String password, BuildContext context) async {
     //tar bort den nuvarande användaren
     String? email = _auth.currentUser?.email;
 
@@ -85,17 +92,17 @@ class FirebaseAuthImplementation extends ChangeNotifier {
       await _auth.signInWithEmailAndPassword(email: email!, password: password);
 
       _auth.currentUser!.delete().then((_) {}).catchError((e) {
-        throw Exception(e);
+        ErrorHandling().errorHandling(e, context);
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
-        throw Exception(
-            'The user must authenticate to be able to delete account');
+        ErrorHandling().errorHandling(e, context);
       }
     }
   }
 
-  void changeUserPassword(String password, String newPassword) async {
+  void changeUserPassword(
+      String password, String newPassword, BuildContext context) async {
     //byt den nuvarande användares lösenord
     String? email = _auth.currentUser?.email;
 
@@ -106,25 +113,27 @@ class FirebaseAuthImplementation extends ChangeNotifier {
           ?.updatePassword(newPassword)
           .then((_) {})
           .catchError((e) {
-        throw Exception(e);
+        ErrorHandling().errorHandling(e, context);
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        throw FirebaseAuthException(code: 'user-not-found');
+        ErrorHandling().errorHandling(e, context);
       } else if (e.code == 'wrong-password') {
-        throw FirebaseAuthException(code: 'wrong-password');
+        ErrorHandling().errorHandling(e, context);
       }
     }
   }
 
   void reauthenticateUser(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
     try {
       AuthCredential credential =
           EmailAuthProvider.credential(email: email, password: password);
       await _auth.currentUser!.reauthenticateWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      throw Exception(e);
+      ErrorHandling().errorHandling(e, context);
     }
   }
 }
@@ -141,7 +150,8 @@ class FirestoreImplementation extends ChangeNotifier {
 
   FirebaseFirestore _database = FirebaseFirestore.instance;
 
-  void createNewUsrStat({required String userId}) async {
+  void createNewUsrStat(
+      {required String userId, required BuildContext context}) async {
     //skapar ett nytt dokument i databasen(används när en ny användare registreras)
     CollectionReference statistics = _database.collection('Statistics');
 
@@ -224,40 +234,44 @@ class FirestoreImplementation extends ChangeNotifier {
             'twoDiamonds': 0,
           },
         },
-      }).catchError((e) => throw Exception(e));
+      }).catchError((e) => ErrorHandling().errorHandling(e, context));
     }
   }
 
-  void incrementCardInDB({required PlayingCard card, required String userId}) {
+  void incrementCardInDB(
+      {required PlayingCard card,
+      required String userId,
+      required BuildContext context}) {
     CollectionReference statistics = _database.collection('Statistics');
 
     statistics.doc(userId).update({
       'drawnCards.${DeckOfCards().suitToString(card)}.${DeckOfCards().cardToString(card)}':
           FieldValue.increment(1)
-    }).catchError((e) => throw Exception(e));
+    }).catchError((e) => ErrorHandling().errorHandling(e, context));
   }
 
   void incrementGameCountAndWinOrLose(
       {required bool split,
       required String splitWinOrLose,
       required String winOrLose,
-      required String userId}) {
+      required String userId,
+      required BuildContext context}) {
     CollectionReference statistics = _database.collection('Statistics');
     if (!split) {
       if (winOrLose == 'Win') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'wins': FieldValue.increment(1)
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else if (winOrLose == 'Lose') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'losses': FieldValue.increment(1)
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       }
     } else {
       if (winOrLose == 'Win' && splitWinOrLose == 'Win') {
@@ -266,62 +280,63 @@ class FirestoreImplementation extends ChangeNotifier {
           'wins': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
           'splits.splitWins': FieldValue.increment(1)
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else if (winOrLose == 'Win' && splitWinOrLose == 'Lose') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'wins': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
           'splits.splitLosses': FieldValue.increment(1)
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else if (winOrLose == 'Lose' && splitWinOrLose == 'Win') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'losses': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
           'splits.splitWins': FieldValue.increment(1)
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else if (winOrLose == 'Lose' && splitWinOrLose == 'Lose') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'losses': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
           'splits.splitLosses': FieldValue.increment(1)
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else if (winOrLose == 'Draw' && splitWinOrLose == 'Win') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
           'splits.splitWins': FieldValue.increment(1)
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else if (winOrLose == 'Draw' && splitWinOrLose == 'Lose') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
           'splits.splitLosses': FieldValue.increment(1)
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else if (winOrLose == 'Win' && splitWinOrLose == 'Draw') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'wins': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else if (winOrLose == 'Lose' && splitWinOrLose == 'Draw') {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'losses': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       } else {
         statistics.doc(userId).update({
           'gamesPlayed': FieldValue.increment(1),
           'splits.splitRounds': FieldValue.increment(1),
-        }).catchError((e) => throw Exception(e));
+        }).catchError((e) => ErrorHandling().errorHandling(e, context));
       }
     }
   }
 
-  Future<String> getChosenDeckTheme({required String userId}) async {
+  Future<String> getChosenDeckTheme(
+      {required String userId, required BuildContext context}) async {
     CollectionReference statistics = _database.collection('Statistics');
     String returnString = 'Something went wrong';
 
@@ -333,7 +348,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnString = documentSnapshot['chosenDeck'];
         } on StateError catch (e) {
-          throw Exception(e);
+          ErrorHandling().errorHandling(e, context);
         }
       }
     });
@@ -341,17 +356,21 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnString;
   }
 
-  void changeDeckTheme({required String deck, required String userId}) {
+  void changeDeckTheme(
+      {required String deck,
+      required String userId,
+      required BuildContext context}) {
     //ändrar standardval på kortlekstema
     CollectionReference statistics = _database.collection('Statistics');
 
-    statistics
-        .doc(userId)
-        .update({'chosenDeck': deck}).catchError((e) => throw Exception(e));
+    statistics.doc(userId).update({'chosenDeck': deck}).catchError(
+        (e) => ErrorHandling().errorHandling(e, context));
   }
 
   Future<bool> getUnlockedDeck(
-      {required String deck, required String userId}) async {
+      {required String deck,
+      required String userId,
+      required BuildContext context}) async {
     CollectionReference statistics = _database.collection('Statistics');
     bool returnBool = false;
     String deckFieldValue = 'starWarsDeckUnlocked';
@@ -369,7 +388,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnBool = documentSnapshot[deckFieldValue];
         } on StateError catch (e) {
-          throw Exception(e);
+          ErrorHandling().errorHandling(e, context);
         }
       }
     });
@@ -377,19 +396,23 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnBool;
   }
 
-  void unlockDeck({required String deck, required String userId}) {
+  void unlockDeck(
+      {required String deck,
+      required String userId,
+      required BuildContext context}) {
     CollectionReference statistics = _database.collection('Statistics');
 
     if (deck == 'StarWars') {
       statistics.doc(userId).update({'starWarsDeckUnlocked': true}).catchError(
-          (e) => throw Exception(e));
+          (e) => ErrorHandling().errorHandling(e, context));
     } else if (deck == 'Golden') {
       statistics.doc(userId).update({'goldenDeckUnlocked': true}).catchError(
-          (e) => throw Exception(e));
+          (e) => ErrorHandling().errorHandling(e, context));
     }
   }
 
-  Future<int> getGamesPlayed({required String userId}) async {
+  Future<int> getGamesPlayed(
+      {required String userId, required BuildContext context}) async {
     CollectionReference statistics = _database.collection('Statistics');
     int returnInt = 0;
 
@@ -401,7 +424,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['gamesPlayed'];
         } on StateError catch (e) {
-          throw Exception(e);
+          ErrorHandling().errorHandling(e, context);
         }
       }
     });
@@ -409,7 +432,8 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnInt;
   }
 
-  Future<int> getGamesWon({required String userId}) async {
+  Future<int> getGamesWon(
+      {required String userId, required BuildContext context}) async {
     CollectionReference statistics = _database.collection('Statistics');
     int returnInt = 0;
 
@@ -421,7 +445,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['wins'];
         } on StateError catch (e) {
-          throw Exception(e);
+          ErrorHandling().errorHandling(e, context);
         }
       }
     });
@@ -429,7 +453,8 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnInt;
   }
 
-  Future<int> getGamesLost({required String userId}) async {
+  Future<int> getGamesLost(
+      {required String userId, required BuildContext context}) async {
     CollectionReference statistics = _database.collection('Statistics');
     int returnInt = 0;
 
@@ -441,7 +466,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['losses'];
         } on StateError catch (e) {
-          throw Exception(e);
+          ErrorHandling().errorHandling(e, context);
         }
       }
     });
@@ -449,7 +474,8 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnInt;
   }
 
-  Future<dynamic> getDrawnCards({required String userId}) async {
+  Future<dynamic> getDrawnCards(
+      {required String userId, required BuildContext context}) async {
     CollectionReference statistics = _database.collection('Statistics');
     Map<String, dynamic> returnMap = <String, dynamic>{};
 
@@ -468,7 +494,7 @@ class FirestoreImplementation extends ChangeNotifier {
           returnMap.addAll(
               documentSnapshot['drawnCards.hearts'] as Map<String, dynamic>);
         } on StateError catch (e) {
-          throw Exception(e);
+          ErrorHandling().errorHandling(e, context);
         }
       }
     });
@@ -476,7 +502,8 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnMap;
   }
 
-  Future<int> getBalance({required String userId}) async {
+  Future<int> getBalance(
+      {required String userId, required BuildContext context}) async {
     CollectionReference statistics = _database.collection('Statistics');
     int returnInt = 0;
 
@@ -488,7 +515,7 @@ class FirestoreImplementation extends ChangeNotifier {
         try {
           returnInt = documentSnapshot['balance'];
         } on StateError catch (e) {
-          throw Exception(e);
+          ErrorHandling().errorHandling(e, context);
         }
       }
     });
@@ -497,22 +524,22 @@ class FirestoreImplementation extends ChangeNotifier {
   }
 
   Future<void> changeBalance(
-      {required String userId, required int change, required add}) async {
+      {required String userId,
+      required int change,
+      required add,
+      required BuildContext context}) async {
     CollectionReference statistics = _database.collection('Statistics');
 
     if (add) {
       await statistics
           .doc(userId)
-          .update({'balance': FieldValue.increment(change)})
-          .then((value) => print('$change added to balance'))
-          .catchError(
-              (error) => print(error.toString())); //TODO:riktig felhantering
-
+          .update({'balance': FieldValue.increment(change)}).catchError(
+              (e) => ErrorHandling().errorHandling(e, context));
     } else {
       await statistics
           .doc(userId)
           .update({'balance': FieldValue.increment(-change)}).catchError(
-              (e) => throw Exception(e));
+              (e) => ErrorHandling().errorHandling(e, context));
     }
   }
 }
