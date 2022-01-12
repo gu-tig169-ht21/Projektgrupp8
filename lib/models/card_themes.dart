@@ -4,6 +4,7 @@ import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 
 import '../game_engine/blackjack.dart';
+import '../game_engine/error_handling.dart';
 
 class CardThemeHandler extends ChangeNotifier {
   var _playingCardThemeMode = PlayingCardsThemes.standardStyle;
@@ -48,7 +49,6 @@ class CardThemeHandler extends ChangeNotifier {
     return _playingCardThemeMode;
   }
 
-
 //TODO kolla så att try stämmer gällande notify listeners
   void fetchBalance({required BuildContext context}) async {
     try {
@@ -60,7 +60,7 @@ class CardThemeHandler extends ChangeNotifier {
                       .getUserId()!);
       notifyListeners();
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
   }
 
@@ -80,7 +80,7 @@ class CardThemeHandler extends ChangeNotifier {
                           .getUserId()!),
           context: context);
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
 
     try {
@@ -92,7 +92,7 @@ class CardThemeHandler extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
 
     try {
@@ -104,7 +104,7 @@ class CardThemeHandler extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
   }
 
@@ -119,7 +119,7 @@ class CardThemeHandler extends ChangeNotifier {
                     .getUserId()!);
         _starWarsDeckUnlocked = true;
       } on Exception catch (e) {
-        BlackJackGameEngine.errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
     } else if (starWarsOrGolden == 'Golden') {
       try {
@@ -130,7 +130,7 @@ class CardThemeHandler extends ChangeNotifier {
                     .getUserId()!);
         _goldenDeckUnlocked = true;
       } on Exception catch (e) {
-        BlackJackGameEngine.errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
     }
   }
@@ -161,7 +161,7 @@ class CardThemeHandler extends ChangeNotifier {
         _cardStyleString = style;
         notifyListeners();
       } on Exception catch (e) {
-        BlackJackGameEngine.errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
     } else if (style == 'StarWars') {
       try {
@@ -175,7 +175,7 @@ class CardThemeHandler extends ChangeNotifier {
         _cardStyleString = style;
         notifyListeners();
       } on Exception catch (e) {
-        BlackJackGameEngine.errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
     } else if (style == 'Golden') {
       try {
@@ -189,7 +189,7 @@ class CardThemeHandler extends ChangeNotifier {
         _cardStyleString = style;
         notifyListeners();
       } on Exception catch (e) {
-        BlackJackGameEngine.errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
     }
   }

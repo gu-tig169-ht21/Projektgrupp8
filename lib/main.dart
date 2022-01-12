@@ -1,18 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/game_engine/blackjack.dart';
 import 'package:my_first_app/models/card_themes.dart';
 import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:my_first_app/models/firebase/firebase_options.dart';
-import 'package:my_first_app/views/how_to_play_page.dart';
-import 'package:my_first_app/views/settings_page.dart';
 import 'package:my_first_app/views/start_page.dart';
 import 'package:my_first_app/models/statistics_handler.dart';
 import 'package:my_first_app/theme_data/theme.dart';
 import 'package:provider/provider.dart';
-import 'settings_page.dart';
-import 'login_page.dart';
+import 'models/number_of_decks.dart';
+import 'views/login_page.dart';
+import 'game_engine/error_handling.dart';
+import 'models/theme_mode_switch.dart';
+import 'models/how_to_play_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +23,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (context) => ChangeNumberOfDecks()),
       ChangeNotifierProvider(create: (context) => ChangeTheme()),
-      ChangeNotifierProvider(create: (context) => HowToPlayPage()),
+      ChangeNotifierProvider(create: (context) => HowToPlayNotifier()),
       ChangeNotifierProvider(
         create: (context) => BlackJackGameEngine(),
       ),
@@ -63,7 +63,7 @@ class MainApp extends StatelessWidget {
       testLogin = Provider.of<FirebaseAuthImplementation>(context, listen: true)
           .isUserLoggedIn();
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
     if (testLogin) {
       return const StartPage();

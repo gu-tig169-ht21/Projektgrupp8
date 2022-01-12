@@ -31,25 +31,25 @@ class _StatisticsPageState extends State<StatisticsPage> {
         centerTitle: true,
       ),
       body: Stack(children: [
-        titles(context: context),
-        _mostCommonCard(),
-        _mostCommonCardValue(context),
-        _statisticsMostCommonCard(),
+        statisticsCards(context: context),
+        _mostDrawnCardTitle(),
+        _mostDrawnCard(context),
+        _chartTitle(),
         barChart(context),
       ]),
     );
   }
 }
 
-List<charts.Series<DrawnCard, String>> _getChartData(
-    BuildContext context) {
+List<charts.Series<DrawnCard, String>> _getChartData(BuildContext context) {
 //värden som presenteras i barchart
 
+//hämtar kort och hur de blivit många gånger alla korten blivit dragna
   List<DrawnCard> cards =
-      Provider.of<StatisticsHandler>(context, listen: false)
-          .drawnCardsToList();
-  cards.sort((a, b) => b.timesDrawn.compareTo(a
-      .timesDrawn)); //sorterar korten i ordning utefter hur många gånger man dragit dem
+      Provider.of<StatisticsHandler>(context, listen: false).drawnCardsToList();
+
+//sorterar korten i ordning utefter hur många gånger man dragit dem
+  cards.sort((a, b) => b.timesDrawn.compareTo(a.timesDrawn));
 
   final statisticsCardData = [
     cards[0],
@@ -66,7 +66,7 @@ List<charts.Series<DrawnCard, String>> _getChartData(
       data: statisticsCardData,
       labelAccessorFn: (DrawnCard card, _) => '${card.timesDrawn}',
       colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-    )
+    ),
   ];
 }
 
@@ -74,20 +74,21 @@ List<charts.Series<DrawnCard, String>> _getChartData(
 
 barChart(BuildContext context) {
   return Align(
-      alignment: const Alignment(0, 1.0),
-      child: FractionallySizedBox(
-          widthFactor: 1.0,
-          heightFactor: 0.4,
-          child: charts.BarChart(
-            _getChartData(context),
-
-            animate: true,
-            vertical: true,
-            barRendererDecorator: charts.BarLabelDecorator<String>(),
-          )));
+    alignment: const Alignment(0, 1.0),
+    child: FractionallySizedBox(
+      widthFactor: 1.0,
+      heightFactor: 0.4,
+      child: charts.BarChart(
+        _getChartData(context),
+        animate: true,
+        vertical: true,
+        barRendererDecorator: charts.BarLabelDecorator<String>(),
+      ),
+    ),
+  );
 }
 
-Widget titles({required BuildContext context}) {
+Widget statisticsCards({required BuildContext context}) {
   return Row(children: <Widget>[
     Expanded(
       child: SizedBox(
@@ -145,9 +146,9 @@ Widget titles({required BuildContext context}) {
 
 // vyn/positionering till bilden av kortet för mest dragna kortet, saknar det verkliga värdet
 
-Widget _mostCommonCard() {
+Widget _mostDrawnCardTitle() {
   return const Align(
-    alignment: Alignment(0.0, -0.6),
+    alignment: Alignment(0.0, -0.7),
     child: FractionallySizedBox(
       widthFactor: 0.35,
       heightFactor: 0.1,
@@ -161,25 +162,23 @@ Widget _mostCommonCard() {
 }
 
 // widget för vilket kort som är vanligast att dra/bild
-Widget _mostCommonCardValue(BuildContext context) {
+Widget _mostDrawnCard(BuildContext context) {
   return Align(
-    alignment: const Alignment(0.0, -0.4),
+    alignment: const Alignment(0.0, -0.45),
     child: SizedBox(
       width: 120,
       child: PlayingCardView(
         card: Provider.of<StatisticsHandler>(context, listen: false)
             .mostDrawnCard(),
-        elevation: 3.0,
+        elevation: 10,
       ),
     ),
   );
 }
 
-
-
-Widget _statisticsMostCommonCard() {
+Widget _chartTitle() {
   return const Align(
-    alignment: Alignment(0.0, 0.1),
+    alignment: Alignment(0.0, 0.2),
     child: FractionallySizedBox(
       widthFactor: 0.35,
       heightFactor: 0.1,
@@ -191,5 +190,3 @@ Widget _statisticsMostCommonCard() {
     ),
   );
 }
-
-//klass för de olika attributen barchart

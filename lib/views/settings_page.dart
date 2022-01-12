@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_first_app/game_engine/blackjack.dart';
+import 'package:my_first_app/models/number_of_decks.dart';
 import 'card_customization_page.dart';
 import 'package:provider/provider.dart';
-
-//TODO: tog bort const från filer game_page(rad 56) och start_page (rad 143)
+import '../models/theme_mode_switch.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         children: [
           _numberOfDecks(),
-          _darkTheme(context),
+          _changeTheme(context),
           _cardCustomizationButton(context)
         ],
       ),
@@ -24,19 +24,21 @@ class SettingsPage extends StatelessWidget {
   }
 
 //widget för att ändra temat dark/standard
-  Widget _darkTheme(BuildContext context) {
+  Widget _changeTheme(BuildContext context) {
     return SwitchListTile(
       title: const Text(
         'Change Theme',
       ),
       subtitle: const Text('Changes the screen theme'),
       secondary: Icon(
+          //ändrar ikonen
           Provider.of<ChangeTheme>(context, listen: true).getThemeModeSwitch
               ? Icons.dark_mode
               : Icons.light_mode_outlined),
       controlAffinity: ListTileControlAffinity.trailing,
       activeColor: Colors.green,
       activeTrackColor: Colors.green[200],
+      //ändrar temat
       value: Provider.of<ChangeTheme>(context, listen: true).getThemeModeSwitch,
       onChanged: (bool? value) {
         Provider.of<ChangeTheme>(context, listen: false)
@@ -78,7 +80,8 @@ Widget _numberOfDecks() {
           value:
               '${Provider.of<ChangeNumberOfDecks>(context, listen: false).getSelectedNumberOfDecks}',
           onChanged: (String? newValue) {
-            Provider.of<BlackJackGameEngine>(context, listen: false).addDecks(newValue!);
+            Provider.of<BlackJackGameEngine>(context, listen: false)
+                .addDecks(newValue!);
             Provider.of<ChangeNumberOfDecks>(context, listen: false)
                 .setSelectedDecks(newValue);
           },
@@ -96,43 +99,4 @@ Widget _numberOfDecks() {
       },
     ),
   );
-}
-
-//provider för att ändra antal kortlekar
-class ChangeNumberOfDecks with ChangeNotifier {
-  final List<String> _numberDecks = ['1', '2', '3', '4', '5'];
-  late int _selectedNumberOfDecks = 1;
-
-  List<String> get getNumberDecks => _numberDecks;
-  int get getSelectedNumberOfDecks => _selectedNumberOfDecks;
-
-  void setSelectedDecks(String x) {
-    _selectedNumberOfDecks = int.parse(x);
-    notifyListeners();
-  }
-}
-
-//Provider för att ändra mellan darktheme/standardtheme
-class ChangeTheme extends ChangeNotifier {
-  var _thememode = ThemeMode.light;
-  bool _themeModeSwitch = false;
-  get getThemeMode {
-    return _thememode;
-  }
-
-  get getThemeModeSwitch {
-    return _themeModeSwitch;
-  }
-
-  void changeDarkTheme(bool value) {
-    if (value == true) {
-      _thememode = ThemeMode.dark;
-      _themeModeSwitch = true;
-      notifyListeners();
-    } else {
-      _thememode = ThemeMode.light;
-      _themeModeSwitch = false;
-      notifyListeners();
-    }
-  }
 }

@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../game_engine/blackjack.dart';
-
-//ändrat stateful till stateless
+import '../game_engine/error_handling.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,7 +13,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-//TODO: byt ut stack
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +27,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _logInTitle() { //Titel för Login
+  Widget _logInTitle() {
+    //Titel för Login
     return const Padding(
-      padding: EdgeInsets.only(left: 75, right: 0, top: 30, bottom: 0),
+      padding: EdgeInsets.only(left: 75, top: 30),
       child: Text(
         'Blackjack',
         style: TextStyle(fontSize: 60),
@@ -40,15 +38,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginFieldsAndButton(BuildContext context) { //textfält för email och lösenord samt login knapp
+  Widget _loginFieldsAndButton(BuildContext context) {
+    //textfält för email och lösenord samt login knapp
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     return Stack(
       children: [
         Padding(
-          padding:
-              const EdgeInsets.only(left: 15, right: 15, top: 175, bottom: 0),
-          child: TextField( //textfält email
+          padding: const EdgeInsets.only(
+            left: 15,
+            right: 15,
+            top: 175,
+          ),
+          child: TextField(
+            //textfält email
             controller: emailController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
@@ -60,7 +63,8 @@ class _LoginPageState extends State<LoginPage> {
         Padding(
           padding:
               const EdgeInsets.only(left: 15, right: 15, top: 250, bottom: 0),
-          child: TextField( //textfält lösenord
+          child: TextField(
+            //textfält lösenord
             obscureText: true,
             controller: passwordController,
             decoration: const InputDecoration(
@@ -71,16 +75,20 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(left: 130, right: 0, top: 350, bottom: 0),
+          padding: const EdgeInsets.only(
+            left: 130,
+            top: 355,
+          ),
           child: FractionallySizedBox(
             widthFactor: 0.5,
             heightFactor: 0.15,
-            child: ElevatedButton( //login knapp
+            child: ElevatedButton(
+              //login knapp
               child: const Text('Log in'),
               onPressed: () {
                 if (emailController.text.isNotEmpty &&
-                    passwordController.text.isNotEmpty) { //kollar om fälten ej är tomma och kallar sen på login metoden i FirebaseImplementation
+                    passwordController.text.isNotEmpty) {
+                  //kollar om fälten ej är tomma och kallar sen på login metoden i FirebaseImplementation
                   try {
                     Provider.of<FirebaseAuthImplementation>(context,
                             listen: false)
@@ -90,11 +98,11 @@ class _LoginPageState extends State<LoginPage> {
                     emailController.clear();
                     passwordController.clear();
                   } on FirebaseAuthException catch (e) {
-                    BlackJackGameEngine.errorHandling(e, context);
+                    ErrorHandling().errorHandling(e, context);
                   }
                 } else {
                   throw Exception();
-                  //TODO: gör så att textfälten som ej är ifyllda blir markerade
+                  //TODO hej något gick fel
                 }
               },
             ),
@@ -111,7 +119,10 @@ class _LoginPageState extends State<LoginPage> {
         text: TextSpan(
           children: [
             const TextSpan(
-                text: 'New user? ', style: TextStyle(color: Colors.black)),
+              text: 'New user? ',
+              style: TextStyle(color: Colors.black),
+            ),
+            // gör så att man kan klicka på texten
             TextSpan(
                 text: 'Create account',
                 style: const TextStyle(color: Colors.blue),
@@ -130,6 +141,7 @@ class _LoginPageState extends State<LoginPage> {
     TextEditingController passwordController = TextEditingController();
 
     showDialog(
+      //dekoration för popup-menyn
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -161,21 +173,23 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(fontSize: 15),
                 ),
                 onPressed: () {
+                  //kollar så att textfälten inte är tomma
                   if (emailController.text.isNotEmpty &&
                       passwordController.text.isNotEmpty) {
                     try {
                       Provider.of<FirebaseAuthImplementation>(context,
                               listen: false)
                           .createNewUser(
+                              context: context,
                               email: emailController.text,
                               password: passwordController.text);
-
-                      emailController.clear();
-                      passwordController.clear();
-                      Navigator.pop(context);
                     } on FirebaseAuthException catch (e) {
-                      BlackJackGameEngine.errorHandling(e, context);
+                      ErrorHandling().errorHandling(e, context);
                     }
+
+                    emailController.clear();
+                    passwordController.clear();
+                    Navigator.pop(context);
                   }
                 },
               ),

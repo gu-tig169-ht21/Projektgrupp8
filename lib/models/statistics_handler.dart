@@ -4,6 +4,7 @@ import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 import '../game_engine/blackjack.dart';
+import '../game_engine/error_handling.dart';
 
 class DrawnCard {
   String name;
@@ -36,7 +37,7 @@ class StatisticsHandler extends ChangeNotifier {
       userId = Provider.of<FirebaseAuthImplementation>(context, listen: false)
           .getUserId()!;
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
 
     try {
@@ -44,28 +45,28 @@ class StatisticsHandler extends ChangeNotifier {
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getGamesPlayed(userId: userId);
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
     try {
       _gamesWon =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getGamesWon(userId: userId);
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
     try {
       _gamesLost =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getGamesLost(userId: userId);
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
     try {
       _drawnCards =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getDrawnCards(userId: userId);
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
 
     notifyListeners();

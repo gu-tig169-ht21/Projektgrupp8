@@ -1,25 +1,27 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:provider/provider.dart';
-import '../game_engine/blackjack.dart';
+import '../game_engine/error_handling.dart';
 
 class ProfileInformationPage extends StatelessWidget {
   const ProfileInformationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //testar så att vi kan hämta användarens email och visa på vyn
+    //behövs göras längst upp för att kunna använda try-satsen på rätt sätt
     String? email = 'email';
     try {
       email = Provider.of<FirebaseAuthImplementation>(context, listen: true)
           .getUserEmail();
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
     return Scaffold(
       appBar: AppBar(
         title: const Text('User profile'),
       ),
+      //vid eventuellt renderingsfel så skapas en scroll
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -52,7 +54,6 @@ class ProfileInformationPage extends StatelessWidget {
           shape: BoxShape.circle,
           image: const DecorationImage(
             fit: BoxFit.fill,
-            //TODO: BYta profilbild!!!!!!!!
             image: AssetImage('assets/profilepicture.png'),
           ),
         ),
@@ -71,7 +72,7 @@ class ProfileInformationPage extends StatelessWidget {
           Provider.of<FirebaseAuthImplementation>(context, listen: false)
               .signOut();
         } on Exception catch (e) {
-          BlackJackGameEngine.errorHandling(e, context);
+          ErrorHandling().errorHandling(e, context);
         }
         Navigator.pop(context);
       },
@@ -93,39 +94,41 @@ class ProfileInformationPage extends StatelessWidget {
           builder: (context) {
             return AlertDialog(
               title: const Text('Change your password'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 40,
-                    child: TextField(
-                      obscureText: true,
-                      controller: oldPassword,
-                      decoration: const InputDecoration(
-                        labelText: 'Old Password',
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      child: TextField(
+                        obscureText: true,
+                        controller: oldPassword,
+                        decoration: const InputDecoration(
+                          labelText: 'Old Password',
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    child: TextField(
-                      obscureText: true,
-                      controller: newPassword,
-                      decoration: const InputDecoration(
-                        labelText: 'New password',
+                    SizedBox(
+                      height: 55,
+                      child: TextField(
+                        obscureText: true,
+                        controller: newPassword,
+                        decoration: const InputDecoration(
+                          labelText: 'New password',
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    child: TextField(
-                      obscureText: true,
-                      controller: verifyNewPassword,
-                      decoration: const InputDecoration(
-                          labelText: 'Verify new password'),
+                    SizedBox(
+                      height: 55,
+                      child: TextField(
+                        obscureText: true,
+                        controller: verifyNewPassword,
+                        decoration: const InputDecoration(
+                            labelText: 'Verify new password'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               actions: [
                 Center(
@@ -143,13 +146,14 @@ class ProfileInformationPage extends StatelessWidget {
                                   oldPassword.text, newPassword.text);
                           Navigator.pop(context);
                         } on Exception catch (e) {
-                          BlackJackGameEngine.errorHandling(e, context);
+                          ErrorHandling().errorHandling(e, context);
                         }
                         oldPassword.clear();
                         newPassword.clear();
                         verifyNewPassword.clear();
                       } else {
                         throw Exception();
+                        //TODO fixa felmeddelande
                       }
                     },
                   ),
@@ -191,7 +195,9 @@ class ProfileInformationPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
-                        'Are you sure you want to delete the user? This will remove all user data and game statistics. This cant be undone.'),
+                        'Are you sure you want to delete the user? This will '
+                        'remove all user data and game statistics. This action '
+                        'can\'t be undone.'),
                     TextField(
                       controller: password,
                       decoration: const InputDecoration(
@@ -217,7 +223,7 @@ class ProfileInformationPage extends StatelessWidget {
                                 .deleteUser(password.text);
                             password.clear();
                           } on Exception catch (e) {
-                            BlackJackGameEngine.errorHandling(e, context);
+                            ErrorHandling().errorHandling(e, context);
                           }
                           Navigator.pop(context);
                         },
@@ -244,6 +250,3 @@ class ProfileInformationPage extends StatelessWidget {
     );
   }
 }
-//TODO: finlir och det sista som har med inloggning och användarhantering att göra.
- 
-

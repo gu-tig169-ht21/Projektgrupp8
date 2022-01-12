@@ -5,7 +5,7 @@ import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:playing_cards/playing_cards.dart';
 import 'package:provider/provider.dart';
 import 'deck_of_cards.dart';
-
+import '../game_engine/error_handling.dart';
 
 class BlackJackGameEngine extends ChangeNotifier {
   List<PlayingCard> _deck = standardFiftyTwoCardDeck();
@@ -130,7 +130,8 @@ class BlackJackGameEngine extends ChangeNotifier {
     notifyListeners();
   }
 
-  void subtractFromBalance({required int i, required BuildContext context}) async {
+  void subtractFromBalance(
+      {required int i, required BuildContext context}) async {
     try {
       await Provider.of<FirestoreImplementation>(context, listen: false)
           .changeBalance(
@@ -141,9 +142,8 @@ class BlackJackGameEngine extends ChangeNotifier {
               add: false);
       notifyListeners();
     } on Exception catch (e) {
-      errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
-
   }
 
   void addDecks(String a) {
@@ -200,7 +200,6 @@ class BlackJackGameEngine extends ChangeNotifier {
     startingHands();
     notifyListeners();
   }
-
 
   void forfeit({required BuildContext context}) async {
     await Provider.of<FirestoreImplementation>(context, listen: false)
@@ -319,7 +318,7 @@ class BlackJackGameEngine extends ChangeNotifier {
   }
 
   void winnings(
-      {required String playerOrSplit, required BuildContext context}) async{
+      {required String playerOrSplit, required BuildContext context}) async {
     //delar upp vinsten, beroende på angivet argument för player eller split bet
     //hanterar dina vunna riksdaler
     if (playerOrSplit == 'Player') {
@@ -332,7 +331,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                 change: _playerBet * 2,
                 add: true);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
       Provider.of<CardThemeHandler>(context, listen: false)
           .fetchBalance(context: context);
@@ -346,7 +345,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                 change: _playerBet * 2,
                 add: true);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
       Provider.of<CardThemeHandler>(context, listen: false)
           .fetchBalance(context: context);
@@ -368,7 +367,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                 change: _playerBet,
                 add: true);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
       Provider.of<CardThemeHandler>(context, listen: false)
           .fetchBalance(context: context);
@@ -382,7 +381,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                 change: _playerBet,
                 add: true);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
 
       Provider.of<CardThemeHandler>(context, listen: false)
@@ -402,7 +401,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
     //returna det nya bettet istället
     //ökar spelarens insats
@@ -417,7 +416,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                 change: bet,
                 add: false);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
       Provider.of<CardThemeHandler>(context, listen: false)
           .fetchBalance(context: context);
@@ -439,7 +438,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
 
     if (balance > 0) {
@@ -453,7 +452,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                 change: balance,
                 add: false);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
       Provider.of<CardThemeHandler>(context, listen: false)
           .fetchBalance(context: context);
@@ -475,7 +474,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                         listen: false)
                     .getUserId()!);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
     }
     if (_split) {
@@ -488,7 +487,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
         } on Exception catch (e) {
-          errorHandling(e, context);
+          ErrorHandling().errorHandling(e, context);
         }
       }
     }
@@ -539,7 +538,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
 
     if (balance >= _playerBet) {
@@ -563,7 +562,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
 
     if (balance >= _playerBet) {
@@ -576,7 +575,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                 change: _playerBet,
                 add: false);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
       _playerBet = _playerBet * 2;
       _doubled = true;
@@ -599,7 +598,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
 
     if (_playerHand[0].value == _playerHand[1].value &&
@@ -614,7 +613,6 @@ class BlackJackGameEngine extends ChangeNotifier {
   }
 
   void doSplit({required BuildContext context}) async {
-
     int balance = 0;
     try {
       balance =
@@ -624,7 +622,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
-      errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
     //gör en split om det väljs och kraven uppfylls
     PlayingCard card = DeckOfCards().pickACard(_deck);
@@ -636,7 +634,7 @@ class BlackJackGameEngine extends ChangeNotifier {
 
       _splitBet = _playerBet;
       try {
-       await Provider.of<FirestoreImplementation>(context, listen: false)
+        await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
@@ -644,7 +642,7 @@ class BlackJackGameEngine extends ChangeNotifier {
                 change: _splitBet,
                 add: false);
       } on Exception catch (e) {
-        errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
       Provider.of<CardThemeHandler>(context, listen: false)
           .fetchBalance(context: context);
@@ -916,20 +914,5 @@ class BlackJackGameEngine extends ChangeNotifier {
     } else {
       throw Exception('Didnt choose hand');
     }
-  }
-
-//TODO: ev ta bort static
-  static Widget errorHandling(Exception e, BuildContext context) {
-    return AlertDialog(
-        title: const Text('Something went wrong'),
-        content: Text('$e'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Exit'),
-          ),
-        ]);
   }
 }

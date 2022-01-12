@@ -20,7 +20,7 @@ class CustomizationPage extends StatelessWidget {
         children: [
           _cardView(context),
           _purchaseDeckButton(context),
-          _changeDeckButton(context),
+          _chooseDeckButton(context),
         ],
       ),
     );
@@ -36,23 +36,24 @@ class CustomizationPage extends StatelessWidget {
     return Row(
       children: [
         Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: Text(
-                '\$ ${Provider.of<CardThemeHandler>(context, listen: false).getBalance(context: context)}'))
+          padding: const EdgeInsets.only(right: 30),
+          child: Text(
+              '\$ ${Provider.of<CardThemeHandler>(context, listen: false).getBalance(context: context)}'),
+        ),
       ],
     );
   }
 
-//pagecontroller för att kunna ha koll på de olika sidorna
+//pagecontroller för att kunna ha koll på de olika korten som visas i pageview
   PageController pageController = PageController(viewportFraction: 0.7);
   var value = 0;
 
 //widget lista med de olika korten
   Widget _cardView(BuildContext context) {
     List<Widget> cardList = <Widget>[
-      _card1(context),
-      _card2(context),
-      _card3(context)
+      _standardDeck(context),
+      _starWarsDeck(context),
+      _goldenDeck(context)
     ];
     return Align(
       alignment: const Alignment(0, -0.4),
@@ -139,13 +140,11 @@ class CustomizationPage extends StatelessWidget {
   }
 
 // widget som returnerar en knapp som du trycker på
-//för att ändra din valda kortlek till en ny kortlek
-  Widget _changeDeckButton(context) {
+//för att ändra din valda kortlek
+  Widget _chooseDeckButton(context) {
     String _deck = 'Standard';
 
-    //hämtar vilket kort du står på i listan så vi kan
-    //skicka vidare det sen
-
+//ändrar värdet på _deck beroende på vald lek
     if (Provider.of<CardThemeHandler>(context, listen: false)
             .getChosenPageViewCard ==
         0) {
@@ -167,12 +166,15 @@ class CustomizationPage extends StatelessWidget {
           onPressed: () {
             //väljer de kort som skall komma till spelplanen
             //välj det deck som är upplåst (går inte att välja oköpt deck)
+            // om chosenpageview är 0 så sätts temat till standard
             if (Provider.of<CardThemeHandler>(context, listen: false)
                     .getChosenPageViewCard ==
                 0) {
               Provider.of<CardThemeHandler>(context, listen: false)
                   .changePlayingCardsThemes(
                       style: 'Standard', context: context);
+              //om chosenpageview är 1 och den är upplåst
+              // så sätts temat till star wars
             } else if (Provider.of<CardThemeHandler>(context, listen: false)
                         .getChosenPageViewCard ==
                     1 &&
@@ -181,6 +183,8 @@ class CustomizationPage extends StatelessWidget {
               Provider.of<CardThemeHandler>(context, listen: false)
                   .changePlayingCardsThemes(
                       style: 'StarWars', context: context);
+              //om chosenpageview är 2 och den är upplåst
+              // så sätts temat till golden
             } else if (Provider.of<CardThemeHandler>(context, listen: false)
                         .getChosenPageViewCard ==
                     2 &&
@@ -204,7 +208,7 @@ class CustomizationPage extends StatelessWidget {
   }
 }
 
-Widget _card1(BuildContext context) {
+Widget _standardDeck(BuildContext context) {
   return Stack(
     children: [
       Column(
@@ -231,13 +235,12 @@ Widget _card1(BuildContext context) {
             ],
           ),
           const Text(
-            'Standard Deck',
+            'Starting Deck',
             style: TextStyle(
               fontSize: 25,
             ),
           ),
           const Text(
-            //TODO: ändra denna texten sen
             'Standard',
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
@@ -249,6 +252,7 @@ Widget _card1(BuildContext context) {
         child: (Provider.of<CardThemeHandler>(context, listen: true)
                     .getCardStyleString ==
                 'Standard')
+            //if-sats som kollar om checkmarken ska visas eller inte
             ? const Icon(
                 Icons.check_sharp,
                 size: 45,
@@ -260,7 +264,7 @@ Widget _card1(BuildContext context) {
   );
 }
 
-Widget _card2(BuildContext context) {
+Widget _starWarsDeck(BuildContext context) {
   return Stack(
     children: [
       Column(
@@ -329,7 +333,7 @@ Widget _card2(BuildContext context) {
   );
 }
 
-Widget _card3(BuildContext context) {
+Widget _goldenDeck(BuildContext context) {
   return Stack(
     children: [
       Column(

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/game_engine/deck_of_cards.dart';
+import 'package:my_first_app/game_engine/error_handling.dart';
 import 'package:playing_cards/playing_cards.dart';
 
 class FirebaseAuthImplementation extends ChangeNotifier {
@@ -36,19 +37,24 @@ class FirebaseAuthImplementation extends ChangeNotifier {
     return _usrLoggedIn;
   }
 
-  void createNewUser({required String email, required String password}) async {
+  void createNewUser(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
     //funktionen för att skapa en ny användare
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        throw FirebaseAuthException(code: 'weak-password');
+        ErrorHandling().errorHandling(e, context);
+        //throw FirebaseAuthException(code: 'weak-password');
       } else if (e.code == 'email-already-in-use') {
-        throw FirebaseAuthException(code: 'email-already-in-use');
+        ErrorHandling().errorHandling(e, context);
+        // throw FirebaseAuthException(code: 'email-already-in-use');
       }
     } catch (e) {
-      throw Exception(e);
+      ErrorHandling().errorHandling(e, context);
     }
   }
 
@@ -490,7 +496,6 @@ class FirestoreImplementation extends ChangeNotifier {
     return returnInt;
   }
 
-
   Future<void> changeBalance(
       {required String userId, required int change, required add}) async {
     CollectionReference statistics = _database.collection('Statistics');
@@ -502,7 +507,6 @@ class FirestoreImplementation extends ChangeNotifier {
           .then((value) => print('$change added to balance'))
           .catchError(
               (error) => print(error.toString())); //TODO:riktig felhantering
-
 
     } else {
       await statistics

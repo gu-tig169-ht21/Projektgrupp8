@@ -1,4 +1,3 @@
-import 'package:my_first_app/game_engine/blackjack.dart';
 import 'package:my_first_app/models/card_themes.dart';
 import 'package:my_first_app/models/firebase/firebase_implementation.dart';
 import 'package:my_first_app/views/game_page.dart';
@@ -11,6 +10,7 @@ import 'how_to_play_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import '../game_engine/error_handling.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -56,17 +56,17 @@ class _StartPageState extends State<StartPage> {
                 change: 200,
                 add: true);
       } on Exception catch (e) {
-        BlackJackGameEngine.errorHandling(e, context);
+        ErrorHandling().errorHandling(e, context);
       }
     }
     file.writeAsString('${_now.day}'); //skriver dagens datum till filen
     try {
+      //metoden som hämtar statistik
       await Provider.of<StatisticsHandler>(context, listen: false)
           .setUpStatistics(context: context);
     } on Exception catch (e) {
-      BlackJackGameEngine.errorHandling(e, context);
+      ErrorHandling().errorHandling(e, context);
     }
-    //metoden som hämtar statistik
   }
 
   @override
@@ -128,13 +128,14 @@ class _StartPageState extends State<StartPage> {
           child: const Text('PLAY NOW'),
           onPressed: () {
             try {
+              //skapar användar statistik om det inte redan finns ett dokument kopplat till det användar-id:t
               Provider.of<FirestoreImplementation>(context, listen: false)
                   .createNewUsrStat(
                       userId: Provider.of<FirebaseAuthImplementation>(context,
                               listen: false)
                           .getUserId()!);
             } on Exception catch (e) {
-              BlackJackGameEngine.errorHandling(e, context);
+              ErrorHandling().errorHandling(e, context);
             }
             Navigator.push(
               context,
@@ -161,7 +162,7 @@ class _StartPageState extends State<StartPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const HelpPage(),
+                builder: (context) => const HowToPlayPage(),
               ),
             );
           },
