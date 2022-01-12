@@ -15,7 +15,6 @@ class PlayingCardsProvider extends ChangeNotifier {
   bool goldenDeckUnlocked = false;
   int balance = 0;
 
-
   get getStarWarsDeckUnlocked {
     return starWarsDeckUnlocked;
   }
@@ -49,12 +48,16 @@ class PlayingCardsProvider extends ChangeNotifier {
     return playingcardThemeMode;
   }
 
-  void fetchBalance({required BuildContext context}) async{
-    balance = await Provider.of<FirestoreImplementation>(context, listen: false).getBalance(userId: Provider.of<FirebaseAuthImplementation>(context, listen:false).getUserId()!);
+  void fetchBalance({required BuildContext context}) async {
+    balance = await Provider.of<FirestoreImplementation>(context, listen: false)
+        .getBalance(
+            userId:
+                Provider.of<FirebaseAuthImplementation>(context, listen: false)
+                    .getUserId()!);
     notifyListeners();
   }
 
-  int getBalance({required BuildContext context}){
+  int getBalance({required BuildContext context}) {
     fetchBalance(context: context);
     return balance;
   }

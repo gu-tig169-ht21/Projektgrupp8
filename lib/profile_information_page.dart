@@ -28,6 +28,10 @@ class ProfileInformation extends StatelessWidget {
               'Email: $email',
               style: const TextStyle(fontSize: 20),
             ),
+            const Divider(
+              color: Colors.transparent,
+              height: 30,
+            ),
             logOut(context),
             changePassword(context),
             deleteUser(context),
@@ -58,8 +62,10 @@ class ProfileInformation extends StatelessWidget {
 
   Widget logOut(BuildContext context) {
     return ListTile(
+      leading: const Icon(Icons.logout),
       title: const Text('Log out'),
       subtitle: const Text('Logs you out of your account'),
+      trailing: const Icon(Icons.double_arrow),
       onTap: () {
         try {
           Provider.of<FirebaseAuthImplementation>(context, listen: false)
@@ -77,8 +83,10 @@ class ProfileInformation extends StatelessWidget {
         newPassword = TextEditingController(),
         verifyNewPassword = TextEditingController();
     return ListTile(
+      leading: const Icon(Icons.password),
       title: const Text('Change password'),
       subtitle: const Text('Changes your password'),
+      trailing: const Icon(Icons.double_arrow),
       onTap: () {
         showDialog(
           context: context,
@@ -89,7 +97,7 @@ class ProfileInformation extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
-                    height: 60,
+                    height: 40,
                     child: TextField(
                       obscureText: true,
                       controller: oldPassword,
@@ -99,7 +107,7 @@ class ProfileInformation extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 40,
                     child: TextField(
                       obscureText: true,
                       controller: newPassword,
@@ -109,7 +117,7 @@ class ProfileInformation extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 40,
                     child: TextField(
                       obscureText: true,
                       controller: verifyNewPassword,
@@ -124,7 +132,7 @@ class ProfileInformation extends StatelessWidget {
                   child: ElevatedButton(
                     child: const Text(
                       'Change password',
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 16),
                     ),
                     onPressed: () {
                       if (newPassword.text == verifyNewPassword.text) {
@@ -146,10 +154,11 @@ class ProfileInformation extends StatelessWidget {
                     },
                   ),
                 ),
+                const Divider(height: 4, color: Colors.transparent),
                 Center(
                   child: ElevatedButton(
                     child: const Text(
-                      'cancel',
+                      'Cancel',
                       style: TextStyle(fontSize: 15),
                     ),
                     onPressed: () {
@@ -168,8 +177,10 @@ class ProfileInformation extends StatelessWidget {
   Widget deleteUser(BuildContext context) {
     TextEditingController password = TextEditingController();
     return ListTile(
+      leading: const Icon(Icons.delete),
       title: const Text('Delete user'),
       subtitle: const Text('Delete the current user and their profile'),
+      trailing: const Icon(Icons.double_arrow),
       onTap: () {
         showDialog(
             context: context,
@@ -180,7 +191,7 @@ class ProfileInformation extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
-                        'Are you sure you want to delete the user? this will remove all user data and game statistics. This cant be undone'),
+                        'Are you sure you want to delete the user? This will remove all user data and game statistics. This cant be undone.'),
                     TextField(
                       controller: password,
                       decoration: const InputDecoration(
@@ -195,7 +206,10 @@ class ProfileInformation extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        child: const Text('Delete user'),
+                        child: const Text(
+                          'Delete user',
+                          style: TextStyle(fontSize: 15),
+                        ),
                         onPressed: () {
                           try {
                             Provider.of<FirebaseAuthImplementation>(context,
@@ -208,8 +222,15 @@ class ProfileInformation extends StatelessWidget {
                           Navigator.pop(context);
                         },
                       ),
+                      const Divider(
+                        height: 4,
+                        color: Colors.transparent,
+                      ),
                       ElevatedButton(
-                        child: const Text('Cancel'),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(fontSize: 15),
+                        ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
