@@ -93,7 +93,6 @@ class LoginPage extends StatelessWidget {
               }
             } else {
               throw Exception();
-              //TODO: gör så att textfälten som ej är ifyllda blir markerade
             }
           },
         ),
@@ -170,7 +169,6 @@ class LoginPage extends StatelessWidget {
                     } on FirebaseAuthException catch (e) {
                       BlackJack.errorHandling(e, context);
                     }
-                    //TODO: gör så att textfälten som ej är ifyllda blir markerade
                   }
                 },
               ),
