@@ -48,13 +48,20 @@ class PlayingCardsProvider extends ChangeNotifier {
     return playingcardThemeMode;
   }
 
+
+//TODO kolla så att try stämmer gällande notify listeners
   void fetchBalance({required BuildContext context}) async {
-    balance = await Provider.of<FirestoreImplementation>(context, listen: false)
-        .getBalance(
-            userId:
-                Provider.of<FirebaseAuthImplementation>(context, listen: false)
-                    .getUserId()!);
-    notifyListeners();
+    try {
+      balance =
+          await Provider.of<FirestoreImplementation>(context, listen: false)
+              .getBalance(
+                  userId: Provider.of<FirebaseAuthImplementation>(context,
+                          listen: false)
+                      .getUserId()!);
+      notifyListeners();
+    } on Exception catch (e) {
+      BlackJack.errorHandling(e, context);
+    }
   }
 
   int getBalance({required BuildContext context}) {

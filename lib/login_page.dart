@@ -176,7 +176,6 @@ class _LoginPageState extends State<LoginPage> {
                     } on FirebaseAuthException catch (e) {
                       BlackJack.errorHandling(e, context);
                     }
-                    //TODO: gör så att textfälten som ej är ifyllda blir markerade
                   }
                 },
               ),
