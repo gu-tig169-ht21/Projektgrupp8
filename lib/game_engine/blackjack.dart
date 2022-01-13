@@ -32,7 +32,7 @@ class BlackJackGameEngine extends ChangeNotifier {
   BlackJackGameEngine() {
     //funktioner som görs vid första instansiering
     resetDeck();
-    //hämta saldo från server här
+
     clearHands();
 
     startingHands();
@@ -135,6 +135,7 @@ class BlackJackGameEngine extends ChangeNotifier {
     try {
       await Provider.of<FirestoreImplementation>(context, listen: false)
           .changeBalance(
+              context: context,
               userId: Provider.of<FirebaseAuthImplementation>(context,
                       listen: false)
                   .getUserId()!,
@@ -146,6 +147,7 @@ class BlackJackGameEngine extends ChangeNotifier {
     }
   }
 
+//adderar lekar
   void addDecks(String a) {
     int decks = int.parse(a);
     if (decks == 1) {
@@ -204,6 +206,7 @@ class BlackJackGameEngine extends ChangeNotifier {
   void forfeit({required BuildContext context}) async {
     await Provider.of<FirestoreImplementation>(context, listen: false)
         .changeBalance(
+            context: context,
             userId:
                 Provider.of<FirebaseAuthImplementation>(context, listen: false)
                     .getUserId()!,
@@ -277,8 +280,8 @@ class BlackJackGameEngine extends ChangeNotifier {
     //funktionen för dealerns tur
     PlayingCard card;
     showDealerCard();
+    //dealern drar kort till summan är över 17
     while (DeckOfCards().handValue(_dealerHand) < 17) {
-      //dealern drar kort till summan är över 17
       card = DeckOfCards().pickACard(_deck);
       _dealerHand.add(card);
       _deck.removeWhere((element) => element == card);
@@ -320,11 +323,11 @@ class BlackJackGameEngine extends ChangeNotifier {
   void winnings(
       {required String playerOrSplit, required BuildContext context}) async {
     //delar upp vinsten, beroende på angivet argument för player eller split bet
-    //hanterar dina vunna riksdaler
     if (playerOrSplit == 'Player') {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -339,6 +342,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -361,6 +365,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -375,6 +380,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -397,6 +403,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       balance =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getBalance(
+                  context: context,
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
                       .getUserId()!);
@@ -410,6 +417,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -434,6 +442,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       balance =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getBalance(
+                  context: context,
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
                       .getUserId()!);
@@ -446,6 +455,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -469,6 +479,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       try {
         Provider.of<FirestoreImplementation>(context, listen: false)
             .incrementCardInDB(
+                context: context,
                 card: card,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
@@ -482,6 +493,7 @@ class BlackJackGameEngine extends ChangeNotifier {
         try {
           Provider.of<FirestoreImplementation>(context, listen: false)
               .incrementCardInDB(
+                  context: context,
                   card: card,
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
@@ -528,19 +540,22 @@ class BlackJackGameEngine extends ChangeNotifier {
     }
   }
 
+//testar om det går att dubbla
   void testingDouble({required BuildContext context}) async {
     int balance = 0;
+    //hämtar balance hos det inloggade UserID:t
     try {
       balance =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getBalance(
+                  context: context,
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
                       .getUserId()!);
     } on Exception catch (e) {
       ErrorHandling().errorHandling(e, context);
     }
-
+    //jämför balance med ditt bet vilket avgör om det går att dubbla eller ej
     if (balance >= _playerBet) {
       _canDouble = true;
       notifyListeners();
@@ -558,6 +573,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       balance =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getBalance(
+                  context: context,
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
                       .getUserId()!);
@@ -567,8 +583,10 @@ class BlackJackGameEngine extends ChangeNotifier {
 
     if (balance >= _playerBet) {
       try {
+        //minskar balance med värdet för playerbet
         Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -577,8 +595,10 @@ class BlackJackGameEngine extends ChangeNotifier {
       } on Exception catch (e) {
         ErrorHandling().errorHandling(e, context);
       }
+      //dubblar bettet
       _playerBet = _playerBet * 2;
       _doubled = true;
+      //uppdaterar balance
       Provider.of<CardThemeHandler>(context, listen: false)
           .fetchBalance(context: context);
       notifyListeners();
@@ -594,6 +614,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       balance =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getBalance(
+                  context: context,
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
                       .getUserId()!);
@@ -618,6 +639,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       balance =
           await Provider.of<FirestoreImplementation>(context, listen: false)
               .getBalance(
+                  context: context,
                   userId: Provider.of<FirebaseAuthImplementation>(context,
                           listen: false)
                       .getUserId()!);
@@ -636,6 +658,7 @@ class BlackJackGameEngine extends ChangeNotifier {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -652,7 +675,9 @@ class BlackJackGameEngine extends ChangeNotifier {
       _splitHand.add(card);
       _deck.removeWhere((element) => element == card);
       _split = true;
-
+      //kollar båda av händerna har fått blackjack eller inte
+      //har de det så stannar den och låter dealern spela
+      //samt kollar vem/vilka som vunnit
       if (handCheck(playerOrSplit: 'Player') &&
           handCheck(playerOrSplit: 'Split')) {
         stop(playerOrDealerOrSplit: 'Player');
@@ -660,7 +685,10 @@ class BlackJackGameEngine extends ChangeNotifier {
         dealersTurn();
         winOrLose(playerOrSplit: 'Player');
         winOrLose(playerOrSplit: 'Split');
-      } else if (handCheck(playerOrSplit: 'Player')) {
+      }
+      //kollar om playerhand fått blackjack
+      //kollar isåfall winorlose och sätter splitturn till true
+      else if (handCheck(playerOrSplit: 'Player')) {
         stop(playerOrDealerOrSplit: 'Player');
         winOrLose(playerOrSplit: 'Player');
         setSplitTurn = true;
@@ -674,9 +702,11 @@ class BlackJackGameEngine extends ChangeNotifier {
       _canSplit = false;
       notifyListeners();
     }
+    //ökar värdet på rounds med 1
     incrementRounds();
   }
 
+  //kollar om man vunnit, förlorat eller spelat lika
   void winOrLose({required String playerOrSplit}) {
     //kalla en gång, eller två vid en split
     int dealerScore = DeckOfCards().handValue(_dealerHand);
@@ -684,6 +714,8 @@ class BlackJackGameEngine extends ChangeNotifier {
     if (playerOrSplit == 'Player') {
       playerScore = DeckOfCards().handValue(_playerHand);
       if (dealerScore == 21 && playerScore == 21) {
+        //gör så att dealern inte visar sina kort innan båda händerna stannat
+        //vid en eventuell split
         _split ? null : showDealerCard();
         //båda har blackjack
         _winCondition = 'Draw';
@@ -812,107 +844,6 @@ class BlackJackGameEngine extends ChangeNotifier {
       return true;
     } else {
       return false;
-    }
-  }
-
-  void blackJackOrBustCheck({required String playerOrSplit}) {
-    int dealerScore = DeckOfCards().handValue(_dealerHand);
-    int playerScore;
-    if (playerOrSplit == 'Player' && _split) {
-      playerScore = DeckOfCards().handValue(_playerHand);
-      if (dealerScore == 21 && playerScore == 21) {
-        //båda har blackjack
-        _winCondition = 'Draw';
-        stop(playerOrDealerOrSplit: 'Player');
-        notifyListeners();
-      } else if (dealerScore == 21 && playerScore != 21) {
-        //dealern har blackjack
-        stop(playerOrDealerOrSplit: 'Player');
-        _winCondition = 'Lose';
-        notifyListeners();
-      } else if (dealerScore != 21 && playerScore == 21) {
-        //spelaren har blackjack
-        stop(playerOrDealerOrSplit: 'Player');
-        _winCondition = 'Win';
-        notifyListeners();
-      } else if (playerScore > 21) {
-        //spelaren blev tjock
-        stop(playerOrDealerOrSplit: 'Player');
-        _winCondition = 'Lose';
-        notifyListeners();
-      } else if (dealerScore > 21) {
-        //dealern blev tjock
-        stop(playerOrDealerOrSplit: 'Player');
-        _winCondition = 'Win';
-        notifyListeners();
-      } else {
-        _winCondition = 'NoWinnerYet';
-        notifyListeners();
-      }
-    } else if (playerOrSplit == 'Player') {
-      playerScore = DeckOfCards().handValue(_playerHand);
-      if (dealerScore == 21 && playerScore == 21) {
-        showDealerCard();
-        //båda har blackjack
-        _winCondition = 'Draw';
-        notifyListeners();
-      } else if (dealerScore == 21 && playerScore != 21) {
-        //dealern har blackjack
-        showDealerCard();
-        _winCondition = 'Lose';
-        notifyListeners();
-      } else if (dealerScore != 21 && playerScore == 21) {
-        showDealerCard();
-        //spelaren har blackjack
-        _winCondition = 'Win';
-        notifyListeners();
-      } else if (playerScore > 21) {
-        showDealerCard();
-        //spelaren blev tjock
-        _winCondition = 'Lose';
-        notifyListeners();
-      } else if (dealerScore > 21) {
-        showDealerCard();
-        //dealern blev tjock
-        _winCondition = 'Win';
-        notifyListeners();
-      } else {
-        _winCondition = 'NoWinnerYet';
-        notifyListeners();
-      }
-    } else if (playerOrSplit == 'Split') {
-      playerScore = DeckOfCards().handValue(_splitHand);
-      if (dealerScore == 21 && playerScore == 21) {
-        showDealerCard();
-        //båda har blackjack
-        _splitWinCondition = 'Draw';
-        notifyListeners();
-      } else if (dealerScore == 21 && playerScore != 21) {
-        //dealern har blackjack
-        showDealerCard();
-        _splitWinCondition = 'Lose';
-        notifyListeners();
-      } else if (dealerScore != 21 && playerScore == 21) {
-        showDealerCard();
-        //spelaren har blackjack
-        _splitWinCondition = 'Win';
-        notifyListeners();
-      } else if (playerScore > 21) {
-        showDealerCard();
-        //spelaren blev tjock
-        _splitWinCondition = 'Lose';
-        notifyListeners();
-      } else if (dealerScore > 21) {
-        showDealerCard();
-        //dealern blev tjock
-        _splitWinCondition = 'Win';
-        notifyListeners();
-      } else {
-        _splitWinCondition = 'NoWinnerYet';
-        notifyListeners();
-      }
-    } else {
-      throw Exception('Didnt choose hand');
     }
   }
 }

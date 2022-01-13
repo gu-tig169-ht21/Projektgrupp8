@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           child: FractionallySizedBox(
             widthFactor: 0.5,
-            heightFactor: 0.15,
+            heightFactor: 0.19,
             child: ElevatedButton(
               //login knapp
               child: const Text('Log in'),
@@ -93,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     Provider.of<FirebaseAuthImplementation>(context,
                             listen: false)
                         .logIn(
+                            context: context,
                             email: emailController.text,
                             password: passwordController.text);
                     emailController.clear();
@@ -100,9 +101,10 @@ class _LoginPageState extends State<LoginPage> {
                   } on FirebaseAuthException catch (e) {
                     ErrorHandling().errorHandling(e, context);
                   }
-                } else {
-                  throw Exception();
-                  //TODO hej något gick fel
+                } else if (emailController.text.isEmpty ||
+                    passwordController.text.isEmpty) {
+                  ErrorHandling().errorHandling(
+                      'One or both of the textfields are empty', context);
                 }
               },
             ),
@@ -114,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _registerText(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 130, right: 0, top: 600),
+      padding: const EdgeInsets.only(left: 130, top: 500),
       child: RichText(
         text: TextSpan(
           children: [

@@ -1,9 +1,7 @@
-
 import 'package:playing_cards/playing_cards.dart';
 import 'dart:math';
 
 class DeckOfCards {
-  //List<PlayingCard> deck = standardFiftyTwoCardDeck(); //ska den ligga här?
   final _random = Random();
 
   PlayingCard pickACard(List<PlayingCard> deck) {
@@ -14,174 +12,225 @@ class DeckOfCards {
     return card;
   }
 
-
-  PlayingCard stringToCard({required String cardString}){
-    switch (cardString){
-      case 'aceSpades':{
-        return PlayingCard(Suit.spades, CardValue.ace);
-      }
-      case 'twoSpades':{
-        return PlayingCard(Suit.spades, CardValue.two);
-      }
-      case 'threeSpades':{
-        return PlayingCard(Suit.spades, CardValue.three);
-      }
-      case 'fourSpades':{
-        return PlayingCard(Suit.spades, CardValue.four);
-      }
-      case 'fiveSpades':{
-        return PlayingCard(Suit.spades, CardValue.five);
-      }
-      case 'sixSpades':{
-        return PlayingCard(Suit.spades, CardValue.six);
-      }
-      case 'sevenSpades':{
-        return PlayingCard(Suit.spades, CardValue.seven);
-      }
-      case 'eightSpades':{
-        return PlayingCard(Suit.spades, CardValue.eight);
-      }
-      case 'nineSpades':{
-        return PlayingCard(Suit.spades, CardValue.nine);
-      }
-      case 'tenSpades':{
-        return PlayingCard(Suit.spades, CardValue.ten);
-      }
-      case 'jackSpades':{
-        return PlayingCard(Suit.spades, CardValue.jack);
-      }
-      case 'queenSpades':{
-        return PlayingCard(Suit.spades, CardValue.queen);
-      }
-      case 'kingSpades':{
-        return PlayingCard(Suit.spades, CardValue.king);
-      }
-      case 'aceClubs':{
-        return PlayingCard(Suit.clubs, CardValue.ace);
-      }
-      case 'twoClubs':{
-        return PlayingCard(Suit.clubs, CardValue.two);
-      }
-      case 'threeClubs':{
-        return PlayingCard(Suit.clubs, CardValue.three);
-      }
-      case 'fourClubs':{
-        return PlayingCard(Suit.clubs, CardValue.four);
-      }
-      case 'fiveClubs':{
-        return PlayingCard(Suit.clubs, CardValue.five);
-      }
-      case 'sixClubs':{
-        return PlayingCard(Suit.clubs, CardValue.six);
-      }
-      case 'sevenClubs':{
-        return PlayingCard(Suit.clubs, CardValue.seven);
-      }
-      case 'eightClubs':{
-        return PlayingCard(Suit.clubs, CardValue.eight);
-      }
-      case 'nineClubs':{
-        return PlayingCard(Suit.clubs, CardValue.nine);
-      }
-      case 'tenClubs':{
-        return PlayingCard(Suit.clubs, CardValue.ten);
-      }
-      case 'jackClubs':{
-        return PlayingCard(Suit.clubs, CardValue.jack);
-      }
-      case 'queenClubs':{
-        return PlayingCard(Suit.clubs, CardValue.queen);
-      }
-      case 'kingClubs':{
-        return PlayingCard(Suit.clubs, CardValue.king);
-      }
-      case 'aceHearts':{
-        return PlayingCard(Suit.hearts, CardValue.ace);
-      }
-      case 'twoHearts':{
-        return PlayingCard(Suit.hearts, CardValue.two);
-      }
-      case 'threeHearts':{
-        return PlayingCard(Suit.hearts, CardValue.three);
-      }
-      case 'fourHearts':{
-        return PlayingCard(Suit.hearts, CardValue.four);
-      }
-      case 'fiveHearts':{
-        return PlayingCard(Suit.hearts, CardValue.five);
-      }
-      case 'sixHearts':{
-        return PlayingCard(Suit.hearts, CardValue.six);
-      }
-      case 'sevenHearts':{
-        return PlayingCard(Suit.hearts, CardValue.seven);
-      }
-      case 'eightHearts':{
-        return PlayingCard(Suit.hearts, CardValue.eight);
-      }
-      case 'nineHearts':{
-        return PlayingCard(Suit.hearts, CardValue.nine);
-      }
-      case 'tenHearts':{
-        return PlayingCard(Suit.hearts, CardValue.ten);
-      }
-      case 'jackHearts':{
-        return PlayingCard(Suit.hearts, CardValue.jack);
-      }
-      case 'queenHearts':{
-        return PlayingCard(Suit.hearts, CardValue.queen);
-      }
-      case 'kingHearts':{
-        return PlayingCard(Suit.hearts, CardValue.king);
-      }
-      case 'aceDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.ace);
-      }
-      case 'twoDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.two);
-      }
-      case 'threeDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.three);
-      }
-      case 'fourDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.four);
-      }
-      case 'fiveDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.five);
-      }
-      case 'sixDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.six);
-      }
-      case 'sevenDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.seven);
-      }
-      case 'eightDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.eight);
-      }
-      case 'nineDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.nine);
-      }
-      case 'tenDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.ten);
-      }
-      case 'jackDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.jack);
-      }
-      case 'queenDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.queen);
-      }
-      case 'kingDiamonds':{
-        return PlayingCard(Suit.diamonds, CardValue.king);
-      }
-      default:{
-        return PlayingCard(Suit.spades, CardValue.ace);
-      }
+  PlayingCard stringToCard({required String cardString}) {
+    switch (cardString) {
+      case 'aceSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.ace);
+        }
+      case 'twoSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.two);
+        }
+      case 'threeSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.three);
+        }
+      case 'fourSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.four);
+        }
+      case 'fiveSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.five);
+        }
+      case 'sixSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.six);
+        }
+      case 'sevenSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.seven);
+        }
+      case 'eightSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.eight);
+        }
+      case 'nineSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.nine);
+        }
+      case 'tenSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.ten);
+        }
+      case 'jackSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.jack);
+        }
+      case 'queenSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.queen);
+        }
+      case 'kingSpades':
+        {
+          return PlayingCard(Suit.spades, CardValue.king);
+        }
+      case 'aceClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.ace);
+        }
+      case 'twoClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.two);
+        }
+      case 'threeClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.three);
+        }
+      case 'fourClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.four);
+        }
+      case 'fiveClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.five);
+        }
+      case 'sixClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.six);
+        }
+      case 'sevenClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.seven);
+        }
+      case 'eightClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.eight);
+        }
+      case 'nineClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.nine);
+        }
+      case 'tenClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.ten);
+        }
+      case 'jackClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.jack);
+        }
+      case 'queenClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.queen);
+        }
+      case 'kingClubs':
+        {
+          return PlayingCard(Suit.clubs, CardValue.king);
+        }
+      case 'aceHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.ace);
+        }
+      case 'twoHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.two);
+        }
+      case 'threeHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.three);
+        }
+      case 'fourHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.four);
+        }
+      case 'fiveHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.five);
+        }
+      case 'sixHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.six);
+        }
+      case 'sevenHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.seven);
+        }
+      case 'eightHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.eight);
+        }
+      case 'nineHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.nine);
+        }
+      case 'tenHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.ten);
+        }
+      case 'jackHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.jack);
+        }
+      case 'queenHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.queen);
+        }
+      case 'kingHearts':
+        {
+          return PlayingCard(Suit.hearts, CardValue.king);
+        }
+      case 'aceDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.ace);
+        }
+      case 'twoDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.two);
+        }
+      case 'threeDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.three);
+        }
+      case 'fourDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.four);
+        }
+      case 'fiveDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.five);
+        }
+      case 'sixDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.six);
+        }
+      case 'sevenDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.seven);
+        }
+      case 'eightDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.eight);
+        }
+      case 'nineDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.nine);
+        }
+      case 'tenDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.ten);
+        }
+      case 'jackDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.jack);
+        }
+      case 'queenDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.queen);
+        }
+      case 'kingDiamonds':
+        {
+          return PlayingCard(Suit.diamonds, CardValue.king);
+        }
+      default:
+        {
+          return PlayingCard(Suit.spades, CardValue.ace);
+        }
     }
-
   }
 
-  String cardToString(PlayingCard card){
-    switch (card.suit){
+  String cardToString(PlayingCard card) {
+    switch (card.suit) {
       case Suit.spades:
         {
           switch (card.value) {
@@ -492,6 +541,8 @@ class DeckOfCards {
     }
   }
 
+  //räknar ut värdet på händerna
+  //kollar om värdet på ess behöver minskas eller inte
   int handValue(List<PlayingCard> hand) {
     //returnerar värdet av en "hand" (lista av kort)
     int value = 0;

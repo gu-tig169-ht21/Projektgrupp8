@@ -50,6 +50,7 @@ class _StartPageState extends State<StartPage> {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)
             .changeBalance(
+                context: context,
                 userId: Provider.of<FirebaseAuthImplementation>(context,
                         listen: false)
                     .getUserId()!,
@@ -131,6 +132,7 @@ class _StartPageState extends State<StartPage> {
               //skapar användar statistik om det inte redan finns ett dokument kopplat till det användar-id:t
               Provider.of<FirestoreImplementation>(context, listen: false)
                   .createNewUsrStat(
+                      context: context,
                       userId: Provider.of<FirebaseAuthImplementation>(context,
                               listen: false)
                           .getUserId()!);

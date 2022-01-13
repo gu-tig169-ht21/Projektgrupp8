@@ -51,8 +51,8 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'blackjack:)',
       home: _startUp(context),
-      theme: ThemeCustom.StandardTheme,
-      darkTheme: ThemeCustom.DarkTheme,
+      theme: ThemeCustom.standardTheme,
+      darkTheme: ThemeCustom.darkTheme,
       themeMode: Provider.of<ChangeTheme>(context, listen: true).getThemeMode,
     );
   }
