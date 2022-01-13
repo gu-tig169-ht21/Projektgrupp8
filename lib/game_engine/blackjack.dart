@@ -32,7 +32,7 @@ class BlackJackGameEngine extends ChangeNotifier {
   BlackJackGameEngine() {
     //funktioner som görs vid första instansiering
     resetDeck();
-    //hämta saldo från server här
+
     clearHands();
 
     startingHands();
@@ -323,7 +323,6 @@ class BlackJackGameEngine extends ChangeNotifier {
   void winnings(
       {required String playerOrSplit, required BuildContext context}) async {
     //delar upp vinsten, beroende på angivet argument för player eller split bet
-    //hanterar dina vunna riksdaler
     if (playerOrSplit == 'Player') {
       try {
         await Provider.of<FirestoreImplementation>(context, listen: false)

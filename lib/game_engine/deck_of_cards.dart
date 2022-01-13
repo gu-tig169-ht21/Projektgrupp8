@@ -2,7 +2,6 @@ import 'package:playing_cards/playing_cards.dart';
 import 'dart:math';
 
 class DeckOfCards {
-  //List<PlayingCard> deck = standardFiftyTwoCardDeck(); //ska den ligga här?
   final _random = Random();
 
   PlayingCard pickACard(List<PlayingCard> deck) {

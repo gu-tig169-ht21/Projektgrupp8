@@ -300,7 +300,7 @@ Widget _starWarsDeck(BuildContext context) {
                   .getDeckUnlocked(
                       starWarsOrGolden: 'StarWars', context: context))
               ? Text(
-                  '\$ ${Provider.of<CardThemeHandler>(context, listen: false).getStarWarsDeckUnlocked}',
+                  '\$ ${Provider.of<CardThemeHandler>(context, listen: false).getStarWarsDeckPrice}',
                   style: const TextStyle(fontSize: 15))
               : const Text('Unlocked', style: TextStyle(fontSize: 15))
         ],

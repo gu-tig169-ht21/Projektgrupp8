@@ -100,10 +100,6 @@ class GamePage extends StatelessWidget {
                     .getSplitWinCondition,
                 context: context),
           ),
-          // Consumer<BlackJack>(
-          //     builder: (context, state, child) => splitOrDouble(
-          //         Provider.of<BlackJack>(context, listen: false)
-          //             .getCanDoubleOrSplit)),
           Consumer<BlackJackGameEngine>(
               builder: (context, state, child) => _popUpBet(
                   firstRound:
@@ -120,7 +116,6 @@ class GamePage extends StatelessWidget {
     //hämtar balance
     Provider.of<CardThemeHandler>(context, listen: false)
         .fetchBalance(context: context);
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -129,11 +124,13 @@ class GamePage extends StatelessWidget {
             : SizedBox(
                 width: 200,
                 child: Consumer<BlackJackGameEngine>(
-                    builder: (context, state, child) => _getHand(
-                        Provider.of<BlackJackGameEngine>(context, listen: false)
-                            .getDealerHand,
-                        dealer: true,
-                        context: context))),
+                  builder: (context, state, child) => _getHand(
+                      Provider.of<BlackJackGameEngine>(context, listen: false)
+                          .getDealerHand,
+                      dealer: true,
+                      context: context),
+                ),
+              ),
         Column(
           children: [
             Row(
@@ -180,7 +177,9 @@ class GamePage extends StatelessWidget {
                                   listen: false)
                               .setSplitTurn = true;
                         }
-                      } else if (Provider.of<BlackJackGameEngine>(context,
+                      }
+                      //om det är en split och splithands tur att spela
+                      else if (Provider.of<BlackJackGameEngine>(context,
                                   listen: false)
                               .getSplit &&
                           Provider.of<BlackJackGameEngine>(context,
@@ -236,7 +235,8 @@ class GamePage extends StatelessWidget {
                   child: const Text('  Hit  '),
                   style: ButtonStyle(
                       backgroundColor:
-                          //ändrar färgen på knappen beroende på om du kan 'hitta' mer
+                          //ändrar färgen på knappen beroende på om du kan
+                          // 'hita' (ta fler kort eller inte) mer
                           //eller inte
                           Provider.of<BlackJackGameEngine>(context,
                                       listen: false)
@@ -383,7 +383,8 @@ class GamePage extends StatelessWidget {
                 ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          //kollar om det går att dubbla
+                          //ändrar färg på knappen beroende på om det går att
+                          // dubbla eller ej
                           Provider.of<BlackJackGameEngine>(context,
                                       listen: false)
                                   .getCanDouble
@@ -418,7 +419,7 @@ class GamePage extends StatelessWidget {
             ),
           ],
         ),
-        //lägger in en pil över den aktuella handen som vars tur det är
+        //lägger in en pil över den aktuella handen vars tur det är
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -427,6 +428,7 @@ class GamePage extends StatelessWidget {
                     width: 200,
                     child: Column(
                       children: [
+                        //pil över splithanden
                         Provider.of<BlackJackGameEngine>(context, listen: false)
                                 .getSplitTurn
                             ? const Icon(Icons.arrow_downward_sharp)
@@ -437,6 +439,7 @@ class GamePage extends StatelessWidget {
                                   listen: false)
                               .handCheckToString(playerOrSplit: 'Split'),
                         ),
+                        //målar upp vyn för splithanden
                         Consumer<BlackJackGameEngine>(
                             builder: (context, state, child) => _getHand(
                                 Provider.of<BlackJackGameEngine>(context,
@@ -454,6 +457,7 @@ class GamePage extends StatelessWidget {
                     width: 200,
                     child: Column(
                       children: [
+                        //pil över playerhanden
                         Provider.of<BlackJackGameEngine>(context, listen: false)
                                 .getSplitTurn
                             ? const SizedBox.shrink()
@@ -463,7 +467,7 @@ class GamePage extends StatelessWidget {
                                   listen: false)
                               .handCheckToString(playerOrSplit: 'Player'),
                         ),
-                        //målar upp vyn för splithand
+                        //målar upp vyn för playerhand
                         (Consumer<BlackJackGameEngine>(
                             builder: (context, state, child) => _getHand(
                                 Provider.of<BlackJackGameEngine>(context,
@@ -480,7 +484,7 @@ class GamePage extends StatelessWidget {
     );
   }
 
-  //genererar vyn för spelaren och dealerns kort
+  //genererar vyn för spelaren och dealerns kort i en flatcardfan
   Widget _getHand(List<PlayingCard> hand,
       {required bool dealer, required BuildContext context}) {
     //hämtar dealercardshown för att kunna bestämma när och om dealern ska visa
@@ -490,6 +494,8 @@ class GamePage extends StatelessWidget {
             .getDealerCardShown;
 
     List<Widget> viewHand = <Widget>[];
+    //målar upp kort så länge som längden på listan hans är 'mindre' än
+    //argumentets längd
     for (int i = 0; i < hand.length; i++) {
       viewHand.add(
         SizedBox(
@@ -518,8 +524,7 @@ class GamePage extends StatelessWidget {
   Widget _winOrLosePopUp(
       bool split, String winOrLosePlayer, String winOrLoseSplit,
       {required BuildContext context}) {
-    //popup om du vinner eller förlorar där du kan starta en ny runda eller
-    // gå till startsidan
+    //popup om du vinner eller förlorar där du kan starta en ny runda
     //om man splittat och alla är sanna så avslutas spelet
     if (Provider.of<BlackJackGameEngine>(context, listen: true).getSplit &&
         Provider.of<BlackJackGameEngine>(context, listen: true).getDealerStop &&
@@ -532,6 +537,7 @@ class GamePage extends StatelessWidget {
           title: const Text('Congratulations'),
           content: const Text('You Won both hands!'),
           actions: <Widget>[
+            // 'OK' knappen
             TextButton(
                 onPressed: () {
                   Provider.of<BlackJackGameEngine>(context, listen: false)

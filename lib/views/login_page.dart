@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           child: FractionallySizedBox(
             widthFactor: 0.5,
-            heightFactor: 0.15,
+            heightFactor: 0.19,
             child: ElevatedButton(
               //login knapp
               child: const Text('Log in'),
