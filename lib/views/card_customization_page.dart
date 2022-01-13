@@ -4,6 +4,7 @@ import 'package:playing_cards/playing_cards.dart';
 import '../models/card_themes.dart';
 import '../game_engine/blackjack.dart';
 
+// ignore: must_be_immutable
 class CustomizationPage extends StatelessWidget {
   CustomizationPage({Key? key}) : super(key: key);
 

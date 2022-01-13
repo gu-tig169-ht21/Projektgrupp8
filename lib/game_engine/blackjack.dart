@@ -9,8 +9,11 @@ import '../game_engine/error_handling.dart';
 
 class BlackJackGameEngine extends ChangeNotifier {
   List<PlayingCard> _deck = standardFiftyTwoCardDeck();
+  // ignore: prefer_final_fields
   List<PlayingCard> _playerHand = <PlayingCard>[];
+  // ignore: prefer_final_fields
   List<PlayingCard> _splitHand = <PlayingCard>[];
+  // ignore: prefer_final_fields
   List<PlayingCard> _dealerHand = <PlayingCard>[];
   bool _dealerStop = false;
   bool _playerStop = false;
