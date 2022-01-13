@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _registerText(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 130, right: 0, top: 600),
+      padding: const EdgeInsets.only(left: 130, top: 500),
       child: RichText(
         text: TextSpan(
           children: [

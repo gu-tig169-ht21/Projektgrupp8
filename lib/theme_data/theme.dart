@@ -1,17 +1,16 @@
-// ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
 
-//klass som gör ett Standard tema på scaffold & appbar
 class ThemeCustom {
-  static ThemeData get StandardTheme {
+  //funktion som gör ett Standard tema
+  static ThemeData get standardTheme {
     return ThemeData(
-       textTheme: const TextTheme(
-         bodyText1: TextStyle(),
-         bodyText2: TextStyle(),
-         headline6: TextStyle(),
-       ).apply(
-         bodyColor: Colors.black,
-       ),
+      textTheme: const TextTheme(
+        bodyText1: TextStyle(),
+        bodyText2: TextStyle(),
+        headline6: TextStyle(),
+      ).apply(
+        bodyColor: Colors.black,
+      ),
       primaryColor: Colors.green.shade800,
       scaffoldBackgroundColor: Colors.white,
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -32,12 +31,11 @@ class ThemeCustom {
           fontSize: 20,
         ),
       ),
-
     );
   }
 
-//funktion som gör ett mörkt tema på scaffold & appbar
-  static ThemeData get DarkTheme {
+//funktion som gör ett mörkt tema
+  static ThemeData get darkTheme {
     return ThemeData(
       primaryColor: Colors.grey,
       scaffoldBackgroundColor: Colors.grey,
